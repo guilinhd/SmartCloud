@@ -24,7 +24,7 @@ namespace SmartCloud.Common.EntityFrameworkCore
         private static IConfigurationRoot BuildConfiguration()
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../SmartCloud.Common.DbMigration/"))
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../SmartCloud.Common.HttpApi.Host/"))
                 .AddJsonFile("appsettings.json", optional: false);
 
             return builder.Build();
