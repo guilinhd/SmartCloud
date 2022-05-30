@@ -26,19 +26,37 @@ namespace SmartCloud.Common.DataIndexs
 
         internal DataIndex(
             Guid id,
-            string name,
-            List<Description> descriptions,
-            string reader,
-            string editor
+            string name
             ) : base(id)
         {
+
+            #region 初始化类型描述
+            List<Description> descriptions = new List<Description>();
+            descriptions.Add(new Description()
+            {
+                No = 1,
+                Name = "Name",
+                Title = "名称",
+                Content = ""
+            });
+            for (int i = 1; i <= 15; i++)
+            {
+                descriptions.Add(new Description()
+                {
+                    No = i + 1,
+                    Name = "Remark" + i.ToString(),
+                    Title = "备注" + i.ToString(),
+                    Content = ""
+                });
+            }
+            #endregion
+
             Name = name;
+            Reader = "";
+            Editor = "";
             Description = JsonSerializer.Serialize(
                 descriptions, 
-                new JsonSerializerOptions(){Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All)}
-                );
-            Reader = reader;
-            Editor = editor;
+                new JsonSerializerOptions(){ Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All) });
         }
 
         internal DataIndex ChangeName([NotNull] string name)

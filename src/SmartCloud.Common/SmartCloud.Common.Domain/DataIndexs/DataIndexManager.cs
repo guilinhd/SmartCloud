@@ -19,11 +19,7 @@ namespace SmartCloud.Common.DataIndexs
             _dataIndexRepository = dataIndexRepository;
         }
 
-        public async Task<DataIndex> Create(
-            [NotNull] string name,
-            List<Description> descriptions,
-            string reader,
-            string editor
+        public async Task<DataIndex> Create([NotNull] string name
             )
         {
             Check.NotNullOrWhiteSpace(name, nameof(name));
@@ -36,10 +32,7 @@ namespace SmartCloud.Common.DataIndexs
 
             return new DataIndex(
                 GuidGenerator.Create(),
-                name,
-                descriptions,
-                reader,
-                editor
+                name
             );
         }
 
