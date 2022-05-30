@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace SmartCloud.Common.Domain.DataIndexs
+namespace SmartCloud.Common.DataIndexs
 {
     public class DataIndex : AuditedAggregateRoot<Guid>
     {
