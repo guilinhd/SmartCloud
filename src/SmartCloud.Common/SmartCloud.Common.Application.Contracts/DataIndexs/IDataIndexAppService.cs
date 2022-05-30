@@ -20,16 +20,33 @@ namespace SmartCloud.Common.DataIndexs
         /// 修改名称
         /// </summary>
         /// <param name="id">Id</param>
-        /// <param name="input">类别信息</param>
+        /// <param name="name">名称</param>
         /// <returns>数据字典类别信息</returns>
-        Task<DataIndexDto> UpdateAsync(Guid id, DataIndexDto input);
+        Task<DataIndexDto> UpdateAsync(Guid id, string name);
+
+        /// <summary>
+        /// 修改描述
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="descriptions">描述信息</param>
+        /// <returns></returns>
+        Task UpdateDescriptionsAsync(Guid id, List<Description> descriptions);
+
+        /// <summary>
+        /// 修改权限
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="reader">读者</param>
+        /// <param name="editor">编辑者</param>
+        /// <returns></returns>
+        Task UpdateAuthorization(Guid id, string reader, string editor);
 
         /// <summary>
         /// 删除
         /// </summary>
         /// <param name="id">类别Id</param>
         /// <returns>类别信息</returns>
-        Task<bool> DeleteAsync(Guid id);
+        Task DeleteAsync(Guid id);
 
         /// <summary>
         /// 查询
