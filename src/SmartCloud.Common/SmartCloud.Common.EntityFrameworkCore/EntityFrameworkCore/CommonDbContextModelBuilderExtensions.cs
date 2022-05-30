@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SmartCloud.Common.Domain.DataIndexs;
-using System;
-using System.Collections.Generic;
+using SmartCloud.Common.DataIndexs;
+using SmartCloud.Common.Datas;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
@@ -23,6 +19,16 @@ namespace SmartCloud.Common.EntityFrameworkCore
                 b.ConfigureByConvention();
 
                 b.HasIndex(b => b.Name);
+            });
+
+            builder.Entity<Data>(b =>
+            {
+                b.ToTable("Datas");
+                b.ConfigureByConvention();
+
+                b.HasIndex(b => b.Category);
+                b.HasIndex(b => new { b.Category, b.Name });
+                b.HasIndex(b => new { b.Category, b.Name, b.Remark1 });
             });
         }
     }

@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SmartCloud.Common.Domain.DataIndexs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SmartCloud.Common.DataIndexs;
+using SmartCloud.Common.Datas;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -14,6 +10,8 @@ namespace SmartCloud.Common.EntityFrameworkCore
     public class CommonDbContext : AbpDbContext<CommonDbContext>, ICommonDbContext
     {
         public DbSet<DataIndex> DataIndexs { get; set; }
+
+        public DbSet<Data> Datas { get; set; }
 
         public CommonDbContext(DbContextOptions<CommonDbContext> options) : base(options)
         {
