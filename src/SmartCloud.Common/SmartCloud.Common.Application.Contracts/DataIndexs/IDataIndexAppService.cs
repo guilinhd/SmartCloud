@@ -7,7 +7,7 @@ using Volo.Abp.Application.Services;
 
 namespace SmartCloud.Common.DataIndexs
 {
-    public interface IDataIndexAppService : ICrudAppService<DataIndexDto, Guid, DataIndexDto, CreateUpdateDataIndexDto, DataIndexDto>
+    public interface IDataIndexAppService : ICrudAppService<DataIndexDto, Guid, DataIndexDto, CreateDataIndexDto, DataIndexDto>
     {
         
     }

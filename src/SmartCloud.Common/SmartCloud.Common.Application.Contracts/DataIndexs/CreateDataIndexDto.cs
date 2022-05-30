@@ -7,7 +7,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace SmartCloud.Common.DataIndexs
 {
-    public class CreateUpdateDataIndexDto : AuditedEntityDto<Guid>
+    public class CreateDataIndexDto : AuditedEntityDto<Guid>
     {
         public string Name { set; get; }
 
