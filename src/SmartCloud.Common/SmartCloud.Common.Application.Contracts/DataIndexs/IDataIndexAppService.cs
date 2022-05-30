@@ -12,9 +12,9 @@ namespace SmartCloud.Common.DataIndexs
         /// <summary>
         /// 新增
         /// </summary>
-        /// <param name="input">类别信息</param>
+        /// <param name="name">名称</param>
         /// <returns>数据字典类别信息</returns>
-        Task<DataIndexDto> CreateAsync(CreateDataIndexDto input);
+        Task<DataIndexDto> CreateAsync(string name);
 
         /// <summary>
         /// 修改名称
