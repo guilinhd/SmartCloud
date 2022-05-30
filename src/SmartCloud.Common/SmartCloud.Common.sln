@@ -3,7 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCloud.Common.Domain.Shared", "SmartCloud.Common.Domain.Shared\SmartCloud.Common.Domain.Shared.csproj", "{FFEB8A55-0E0C-44A3-B2B2-09325876B63A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartCloud.Common.Domain.Shared", "SmartCloud.Common.Domain.Shared\SmartCloud.Common.Domain.Shared.csproj", "{FFEB8A55-0E0C-44A3-B2B2-09325876B63A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartCloud.Common.Domain", "SmartCloud.Common.Domain\SmartCloud.Common.Domain.csproj", "{DB5549E1-327A-43EA-BCD2-E307623FE8DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{40F53F70-6A6C-4D1E-990A-4BAB61B5FB9A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCloud.Common.EntityFrameworkCore", "SmartCloud.Common.EntityFrameworkCore\SmartCloud.Common.EntityFrameworkCore.csproj", "{171B39AD-D071-47CF-80E4-BED6A76CC6A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +24,14 @@ Global
 		{FFEB8A55-0E0C-44A3-B2B2-09325876B63A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFEB8A55-0E0C-44A3-B2B2-09325876B63A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFEB8A55-0E0C-44A3-B2B2-09325876B63A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB5549E1-327A-43EA-BCD2-E307623FE8DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB5549E1-327A-43EA-BCD2-E307623FE8DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB5549E1-327A-43EA-BCD2-E307623FE8DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB5549E1-327A-43EA-BCD2-E307623FE8DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{171B39AD-D071-47CF-80E4-BED6A76CC6A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{171B39AD-D071-47CF-80E4-BED6A76CC6A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{171B39AD-D071-47CF-80E4-BED6A76CC6A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{171B39AD-D071-47CF-80E4-BED6A76CC6A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
