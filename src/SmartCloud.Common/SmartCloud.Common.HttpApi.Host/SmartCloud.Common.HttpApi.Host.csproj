@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="5.2.2" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="5.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartCloud.Common.Application\SmartCloud.Common.Application.csproj" />
+    <ProjectReference Include="..\SmartCloud.Common.EntityFrameworkCore\SmartCloud.Common.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\SmartCloud.Common.HttpApi\SmartCloud.Common.HttpApi.csproj" />
+  </ItemGroup>
+
+</Project>
