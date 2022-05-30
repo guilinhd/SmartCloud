@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartCloud.Common.Domain.Shared
+namespace SmartCloud.Common
 {
     public static class CommonDomainErrorCodes
     {
