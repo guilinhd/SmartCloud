@@ -8,7 +8,7 @@ using SmartCloud.Common.DataIndexs;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace SmartCloud.Common.Domain.DataIndexs
+namespace SmartCloud.Common.DataIndexs
 {
     public class DataIndexManager : DomainService
     {

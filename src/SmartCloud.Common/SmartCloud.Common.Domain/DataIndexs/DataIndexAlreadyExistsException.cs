@@ -1,6 +1,6 @@
 ﻿using Volo.Abp;
 
-namespace SmartCloud.Common.Domain.DataIndexs 
+namespace SmartCloud.Common.DataIndexs 
 {
     public class DataIndexAlreadyExistsException : BusinessException
     {
