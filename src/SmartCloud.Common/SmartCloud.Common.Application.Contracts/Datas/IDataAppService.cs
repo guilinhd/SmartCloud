@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 
-namespace SmartCloud.Common.Application.Contracts.Datas
+namespace SmartCloud.Common.Datas
 {
     public interface IDataAppService : ICrudAppService<DataDto, Guid, GetDataListDto, DataDto>
     {
