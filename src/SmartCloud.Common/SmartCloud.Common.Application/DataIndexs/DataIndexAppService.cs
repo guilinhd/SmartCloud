@@ -10,6 +10,7 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.ObjectMapping;
 
+
 namespace SmartCloud.Common.DataIndexs
 {
     public class DataIndexAppService : ApplicationService, IDataIndexAppService
@@ -36,6 +37,7 @@ namespace SmartCloud.Common.DataIndexs
             DataIndex dataIndex = await _manager.Create(name);
             dataIndex = await _repository.InsertAsync(dataIndex);
 
+            string result = dataIndex.Description;
             return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
         }
 
@@ -70,7 +72,7 @@ namespace SmartCloud.Common.DataIndexs
         /// </summary>
         /// <param name="name">读者姓名</param>
         /// <returns>类别信息列表</returns>
-        public async Task<List<DataIndexDto>> GetListAsync(string name)
+        public async Task<List<DataIndexDto>> GetListAsync(string? name)
         {
             var datas = await _repository.FindAllByNameAsync(name);
             return ObjectMapper.Map<List<DataIndex>, List<DataIndexDto>>(datas);
