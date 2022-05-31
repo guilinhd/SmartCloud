@@ -1,17 +1,27 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.OpenApi.Models;
 using SmartCloud.Common.Application;
 using SmartCloud.Common.EntityFrameworkCore;
+using System.Text;
+using System.Text.Json;
+using System.Text.Unicode;
 using Volo.Abp;
 using Volo.Abp.AspNetCore;
 using Volo.Abp.AspNetCore.Mvc;
+using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.Autofac;
 using Volo.Abp.Modularity;
+using Volo.Abp.Swashbuckle;
 
 namespace SmartCloud.Common.HttpApi.Host
 {
     [DependsOn(
         typeof(AbpAspNetCoreModule),
         typeof(AbpAutofacModule),
+        typeof(AbpSwashbuckleModule),
         typeof(CommonApplicationModule),
         typeof(CommonEntityFrameworkCoreModule),
         typeof(CommonHttpApiModule)
@@ -22,7 +32,21 @@ namespace SmartCloud.Common.HttpApi.Host
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             Configure<AbpAspNetCoreMvcOptions>(options => {
-                options.ConventionalControllers.Create(typeof(CommonApplicationModule).Assembly);
+                options.ConventionalControllers.Create(typeof(CommonApplicationModule).Assembly, opts =>
+                {
+                    opts.RootPath = "common";
+                });
+            });
+
+            //Configure<MvcOptions>(configure => {
+            //    var policy = new AuthorizationPolicyBuilder()
+            //        .RequireAuthenticatedUser()
+            //        .Build();
+            //    configure.Filters.Add(new AuthorizeFilter(policy));
+            //});
+
+            Configure<AbpAntiForgeryOptions>(options => {
+                options.AutoValidate = false;
             });
 
             ConfigureSwaggerServices(context.Services);
@@ -43,6 +67,7 @@ namespace SmartCloud.Common.HttpApi.Host
                 });
             }
 
+            //app.UseCors();
             app.UseRouting();
             app.UseAuthorization();
             app.UseConfiguredEndpoints();
@@ -54,6 +79,28 @@ namespace SmartCloud.Common.HttpApi.Host
                 c.SwaggerDoc("v1", new OpenApiInfo() { Title = "SmartCloud.Common.Api", Description = "v1.0" });
                 c.CustomSchemaIds(type => type.FullName);
                 c.DocInclusionPredicate((doc, description) => true);
+            });
+        }
+
+        private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
+        {
+            context.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder
+                        .WithOrigins(
+                            configuration["App:CorsOrigins"]
+                                .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                                .Select(o => o.RemovePostFix("/"))
+                                .ToArray()
+                        )
+                        .WithAbpExposedHeaders()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
             });
         }
     }
