@@ -19,8 +19,6 @@ namespace SmartCloud.Common.Datas
         public async Task<List<Data>> FindAllAsync(string category)
         {
             var dbSet = await GetDbSetAsync();
-
-
             return await dbSet
                 .Where(d => d.Category == category)
                 .ToListAsync();
