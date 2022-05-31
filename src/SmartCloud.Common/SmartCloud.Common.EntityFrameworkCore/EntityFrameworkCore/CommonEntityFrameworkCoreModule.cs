@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.MySQL;
 using Volo.Abp.Modularity;
 
 namespace SmartCloud.Common.EntityFrameworkCore
 {
     [DependsOn(
-        typeof(CommonDomainModule)
+        typeof(AbpEntityFrameworkCoreMySQLModule)
     )]
     public class CommonEntityFrameworkCoreModule : AbpModule
     {
