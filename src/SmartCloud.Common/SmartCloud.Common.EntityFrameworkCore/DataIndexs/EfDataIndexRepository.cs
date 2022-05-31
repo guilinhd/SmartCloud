@@ -15,7 +15,7 @@ namespace SmartCloud.Common.DataIndexs
         {
             var dbSet = await GetDbSetAsync();
             
-            if (name == "")
+            if (name.IsNullOrEmpty())
             {
                 return await dbSet.ToListAsync();
             }
