@@ -1,4 +1,5 @@
-﻿using Volo.Abp;
+﻿using Microsoft.Extensions.Logging;
+using Volo.Abp;
 
 namespace SmartCloud.Common.DataIndexs 
 {
@@ -8,6 +9,10 @@ namespace SmartCloud.Common.DataIndexs
             : base(CommonDomainErrorCodes.DataIndexAlreadyExists)
         {
             WithData("name", name);
+            WithData("category", "业务数据错误");
+            WithData("reason", "类别名称重复!");
         }
+
+        
     }
 }
