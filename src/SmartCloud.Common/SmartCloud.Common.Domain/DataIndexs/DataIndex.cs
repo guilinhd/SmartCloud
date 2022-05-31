@@ -1,6 +1,8 @@
 ﻿using SmartCloud.Common.DataIndexs;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -14,13 +16,19 @@ namespace SmartCloud.Common.DataIndexs
 {
     public class DataIndex : AuditedAggregateRoot<Guid>
     {
+        [Required]
+        [Column(TypeName = "varchar(60)")]
+
         public string Name { private set; get; }
 
-        public string Description { set; get; }
+        [Column(TypeName = "text")]
+        public string Description { set; get; } = "";
 
-        public string Reader { set; get; }
+        [Column(TypeName = "text")]
+        public string Reader { set; get; } = "";
 
-        public string Editor { set; get; }
+        [Column(TypeName = "text")]
+        public string Editor { set; get; } = "";
 
         private DataIndex() { }
 
@@ -44,6 +52,7 @@ namespace SmartCloud.Common.DataIndexs
                 descriptions.Add(new Description()
                 {
                     No = i + 1,
+                    Width = 120,
                     Name = "Remark" + i.ToString(),
                     Title = "备注" + i.ToString(),
                     Content = ""
@@ -55,8 +64,8 @@ namespace SmartCloud.Common.DataIndexs
             Reader = "";
             Editor = "";
             Description = JsonSerializer.Serialize(
-                descriptions, 
-                new JsonSerializerOptions(){ Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All) });
+                descriptions,
+                new JsonSerializerOptions() { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All) }); ;
         }
 
         internal DataIndex ChangeName([NotNull] string name)
