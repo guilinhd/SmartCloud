@@ -14,23 +14,32 @@ namespace SmartCloud.Common.Datas
         {
         }
 
-
-
         public async Task<List<Data>> FindAllAsync(string category)
         {
             var dbSet = await GetDbSetAsync();
             return await dbSet
                 .Where(d => d.Category == category)
+                .OrderBy(d => d.Name)
                 .ToListAsync();
         }
 
-        public async Task<List<Data>> FindAllByNameAndRemarkAsync(string category, string name, string remark)
+        public async Task<List<Data>> FindAllAsync(string category, string name)
+        {
+            var dbSet = await GetDbSetAsync();
+
+            return await dbSet
+                .Where(d => d.Category == category && d.Name == name)
+                .ToListAsync();
+        }
+
+        public async Task<List<Data>> FindAllAsync(string category, string name, string remark)
         {
             var dbSet = await GetDbSetAsync();
             if (name == "")
             {
                 return await dbSet
                 .Where(d => d.Category == category && d.Remark1 == remark)
+                .OrderBy(d=>d.Name)
                 .ToListAsync();
             }
             else
@@ -40,15 +49,6 @@ namespace SmartCloud.Common.Datas
                 .ToListAsync();
             }
 
-        }
-
-        public async Task<List<Data>> FindAllByNameAsync(string category, string name)
-        {
-            var dbSet = await GetDbSetAsync();
-
-            return await dbSet
-                .Where(d => d.Category == category && d.Name == name)
-                .ToListAsync();
         }
 
         public async Task<List<Data>> GetListAsync(int skipCount, int maxResultCount, string sorting, string category)
