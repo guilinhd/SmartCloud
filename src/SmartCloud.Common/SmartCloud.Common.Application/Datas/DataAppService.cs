@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SmartCloud.Common.Datas
 {
@@ -16,22 +17,45 @@ namespace SmartCloud.Common.Datas
             _dataRepository = dataRepository;
         }
 
-        public async Task<List<DataDto>> FindAllAsync(string category)
+        /// <summary>
+        /// 按类别名称查询
+        /// </summary>
+        /// <param name="category">类别名称</param>
+        /// <returns>数据字典信息列表</returns>
+        [Route("api/common/data/category")]
+        public async Task<List<DataDto>> GetListAsync(string category)
         {
-            var datas = await _dataRepository.FindAllAsync(category);
+            var datas = await _dataRepository.GetListAsync(category);
             return ObjectMapper.Map<List<Data>, List<DataDto>>(datas);
         }
 
-        public async Task<List<DataDto>> FindAllAsync(string category, string name)
+        /// <summary>
+        /// 按类别名称、数据字典名称查询
+        /// </summary>
+        /// <param name="category">类别名称</param>
+        /// <param name="name">数据字典名称</param>
+        /// <returns>数据字典信息列表</returns>
+        [Route("api/common/data/{category}/name")]
+        public async Task<List<DataDto>> GetListAsync(string category, string name)
         {
-            var datas = await _dataRepository.FindAllAsync(category, name);
+            var datas = await _dataRepository.GetListAsync(category, name);
             return ObjectMapper.Map<List<Data>, List<DataDto>>(datas);
         }
 
-        public async Task<List<DataDto>> FindAllAsync(string category, string name, string remark)
+        /// <summary>
+        /// 按类别名称、数据字典名称、数据字典备注查询
+        /// </summary>
+        /// <param name="category">类别名称</param>
+        /// <param name="name">数据字典名称</param>
+        /// <param name="remark">数据字典备注</param>
+        /// <returns>数据字典信息列表</returns>
+        [Route("api/common/data/{category}/name/remark")]
+        public async Task<List<DataDto>> GetListAsync(string category, string? name, string remark)
         {
-            var datas = await _dataRepository.FindAllAsync(category, name, remark);
+            var datas = await _dataRepository.GetListAsync(category, name, remark);
             return ObjectMapper.Map<List<Data>, List<DataDto>>(datas);
         }
+
+        
     }
 }
