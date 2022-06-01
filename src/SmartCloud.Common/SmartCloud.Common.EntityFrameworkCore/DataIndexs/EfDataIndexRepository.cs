@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.EntityFrameworkCore;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -11,24 +12,26 @@ namespace SmartCloud.Common.DataIndexs
         {
         }
 
-        public async Task<List<DataIndex>> FindAllByNameAsync(string name)
+        public async Task<List<DataIndex>> GetLisAsync(QueryEnum query, string name = "")
         {
             var dbSet = await GetDbSetAsync();
-            
-            if (name.IsNullOrEmpty())
+            switch (query)
             {
-                return await dbSet.ToListAsync();
+                case QueryEnum.Reader:
+                    return await dbSet.Where(d => d.Reader.Contains(name + ";") || d.Editor.Contains(name + ";")).ToListAsync();
+                case QueryEnum.Single:
+                    {
+                        var dataIndexs = new List<DataIndex>();
+                        var dataInex = await dbSet.FirstOrDefaultAsync(d => d.Name == name);
+                        if (dataInex != null)
+                        {
+                            dataIndexs.Add(dataInex);
+                        }
+                        return dataIndexs;
+                    }
+                default: 
+                    return await dbSet.ToListAsync();
             }
-            else
-            {
-                return await dbSet.Where(d => d.Reader.Contains(name + ";")).ToListAsync();
-            }
-        }
-
-        public async Task<DataIndex> FindByNameAsync(string name)
-        {
-            var dbSet = await GetDbSetAsync();
-            return await dbSet.FirstOrDefaultAsync(d => d.Name == name);
         }
     }
 }
