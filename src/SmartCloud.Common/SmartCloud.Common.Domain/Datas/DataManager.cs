@@ -11,27 +11,29 @@ namespace SmartCloud.Common.Datas
     {
         private readonly IDataRepository _repository;
 
-        public DataManager(IDataRepository dataRepository)
+        public DataManager(IDataRepository repository)
         {
-            _repository = dataRepository;
+            _repository = repository;
         }
 
-        public async Task DeleteAll(string category)
+        public async Task DeleteAllByCategoryName(string name)
         {
-            var datas = await _repository.FindAllAsync(category);
+            var datas = await _repository.FindAllAsync(name);
 
             await _repository.DeleteManyAsync(datas);
         }
 
-        public async Task UpdateAll(string category, string newCatgory)
+        public async Task ChangeAllByCategoryName(string oldName, string newName)
         {
-            var datas = await _repository.FindAllAsync(category);
+            var datas = await _repository.FindAllAsync(oldName);
 
             Parallel.ForEach(datas, data => {
-                data.Category = newCatgory;
+                data.Category = newName;
             });
 
             await _repository.UpdateManyAsync(datas);
         }
+
+        
     }
 }
