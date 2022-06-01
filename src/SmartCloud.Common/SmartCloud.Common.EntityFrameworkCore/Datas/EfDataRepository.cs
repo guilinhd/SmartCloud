@@ -14,43 +14,6 @@ namespace SmartCloud.Common.Datas
         {
         }
 
-        public async Task<List<Data>> FindAllAsync(string category)
-        {
-            var dbSet = await GetDbSetAsync();
-            return await dbSet
-                .Where(d => d.Category == category)
-                .OrderBy(d => d.Name)
-                .ToListAsync();
-        }
-
-        public async Task<List<Data>> FindAllAsync(string category, string name)
-        {
-            var dbSet = await GetDbSetAsync();
-
-            return await dbSet
-                .Where(d => d.Category == category && d.Name == name)
-                .ToListAsync();
-        }
-
-        public async Task<List<Data>> FindAllAsync(string category, string name, string remark)
-        {
-            var dbSet = await GetDbSetAsync();
-            if (name == "")
-            {
-                return await dbSet
-                .Where(d => d.Category == category && d.Remark1 == remark)
-                .OrderBy(d=>d.Name)
-                .ToListAsync();
-            }
-            else
-            {
-                return await dbSet
-                .Where(d => d.Category == category && d.Name == name && d.Remark1 == remark)
-                .ToListAsync();
-            }
-
-        }
-
         public async Task<List<Data>> GetListAsync(int skipCount, int maxResultCount, string sorting, string category)
         {
             var dbSet = await GetDbSetAsync();
@@ -63,6 +26,42 @@ namespace SmartCloud.Common.Datas
                 .Skip(skipCount)
                 .Take(maxResultCount)
                 .ToListAsync();
+        }
+
+        public async Task<List<Data>> GetListAsync(string category)
+        {
+            var dbSet = await GetDbSetAsync();
+            return await dbSet
+                .Where(d => d.Category == category)
+                .OrderBy(d => d.Name)
+                .ToListAsync();
+        }
+
+        public async Task<List<Data>> GetListAsync(string category, string name)
+        {
+            var dbSet = await GetDbSetAsync();
+
+            return await dbSet
+                .Where(d => d.Category == category && d.Name == name)
+                .ToListAsync();
+        }
+
+        public async Task<List<Data>> GetListAsync(string category, string name, string remark)
+        {
+            var dbSet = await GetDbSetAsync();
+            if (name.IsNullOrEmpty())
+            {
+                return await dbSet
+                .Where(d => d.Category == category && d.Remark1 == remark)
+                .OrderBy(d=>d.Name)
+                .ToListAsync();
+            }
+            else
+            {
+                return await dbSet
+                .Where(d => d.Category == category && d.Name == name && d.Remark1 == remark)
+                .ToListAsync();
+            }
         }
     }
 }
