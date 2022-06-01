@@ -18,9 +18,8 @@ namespace SmartCloud.Common.Datas
 
         Task<List<Data>> FindAllAsync(string category);
 
-        Task<List<Data>> FindAllByNameAsync(string category, string name);
+        Task<List<Data>> FindAllAsync(string category, string name);
 
-        Task<List<Data>> FindAllByNameAndRemarkAsync(string category, string name, string remark);
-
+        Task<List<Data>> FindAllAsync(string category, string name, string remark);
     }
 }
