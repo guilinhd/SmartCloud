@@ -30,6 +30,7 @@ namespace SmartCloud.Common.EntityFrameworkCore
 
                 b.HasIndex(b => b.Category);
                 b.HasIndex(b => new { b.Category, b.Name });
+                b.HasIndex(b => new { b.Category, b.Remark1 });
                 b.HasIndex(b => new { b.Category, b.Name, b.Remark1 });
 
                 b.Property(b => b.Remark1).HasDefaultValue("");
