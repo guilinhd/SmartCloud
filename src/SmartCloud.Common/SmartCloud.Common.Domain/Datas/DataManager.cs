@@ -23,7 +23,7 @@ namespace SmartCloud.Common.Datas
         /// <returns></returns>
         public async Task DeleteAllByCategoryName(string name)
         {
-            var datas = await _repository.FindAllAsync(name);
+            var datas = await _repository.GetListAsync(name);
 
             await _repository.DeleteManyAsync(datas);
         }
@@ -36,7 +36,7 @@ namespace SmartCloud.Common.Datas
         /// <returns></returns>
         public async Task ChangeAllByCategoryName(string oldName, string newName)
         {
-            var datas = await _repository.FindAllAsync(oldName);
+            var datas = await _repository.GetListAsync(oldName);
 
             Parallel.ForEach(datas, data => {
                 data.Category = newName;
