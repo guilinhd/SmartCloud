@@ -11,11 +11,27 @@ namespace SmartCloud.Common.Datas
 {
     public class DataAppService : CrudAppService<Data, DataDto, Guid, GetDataListDto, DataDto>, IDataAppService
     {
-        private readonly IDataRepository _dataRepository;
+        private readonly IDataRepository _repository;
+        private readonly DataManager _manager;
 
-        public DataAppService(IDataRepository dataRepository) : base(dataRepository)
+        public DataAppService(
+            IDataRepository repository,
+            DataManager manager) 
+            : base(repository)
         {
-            _dataRepository = dataRepository;
+            _repository = repository;
+            _manager = manager;
+        }
+
+        /// <summary>
+        /// 按类别名称批量删除
+        /// </summary>
+        /// <param name="category">类别名称</param>
+        /// <returns></returns>
+        [Route("api/common/data/category/{category}")]
+        public async Task DeleteAsync(string category)
+        {
+            await _manager.DeleteAsync(category);
         }
 
         /// <summary>
@@ -26,7 +42,7 @@ namespace SmartCloud.Common.Datas
         [Route("api/common/data/category/{category}")]
         public async Task<List<DataDto>> GetListAsync(string category)
         {
-            var datas = await _dataRepository.GetListAsync(category);
+            var datas = await _repository.GetListAsync(category);
             return ObjectMapper.Map<List<Data>, List<DataDto>>(datas);
         }
 
@@ -39,7 +55,7 @@ namespace SmartCloud.Common.Datas
         [Route("api/common/data/category/{category}/name/{name}")]
         public async Task<List<DataDto>> GetListAsync(string category, string name)
         {
-            var datas = await _dataRepository.GetListAsync(category, name);
+            var datas = await _repository.GetListAsync(category, name);
             return ObjectMapper.Map<List<Data>, List<DataDto>>(datas);
         }
 
@@ -53,7 +69,7 @@ namespace SmartCloud.Common.Datas
         [Route("api/common/data/category/{category}/name/{name}/remark/{remark}")]
         public async Task<List<DataDto>> GetListAsync(string category, string name, string remark)
         {
-            var datas = await _dataRepository.GetListAsync(category, name, remark);
+            var datas = await _repository.GetListAsync(category, name, remark);
             return ObjectMapper.Map<List<Data>, List<DataDto>>(datas);
         }
 
@@ -66,7 +82,7 @@ namespace SmartCloud.Common.Datas
         [Route("api/common/data/category/{category}/remark/{remark}")]
         public async Task<List<DataDto>> GetListRemarkAsync(string category, string remark)
 {
-            var datas = await _dataRepository.GetListRemarkAsync(category, remark);
+            var datas = await _repository.GetListRemarkAsync(category, remark);
             return ObjectMapper.Map<List<Data>, List<DataDto>>(datas);
         }
     }
