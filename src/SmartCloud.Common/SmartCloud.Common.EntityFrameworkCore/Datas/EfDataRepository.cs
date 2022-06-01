@@ -43,25 +43,27 @@ namespace SmartCloud.Common.Datas
 
             return await dbSet
                 .Where(d => d.Category == category && d.Name == name)
+                .OrderBy(d => d.No)
                 .ToListAsync();
         }
 
         public async Task<List<Data>> GetListAsync(string category, string name, string remark)
         {
             var dbSet = await GetDbSetAsync();
-            if (name.IsNullOrEmpty())
-            {
-                return await dbSet
-                .Where(d => d.Category == category && d.Remark1 == remark)
-                .OrderBy(d=>d.Name)
-                .ToListAsync();
-            }
-            else
-            {
-                return await dbSet
+            return await dbSet
                 .Where(d => d.Category == category && d.Name == name && d.Remark1 == remark)
+                .OrderBy(d => d.No)
                 .ToListAsync();
-            }
+        }
+
+        public async Task<List<Data>> GetListRemarkAsync(string category, string remark)
+        {
+            var dbSet = await GetDbSetAsync();
+
+            return await dbSet
+                .Where(d => d.Category == category && d.Remark1 == remark)
+                .OrderBy(d => d.Name)
+                .ToListAsync();
         }
     }
 }
