@@ -10,6 +10,10 @@ namespace SmartCloud.Common.Datas
 {
     public interface IDataAppService : ICrudAppService<DataDto, Guid, GetDataListDto, DataDto>
     {
+        Task<List<DataDto>> FindAllAsync(string category);
 
+        Task<List<DataDto>> FindAllAsync(string category, string name);
+
+        Task<List<DataDto>> FindAllAsync(string category, string name, string remark);
     }
 }
