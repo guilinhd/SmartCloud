@@ -29,7 +29,7 @@ namespace SmartCloud.Common.Datas
         /// </summary>
         /// <param name="category">类别名称</param>
         /// <returns>数据字典信息列表</returns>
-        Task<List<Data>> FindAllAsync(string category);
+        Task<List<Data>> GetListAsync(string category);
 
         /// <summary>
         /// 按类别名称、数据字典名称查询
@@ -37,7 +37,7 @@ namespace SmartCloud.Common.Datas
         /// <param name="category">类别名称</param>
         /// <param name="name">数据字典名称</param>
         /// <returns>数据字典信息列表</returns>
-        Task<List<Data>> FindAllAsync(string category, string name);
+        Task<List<Data>> GetListAsync(string category, string name);
 
         /// <summary>
         /// 按类别名称、数据字典名称、数据字典备注查询
@@ -46,6 +46,6 @@ namespace SmartCloud.Common.Datas
         /// <param name="name">数据字典名称</param>
         /// <param name="remark">数据字典备注</param>
         /// <returns>数据字典信息列表</returns>
-        Task<List<Data>> FindAllAsync(string category, string name, string remark);
+        Task<List<Data>> GetListAsync(string category, string name, string remark);
     }
 }
