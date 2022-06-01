@@ -73,7 +73,7 @@ namespace SmartCloud.Common.DataIndexs
 
             dataIndex.ChangeName(newName);
             await _repository.UpdateAsync(dataIndex);
-            await _dataManager.ChangeAllByCategoryName(oldName, newName);
+            await _dataManager.ChangeAsync(oldName, newName);
         }
 
         /// <summary>
