@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.Datas;
 using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
@@ -16,15 +15,19 @@ namespace SmartCloud.Common.DataIndexs
 {
     public class DataIndexManager : DomainService
     {
-        private IDataIndexRepository _repository;
+        private readonly IDataIndexRepository _repository;
         private readonly IDataRepository _dataRepository;
+        private readonly DataManager _dataManager;
 
         public DataIndexManager(
             IDataIndexRepository repository,
-            IDataRepository dataRepository)
+            IDataRepository dataRepository,
+            DataManager dataManager
+            )
         {
             _repository = repository;
             _dataRepository = dataRepository;
+            _dataManager = dataManager;
         }
 
         /// <summary>
@@ -38,16 +41,13 @@ namespace SmartCloud.Common.DataIndexs
         {
             Check.NotNullOrWhiteSpace(name, nameof(name));
 
-            var existingAuthor = await _repository.FindByNameAsync(name);
-            if (existingAuthor != null)
+            var existingDataIndex = await _repository.GetLisAsync(QueryEnum.Single, name);
+            if (existingDataIndex.Count == 0)
             {
                 throw new DataIndexAlreadyExistsException(name);
             }
 
-            return new DataIndex(
-                GuidGenerator.Create(),
-                name
-            );
+            return new DataIndex(GuidGenerator.Create(), name);
         }
 
         /// <summary>
@@ -63,13 +63,17 @@ namespace SmartCloud.Common.DataIndexs
             Check.NotNull(dataIndex, nameof(dataIndex));
             Check.NotNullOrWhiteSpace(newName, nameof(newName));
 
-            var existingDataIndex = await _repository.FindByNameAsync(newName);
-            if (existingDataIndex != null && existingDataIndex.Id != dataIndex.Id)
+            string oldName = dataIndex.Name;
+
+            var existingDataIndex = await _repository.GetLisAsync(QueryEnum.Single, newName);
+            if (existingDataIndex.Count > 0 && existingDataIndex.First().Id != dataIndex.Id)
             {
                 throw new DataIndexAlreadyExistsException(newName);
             }
 
             dataIndex.ChangeName(newName);
+            await _repository.UpdateAsync(dataIndex);
+            await _dataManager.ChangeAllByCategoryName(oldName, newName);
         }
 
         /// <summary>
@@ -77,7 +81,7 @@ namespace SmartCloud.Common.DataIndexs
         /// </summary>
         /// <param name="id">类别id</param>
         /// <param name="descriptions">描述信息</param>
-        public async Task UpdateDescriptionsAsync(Guid id, List<Description> descriptions)
+        public async Task UpdateAsync(Guid id, List<Description> descriptions)
         {
             var dataIndex = await _repository.GetAsync(id);
 
@@ -101,7 +105,7 @@ namespace SmartCloud.Common.DataIndexs
             var dataIndex = await _repository.GetAsync(id);
             if (dataIndex != null)
             {
-                var datas = await _dataRepository.FindAllAsync(dataIndex.Name);
+                var datas = await _dataRepository.GetListAsync(dataIndex.Name);
                 if (datas.Count > 0)
                 {
                     throw new DataIndexHasDatasException(dataIndex.Name);
