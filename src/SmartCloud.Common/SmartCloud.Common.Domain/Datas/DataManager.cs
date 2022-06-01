@@ -21,7 +21,7 @@ namespace SmartCloud.Common.Datas
         /// </summary>
         /// <param name="name">类别名称</param>
         /// <returns></returns>
-        public async Task DeleteAllByCategoryName(string name)
+        public async Task DeleteAsync(string name)
         {
             var datas = await _repository.GetListAsync(name);
 
@@ -34,7 +34,7 @@ namespace SmartCloud.Common.Datas
         /// <param name="oldName">旧类别名称</param>
         /// <param name="newName">新类别名称</param>
         /// <returns></returns>
-        public async Task ChangeAllByCategoryName(string oldName, string newName)
+        public async Task ChangeAsync(string oldName, string newName)
         {
             var datas = await _repository.GetListAsync(oldName);
 
