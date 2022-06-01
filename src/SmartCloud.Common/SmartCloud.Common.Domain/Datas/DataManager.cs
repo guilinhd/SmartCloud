@@ -16,6 +16,11 @@ namespace SmartCloud.Common.Datas
             _repository = repository;
         }
 
+        /// <summary>
+        /// 按类别名称批量删除
+        /// </summary>
+        /// <param name="name">类别名称</param>
+        /// <returns></returns>
         public async Task DeleteAllByCategoryName(string name)
         {
             var datas = await _repository.FindAllAsync(name);
@@ -23,6 +28,12 @@ namespace SmartCloud.Common.Datas
             await _repository.DeleteManyAsync(datas);
         }
 
+        /// <summary>
+        /// 按旧类别名称批量修改新类别名称
+        /// </summary>
+        /// <param name="oldName">旧类别名称</param>
+        /// <param name="newName">新类别名称</param>
+        /// <returns></returns>
         public async Task ChangeAllByCategoryName(string oldName, string newName)
         {
             var datas = await _repository.FindAllAsync(oldName);
