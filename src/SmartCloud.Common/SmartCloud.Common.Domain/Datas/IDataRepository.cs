@@ -47,5 +47,13 @@ namespace SmartCloud.Common.Datas
         /// <param name="remark">数据字典备注</param>
         /// <returns>数据字典信息列表</returns>
         Task<List<Data>> GetListAsync(string category, string name, string remark);
+
+        /// <summary>
+        /// 按类别名称、备注查询
+        /// </summary>
+        /// <param name="category">类别名称</param>
+        /// <param name="remark">备注</param>
+        /// <returns>数据字典信息列表</returns>
+        Task<List<Data>> GetListRemarkAsync(string category, string remark);
     }
 }
