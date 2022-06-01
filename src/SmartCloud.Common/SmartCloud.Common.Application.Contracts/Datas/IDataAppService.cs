@@ -42,5 +42,12 @@ namespace SmartCloud.Common.Datas
         /// <param name="remark">数据字典备注</param>
         /// <returns>数据字典信息列表</returns>
         Task<List<DataDto>> GetListRemarkAsync(string category, string remark);
+
+        /// <summary>
+        /// 按类别名称批量删除
+        /// </summary>
+        /// <param name="category">类别名称</param>
+        /// <returns></returns>
+        Task DeleteAsync(string category);
     }
 }
