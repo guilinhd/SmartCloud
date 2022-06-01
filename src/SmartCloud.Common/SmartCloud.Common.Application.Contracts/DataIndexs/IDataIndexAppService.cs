@@ -30,16 +30,15 @@ namespace SmartCloud.Common.DataIndexs
         /// <param name="id">id</param>
         /// <param name="descriptions">描述信息</param>
         /// <returns></returns>
-        Task UpdateDescriptionsAsync(Guid id, List<Description> descriptions);
+        Task UpdateAsync(Guid id, List<Description> descriptions);
 
         /// <summary>
         /// 修改权限
         /// </summary>
         /// <param name="id">id</param>
-        /// <param name="reader">读者</param>
-        /// <param name="editor">编辑者</param>
+        /// <param name="authority">权限</param>
         /// <returns></returns>
-        Task UpdateAuthorization(Guid id, string reader, string editor);
+        Task UpdateAsync(Guid id, AuthorityDto authority);
 
         /// <summary>
         /// 删除
@@ -56,7 +55,7 @@ namespace SmartCloud.Common.DataIndexs
         Task<DataIndexDto> GetAsync(Guid id);
 
         /// <summary>
-        /// 查询列表
+        /// 显示当前读者可以查看的信息列表
         /// </summary>
         /// <param name="name">读者姓名</param>
         /// <returns>类别信息列表</returns>
