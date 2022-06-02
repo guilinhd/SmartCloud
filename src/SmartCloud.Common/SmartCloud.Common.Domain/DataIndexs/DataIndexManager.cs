@@ -42,7 +42,7 @@ namespace SmartCloud.Common.DataIndexs
             Check.NotNullOrWhiteSpace(name, nameof(name));
 
             var existingDataIndex = await _repository.GetLisAsync(QueryEnum.Single, name);
-            if (existingDataIndex.Count == 0)
+            if (existingDataIndex.Count > 0)
             {
                 throw new DataIndexAlreadyExistsException(name);
             }
