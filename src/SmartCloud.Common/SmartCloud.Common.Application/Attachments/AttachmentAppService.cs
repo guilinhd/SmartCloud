@@ -1,4 +1,5 @@
 ﻿using Volo.Abp.Application.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SmartCloud.Common.Attachments
 {
@@ -21,6 +22,7 @@ namespace SmartCloud.Common.Attachments
         /// </summary>
         /// <param name="tableId">行id</param>
         /// <returns>附件信息</returns>
+        [Route("api/common/attchment/tableid/{tableid}")]
         public async Task DeleteAsync(string tableId)
         {
             await _manager.DeleteAsync(QueryEnum.Row, tableId, "");
@@ -32,6 +34,7 @@ namespace SmartCloud.Common.Attachments
         /// <param name="tableId">行id</param>
         /// <param name="serverPathName">文件名称</param>
         /// <returns></returns>
+        [Route("api/common/attchment/tableid/{tableid}/serverfilename/{serverfilename}")]
         public async Task DeleteAsync(string tableId, string serverFileName)
         {
             await _manager.DeleteAsync(QueryEnum.File, tableId, serverFileName);
@@ -43,6 +46,7 @@ namespace SmartCloud.Common.Attachments
         /// <param name="tableId">行id</param>
         /// <param name="serverPathName">文件夹名称</param>
         /// <returns></returns>
+        [Route("api/common/attchment/tableid/{tableid}/serverpathname/{serverpathname}")]
         public async Task DeleteListAsync(string tableId, string serverPathName)
         {
             await _manager.DeleteAsync(QueryEnum.Folder, tableId, serverPathName);
@@ -53,6 +57,7 @@ namespace SmartCloud.Common.Attachments
         /// </summary>
         /// <param name="tableId">行id</param>
         /// <returns>附件信息</returns>
+        [Route("api/common/attchment/tableid/{tableid}")]
         public async Task<List<AttachmentDto>> GetAsync(string tableId)
         {
             var attachments = await _repository.GetListAsync(QueryEnum.Row, tableId, "");
@@ -65,6 +70,7 @@ namespace SmartCloud.Common.Attachments
         /// <param name="tableId">行id</param>
         /// <param name="serverFileName">文件名</param>
         /// <returns>附件信息</returns>
+        [Route("api/common/attchment/tableid/{tableid}/serverfilename/{serverfilename}")]
         public async Task<List<AttachmentDto>> GetAsync(string tableId, string serverFileName)
         {
             var attachments = await _repository.GetListAsync(QueryEnum.File, tableId, serverFileName);
@@ -77,6 +83,7 @@ namespace SmartCloud.Common.Attachments
         /// <param name="tableId">行id</param>
         /// <param name="serverPathName">文件夹名称</param>
         /// <returns>附件信息</returns>
+        [Route("api/common/attchment/tableid/{tableid}/serverpathname/{serverpathname}")]
         public async Task<List<AttachmentDto>> GetListAsync(string tableId, string serverPathName)
         {
             var attachments = await _repository.GetListAsync(QueryEnum.Folder, tableId, serverPathName);
@@ -88,6 +95,7 @@ namespace SmartCloud.Common.Attachments
         /// </summary>
         /// <param name="tableIds">行id</param>
         /// <returns>附件信息</returns>
+        [Route("api/common/attchment/tableids/{tableids}")]
         public async Task<List<AttachmentDto>> GetListAsync(string tableIds)
         {
             var attachments = await _repository.GetListAsync(QueryEnum.Rows, tableIds, "");
