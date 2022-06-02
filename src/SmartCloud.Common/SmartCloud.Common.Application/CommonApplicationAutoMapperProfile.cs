@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
 using SmartCloud.Common.DataIndexs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
-using System.Text.Unicode;
 using SmartCloud.Common.Datas;
+using SmartCloud.Common.Attachments;
 
 namespace SmartCloud.Common
 {
@@ -21,6 +16,8 @@ namespace SmartCloud.Common
                 opt => opt.MapFrom(src => src.Description.ToDescriptions()));
 
             CreateMap<Data, DataDto>().ReverseMap();
+
+            CreateMap<Attachment, AttachmentDto>().ReverseMap();
         }
     }
 
