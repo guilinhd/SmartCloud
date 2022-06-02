@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SmartCloud.Common.Attachments;
 using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.Datas;
 using Volo.Abp.Data;
@@ -12,6 +13,8 @@ namespace SmartCloud.Common.EntityFrameworkCore
         public DbSet<DataIndex> DataIndexs { get; set; }
 
         public DbSet<Data> Datas { get; set; }
+
+        public DbSet<Attachment> Attachments { get; set; };
 
         public CommonDbContext(DbContextOptions<CommonDbContext> options) : base(options)
         {
