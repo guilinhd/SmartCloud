@@ -5,7 +5,14 @@ VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartCloud.Core.Domain.Shared", "SmartCloud.Core.Domain.Shared\SmartCloud.Core.Domain.Shared.csproj", "{DE286A36-EE88-4BF7-9477-CBF887A3FC3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCloud.Core.Domain", "SmartCloud.Core.Domain\SmartCloud.Core.Domain.csproj", "{2CC70B1F-0136-4E54-A740-2EB9B0FBAB1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartCloud.Core.Domain", "SmartCloud.Core.Domain\SmartCloud.Core.Domain.csproj", "{2CC70B1F-0136-4E54-A740-2EB9B0FBAB1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartCloud.Core.EntityFrameworkCore", "SmartCloud.Core.EntityFrameworkCore\SmartCloud.Core.EntityFrameworkCore.csproj", "{5DD795D3-411A-4DC2-A89C-9FD50554B28E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F6FD985D-EBD5-40D5-93CD-DC01C03E6236}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +28,10 @@ Global
 		{2CC70B1F-0136-4E54-A740-2EB9B0FBAB1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CC70B1F-0136-4E54-A740-2EB9B0FBAB1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CC70B1F-0136-4E54-A740-2EB9B0FBAB1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DD795D3-411A-4DC2-A89C-9FD50554B28E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DD795D3-411A-4DC2-A89C-9FD50554B28E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DD795D3-411A-4DC2-A89C-9FD50554B28E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DD795D3-411A-4DC2-A89C-9FD50554B28E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
