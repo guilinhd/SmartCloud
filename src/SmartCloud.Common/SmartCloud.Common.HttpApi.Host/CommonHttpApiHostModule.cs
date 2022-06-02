@@ -1,13 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
+﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.OpenApi.Models;
-using SmartCloud.Common.Application;
 using SmartCloud.Common.EntityFrameworkCore;
-using System.Text;
-using System.Text.Json;
-using System.Text.Unicode;
 using Volo.Abp;
 using Volo.Abp.AspNetCore;
 using Volo.Abp.AspNetCore.Mvc;
@@ -16,7 +9,7 @@ using Volo.Abp.Autofac;
 using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
 
-namespace SmartCloud.Common.HttpApi.Host
+namespace SmartCloud.Common
 {
     [DependsOn(
         typeof(AbpAspNetCoreModule),

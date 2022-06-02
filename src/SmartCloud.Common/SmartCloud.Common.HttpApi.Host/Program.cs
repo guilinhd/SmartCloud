@@ -1,4 +1,4 @@
-using SmartCloud.Common.HttpApi.Host;
+using SmartCloud.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 

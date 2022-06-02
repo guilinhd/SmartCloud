@@ -1,10 +1,8 @@
 ﻿
 using Volo.Abp.Modularity;
 using Volo.Abp.AutoMapper;
-using SmartCloud.Common.Application.Contracts;
-using SmartCloud.Common.Domain;
 
-namespace SmartCloud.Common.Application
+namespace SmartCloud.Common
 {
     [DependsOn(
         typeof(AbpAutoMapperModule),

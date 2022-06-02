@@ -1,7 +1,6 @@
-﻿using SmartCloud.Common.Domain.Shared;
-using Volo.Abp.Modularity;
+﻿using Volo.Abp.Modularity;
 
-namespace SmartCloud.Common.Application.Contracts
+namespace SmartCloud.Common
 {
     [DependsOn(
         typeof(CommonDomainSharedModule)
