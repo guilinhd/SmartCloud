@@ -14,7 +14,7 @@ namespace SmartCloud.Common.EntityFrameworkCore
 
         public DbSet<Data> Datas { get; set; }
 
-        public DbSet<Attachment> Attachments { get; set; };
+        public DbSet<Attachment> Attachments { get; set; }
 
         public CommonDbContext(DbContextOptions<CommonDbContext> options) : base(options)
         {
