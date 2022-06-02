@@ -1,33 +1,19 @@
-﻿using SmartCloud.Common.DataIndexs;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Unicode;
-using System.Threading.Tasks;
 using Volo.Abp;
-using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.Domain.Entities;
 
 namespace SmartCloud.Common.DataIndexs
 {
-    public class DataIndex : AuditedAggregateRoot<Guid>
+    public class DataIndex : AggregateRoot<Guid>
     {
-        [Required]
-        [Column(TypeName = "varchar(60)")]
-
         public string Name { private set; get; }
-
-        [Column(TypeName = "text")]
+        
         public string Description { set; get; } = "";
-
-        [Column(TypeName = "text")]
+        
         public string Reader { set; get; } = "";
 
-        [Column(TypeName = "text")]
         public string Editor { set; get; } = "";
 
         private DataIndex() { }

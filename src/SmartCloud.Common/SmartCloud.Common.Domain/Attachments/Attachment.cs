@@ -1,15 +1,12 @@
 ﻿
-using System.ComponentModel.DataAnnotations;
-using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.Domain.Entities;
 
 namespace SmartCloud.Common.Attachments
 {
-    public class Attachment : AuditedAggregateRoot<Guid>
+    public class Attachment : AggregateRoot<Guid>
     {
-        [Required]
         public string TableId { get; set; }
-
-        [Required]
+        
         public string TableName { get; set; }
 
         public string Name { get; set; }
