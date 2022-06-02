@@ -20,6 +20,6 @@ namespace SmartCloud.Core.Organizations
 
         public string Accounting { get; set; } = null!;
 
-        public List<Description> Descriptions { get; set; } = new List<Description>();
+        public string Description { get; set; } = "";
     }
 }
