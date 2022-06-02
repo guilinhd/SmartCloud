@@ -17,4 +17,8 @@
     <ProjectReference Include="..\SmartCloud.Common.Domain\SmartCloud.Common.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attachments\" />
+  </ItemGroup>
+
 </Project>

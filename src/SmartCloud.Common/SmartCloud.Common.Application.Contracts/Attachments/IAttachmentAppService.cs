@@ -7,7 +7,7 @@ using Volo.Abp.Application.Services;
 
 namespace SmartCloud.Common.Attachments
 {
-    public interface IAttachmentService : ICrudAppService<AttachmentDto, Guid>
+    public interface IAttachmentAppService : ICrudAppService<AttachmentDto, Guid>
     {
         /// <summary>
         /// 查询当前行的附件信息
