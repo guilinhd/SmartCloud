@@ -8,5 +8,7 @@ namespace SmartCloud.Core
 {
     public static class CoreDomainErrorCodes
     {
+        public const string OrganizationAlreadyExists = "SmartCloud.Core:00001";
+        public const string OrganizationAjustRepeat = "SmartCloud.Core:00002";
     }
 }
