@@ -8,13 +8,13 @@ namespace SmartCloud.Common.DataIndexs
 {
     public class DataIndex : AggregateRoot<Guid>
     {
-        public string Name { private set; get; }
+        public string Name { get; private set;  }
         
-        public string Description { set; get; } = "";
+        public string Description { get; set;  } = "";
         
-        public string Reader { set; get; } = "";
+        public string Reader { get; set;  } = "";
 
-        public string Editor { set; get; } = "";
+        public string Editor { get; set;  } = "";
 
         private DataIndex() { }
 
@@ -51,7 +51,7 @@ namespace SmartCloud.Common.DataIndexs
             Editor = "";
             Description = JsonSerializer.Serialize(
                 descriptions,
-                new JsonSerializerOptions() { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All) }); ;
+                new JsonSerializerOptions() { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All) });
         }
 
         internal DataIndex ChangeName([NotNull] string name)

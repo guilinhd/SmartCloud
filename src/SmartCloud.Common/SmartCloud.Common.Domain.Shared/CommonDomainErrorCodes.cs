@@ -8,8 +8,8 @@ namespace SmartCloud.Common
 {
     public static class CommonDomainErrorCodes
     {
-        public const string DataIndexAlreadyExists = "TravleCrm:00001";
+        public const string DataIndexAlreadyExists = "SmartCloud.Common:00001";
 
-        public const string DataIndexHasDatas = "TravleCrm:00002";
+        public const string DataIndexHasDatas = "SmartCloud.Common:00002";
     }
 }
