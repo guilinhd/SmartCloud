@@ -1,4 +1,5 @@
-﻿using SmartCloud.Common.Datas;
+﻿using SmartCloud.Common.DataIndexs;
+using SmartCloud.Common.Datas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,13 @@ namespace SmartCloud.Common.Datas
         /// <param name="category">类别名称</param>
         /// <returns>数据字典信息列表</returns>
         Task<List<Data>> GetListAsync(string category);
+
+        /// <summary>
+        /// 按类别名称批量查询
+        /// </summary>
+        /// <param name="categoires">类别名称数组</param>
+        /// <returns>数据字典信息列表</returns>
+        Task<List<Data>> GetListAsync(string[] categoires);
 
         /// <summary>
         /// 按类别名称、数据字典名称查询
