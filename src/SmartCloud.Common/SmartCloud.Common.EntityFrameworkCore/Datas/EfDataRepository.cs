@@ -37,6 +37,15 @@ namespace SmartCloud.Common.Datas
                 .ToListAsync();
         }
 
+        public async Task<List<Data>> GetListAsync(string[] categories)
+        {
+            var dbSet = await GetDbSetAsync();
+            return await dbSet
+                .Where(d => categories.Contains(d.Category))
+                .OrderBy(d => d.Name)
+                .ToListAsync();
+        }
+
         public async Task<List<Data>> GetListAsync(string category, string name)
         {
             var dbSet = await GetDbSetAsync();
