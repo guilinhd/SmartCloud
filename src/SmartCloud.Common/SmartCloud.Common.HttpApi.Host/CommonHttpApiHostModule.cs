@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.OpenApi.Models;
 using SmartCloud.Common.EntityFrameworkCore;
+using System.Text.Json;
+using System.Text.Unicode;
 using Volo.Abp;
 using Volo.Abp.AspNetCore;
 using Volo.Abp.AspNetCore.Mvc;
@@ -40,6 +42,10 @@ namespace SmartCloud.Common
 
             Configure<AbpAntiForgeryOptions>(options => {
                 options.AutoValidate = false;
+            });
+
+            context.Services.Configure<JsonSerializerOptions>(options => {
+                options.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All);
             });
 
             ConfigureSwaggerServices(context.Services);
