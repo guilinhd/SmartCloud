@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Xml.Linq;
+using Volo.Abp;
 
 namespace SmartCloud.Common.Datas
 {
@@ -71,6 +72,33 @@ namespace SmartCloud.Common.Datas
         {
             var datas = await _repository.GetListAsync(category, name, remark);
             return ObjectMapper.Map<List<Data>, List<DataDto>>(datas);
+        }
+
+        /// <summary>
+        /// 按类别名称批量查询
+        /// </summary>
+        /// <param name="categoires">类别名称数组</param>
+        /// <returns>数据字典信息列表</returns>
+       
+        [Route("api/common/data/categories/{categories}")]
+        public async Task<List<GetDataNameListDto>> GetListAsync(string[] categories)
+        {
+            List<GetDataNameListDto> dtos = new List<GetDataNameListDto>();
+
+            string[] vs = categories[0].Split(',');
+            var datas = await _repository.GetListAsync(vs);
+            foreach (var category in vs)
+            {
+                dtos.Add(
+                    new GetDataNameListDto()
+                    {
+                        Category = category,
+                        Names = datas.Where(d => d.Category == category).Select(d => d.Name).ToArray()
+                    }
+                );
+            }
+
+            return dtos;
         }
 
         /// <summary>
