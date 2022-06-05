@@ -10,6 +10,7 @@ using SmartCloud.Common.Datas;
 using Volo.Abp;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
+using Microsoft.Extensions.Options;
 
 namespace SmartCloud.Common.DataIndexs
 {
@@ -18,16 +19,19 @@ namespace SmartCloud.Common.DataIndexs
         private readonly IDataIndexRepository _repository;
         private readonly IDataRepository _dataRepository;
         private readonly DataManager _dataManager;
+        private readonly IOptions<JsonSerializerOptions> _options;
 
         public DataIndexManager(
             IDataIndexRepository repository,
             IDataRepository dataRepository,
-            DataManager dataManager
+            DataManager dataManager,
+            IOptions<JsonSerializerOptions> options
             )
         {
             _repository = repository;
             _dataRepository = dataRepository;
             _dataManager = dataManager;
+            _options = options;
         }
 
         /// <summary>
@@ -47,7 +51,33 @@ namespace SmartCloud.Common.DataIndexs
                 throw new DataIndexAlreadyExistsException(name);
             }
 
-            return new DataIndex(GuidGenerator.Create(), name);
+            #region 初始化类型描述
+            List<Description> descriptions = new List<Description>();
+            descriptions.Add(new Description()
+            {
+                No = 1,
+                Name = "Name",
+                Title = "名称",
+                Content = ""
+            });
+            for (int i = 1; i <= 15; i++)
+            {
+                descriptions.Add(new Description()
+                {
+                    No = i + 1,
+                    Width = 120,
+                    Name = "Remark" + i.ToString(),
+                    Title = "备注" + i.ToString(),
+                    Content = ""
+                });
+            }
+            #endregion
+
+            return new DataIndex(
+                GuidGenerator.Create(),
+                name,
+                JsonSerializer.Serialize(descriptions, _options.Value)
+                ); 
         }
 
         /// <summary>
