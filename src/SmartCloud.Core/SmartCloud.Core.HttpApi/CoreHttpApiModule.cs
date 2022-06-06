@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Modularity;
 
-namespace SmartCloud.Core.HttpApi
+namespace SmartCloud.Core
 {
     [DependsOn(
         typeof(CoreApplicationContractsModule)
