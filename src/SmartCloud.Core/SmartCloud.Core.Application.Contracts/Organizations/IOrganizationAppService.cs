@@ -7,8 +7,16 @@ using Volo.Abp.Application.Services;
 
 namespace SmartCloud.Core.Organizations
 {
-    public interface IOrganizationAppService : ICrudAppService<OrganizationDto, Guid>
+    public interface IOrganizationAppService : IApplicationService
     {
-        Task<List<OrganizationDto>> GetListAsync(QueryEnum query, string name);
+        Task<OrganizationDto> CreateAsync(OrganizationDto dto);
+
+        Task UpdateAsync(Guid id, OrganizationDto dto);
+
+        Task DeleteAsync(Guid id);
+
+        Task<OrganizationDto> GetAsync(Guid id);
+
+        Task<List<OrganizationDto>> GetListAsync(string parentId);
     }
 }
