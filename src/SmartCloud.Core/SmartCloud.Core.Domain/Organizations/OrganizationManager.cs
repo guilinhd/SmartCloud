@@ -1,5 +1,7 @@
 ﻿
+using Microsoft.Extensions.Options;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using System.Xml.Linq;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
@@ -9,10 +11,14 @@ namespace SmartCloud.Core.Organizations
     public class OrganizationManager : DomainService
     {
         private readonly IOrganizationRepository _repository;
+        private readonly IOptions<JsonSerializerOptions> _options;
 
-        public OrganizationManager(IOrganizationRepository repository)
+        public OrganizationManager(
+            IOrganizationRepository repository,
+            IOptions<JsonSerializerOptions> options)
         {
             _repository = repository;
+            _options = options;
         }
 
         /// <summary>
@@ -68,14 +74,14 @@ namespace SmartCloud.Core.Organizations
                 phone,
                 fax,
                 accounting,
-                descriptions
+                JsonSerializer.Serialize(descriptions, _options.Value)
             );
         }
 
         public async Task ChangeNameAsync(
-            [NotNull] Organization organization, 
-            [NotNull] string newName
-        )
+            [NotNull] Organization organization,
+            [NotNull] string newName,
+            List<Description> descriptions)
         {
             Check.NotNull(organization, nameof(organization));
             Check.NotNullOrWhiteSpace(newName, nameof(newName));
@@ -83,13 +89,12 @@ namespace SmartCloud.Core.Organizations
             var existingOrganization = await _repository.GetListAsync(QueryEnum.Name, newName);
             if (existingOrganization.Count > 0 && existingOrganization.First().Id != organization.Id)
             {
-                throw new OrganizationAlreadyExistsException(organization.Name);
+                throw new OrganizationAlreadyExistsException(newName);
             }
 
-            organization.ChangeName(newName);
-            await _repository.UpdateAsync(organization); 
+            organization.Description = JsonSerializer.Serialize(descriptions, _options.Value);
+            await _repository.UpdateAsync(organization);
         }
-
 
         /// <summary>
         /// 调整组织结构的所属上级
@@ -103,7 +108,7 @@ namespace SmartCloud.Core.Organizations
             var organization = await _repository.GetAsync(id);
             if (organization.ParentId == parentId)
 {
-                throw new OrganizationAlreadyExistsException(name);
+                throw new OrganizationAlreadyExistsException(organization.Name);
             }
 
             var parentOrganization = await _repository.GetAsync(new Guid(parentId));

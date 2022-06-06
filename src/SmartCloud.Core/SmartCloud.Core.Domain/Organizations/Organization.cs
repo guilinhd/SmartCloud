@@ -38,7 +38,7 @@ namespace SmartCloud.Core.Organizations
             string phone,
             string fax,
             string accounting,
-            List<Description> descriptions
+            string description
         )
         {
             No = no;
@@ -49,9 +49,7 @@ namespace SmartCloud.Core.Organizations
             Phone = phone;
             Fax = fax;
             Accounting = accounting;
-            Description = JsonSerializer.Serialize(
-                descriptions,
-                new JsonSerializerOptions() { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All) });
+            Description = description;
         }
 
         internal Organization ChangeName([NotNull] string name)
