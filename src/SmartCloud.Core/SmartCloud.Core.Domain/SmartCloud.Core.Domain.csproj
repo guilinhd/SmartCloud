@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SmartCloud.Common.Domain" Version="1.0.0" />
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="5.2.2" />
   </ItemGroup>
 
