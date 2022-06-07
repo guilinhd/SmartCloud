@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Core" Version="5.2.2" />
+    <PackageReference Include="SmartCloud.Common.Domain.Shared" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
