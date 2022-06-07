@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="5.2.2" />
+    <PackageReference Include="SmartCloud.Common.Application.Contracts" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
