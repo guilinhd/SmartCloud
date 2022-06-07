@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -11,7 +11,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore.MySQL" Version="5.2.2" />
+    <PackageReference Include="SmartCloud.Common.EntityFrameworkCore" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
