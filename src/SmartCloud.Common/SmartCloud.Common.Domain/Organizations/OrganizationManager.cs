@@ -33,6 +33,7 @@ namespace SmartCloud.Common.Organizations
         /// <exception cref="OrganizationAlreadyExistsException">组织结构名称重复</exception>
         public async Task<Organization> Create(
             string parentId,
+            int category,
             int no,
             [NotNull] string name,
             string type,
@@ -52,8 +53,8 @@ namespace SmartCloud.Common.Organizations
             #endregion
 
             #region 上级组织结构的核算科目
-            string parentAccounting = ""; int category = 1;
-            if (parentId != "")
+            string parentAccounting = "";
+            if (category > 1)
             {
                 var parentOrganization = await _repository.GetAsync(new Guid(parentId));
                 if (parentOrganization != null)
@@ -170,7 +171,7 @@ namespace SmartCloud.Common.Organizations
             else
             {
                 var accounting = organizations.Max(d => d.Accounting);
-                return (Convert.ToInt16(accounting.Right(4)) + 1).ToString("d:4");
+                return (Convert.ToInt16(accounting.Right(4)) + 1).ToString("D4");
             }
         }
     }
