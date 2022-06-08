@@ -74,7 +74,7 @@ namespace SmartCloud.Common.Organizations
                 organization.Phone = dto.Phone;
                 organization.Fax = dto.Fax;
 
-                await _manager.UpdateAsyncAsync(organization, dto.Name, dto.Descriptions);
+                await _manager.UpdateAsync(organization, dto.Name, dto.Descriptions);
             }
         }
     }
