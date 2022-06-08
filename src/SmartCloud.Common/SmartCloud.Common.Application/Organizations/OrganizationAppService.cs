@@ -39,8 +39,12 @@ namespace SmartCloud.Common.Organizations
         [HttpGet]
         public async Task<GetDataNameListDto> CreateAsync()
         {
-            var dtos = await _dataAppService.GetNameListAsync(new string[] { "组织结构类别列表" });
-            return dtos.FirstOrDefault();
+            var names = await _dataAppService.GetNameListAsync("组织结构说明", "类型");
+            return new GetDataNameListDto()
+            {
+                Category = "组织结构类型",
+                Names = names
+            };
         }
 
         /// <summary>
