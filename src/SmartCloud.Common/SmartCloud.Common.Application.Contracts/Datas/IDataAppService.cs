@@ -37,7 +37,7 @@ namespace SmartCloud.Common.Datas
         /// <param name="category">类别名称</param>
         /// <param name="name">数据字典名称</param>
         /// <returns>数据字典信息列表</returns>
-        Task<List<GetDataNameListDto>> GetNameListAsync(string category, string name);
+        Task<ICollection<string>> GetNameListAsync(string category, string name);
 
         /// <summary>
         /// 按类别名称、数据字典名称查询
