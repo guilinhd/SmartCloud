@@ -101,17 +101,10 @@ namespace SmartCloud.Common.Datas
         /// <param name="name">数据字典名称</param>
         /// <returns>数据字典信息列表</returns>
         [RemoteService(false)]
-        public async Task<List<GetDataNameListDto>> GetNameListAsync(string category, string name)
+        public async Task<ICollection<string>> GetNameListAsync(string category, string name)
         {
-            List<GetDataNameListDto> dtos = new List<GetDataNameListDto>();
-
             var datas = await _repository.GetListAsync(category, name);
-            dtos.Add(new GetDataNameListDto()
-            {
-                Category = category,
-                Names = datas.GroupBy(d => d.Remark1).Select(d => d.Key).ToArray()
-            });
-            return dtos;
+            return datas.GroupBy(d => d.Remark1).Select(d => d.Key).ToArray();
         }
 
         /// <summary>
