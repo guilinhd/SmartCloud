@@ -11,12 +11,18 @@ namespace SmartCloud.Common.Datas
     public interface IDataAppService : ICrudAppService<DataDto, Guid, GetDataListDto, DataDto>
     {
         /// <summary>
+        /// 按类别名称批量删除
+        /// </summary>
+        /// <param name="category">类别名称</param>
+        /// <returns></returns>
+        Task DeleteAsync(string category);
+
+        /// <summary>
         /// 按类别名称查询
         /// </summary>
         /// <param name="category">类别名称</param>
         /// <returns>数据字典信息列表</returns>
         Task<List<DataDto>> GetListAsync(string category);
-
 
         /// <summary>
         /// 按类别名称批量查询
@@ -28,11 +34,18 @@ namespace SmartCloud.Common.Datas
         /// <summary>
         /// 按类别名称、数据字典名称查询
         /// </summary>
+        /// <param name="categoires">类别名称数组</param>
+        /// <param name="name">数据字典名称</param>
+        /// <returns>数据字典信息列表</returns>
+        Task<List<GetDataNameListDto>> GetListAsync(string[] categories, string name);
+
+        /// <summary>
+        /// 按类别名称、数据字典名称查询
+        /// </summary>
         /// <param name="category">类别名称</param>
         /// <param name="name">数据字典名称</param>
         /// <returns>数据字典信息列表</returns>
         Task<List<DataDto>> GetListAsync(string category, string name);
-
 
         /// <summary>
         /// 按类别名称、数据字典名称、数据字典备注查询
@@ -50,12 +63,5 @@ namespace SmartCloud.Common.Datas
         /// <param name="remark">数据字典备注</param>
         /// <returns>数据字典信息列表</returns>
         Task<List<DataDto>> GetListRemarkAsync(string category, string remark);
-
-        /// <summary>
-        /// 按类别名称批量删除
-        /// </summary>
-        /// <param name="category">类别名称</param>
-        /// <returns></returns>
-        Task DeleteAsync(string category);
     }
 }
