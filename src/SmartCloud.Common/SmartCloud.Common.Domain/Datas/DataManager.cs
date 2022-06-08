@@ -17,34 +17,14 @@ namespace SmartCloud.Common.Datas
         }
 
         /// <summary>
-        /// 按类别名称批量删除
+        /// 获取实体个数
         /// </summary>
-        /// <param name="name">类别名称</param>
-        /// <returns></returns>
-        public async Task DeleteAsync(string name)
+        /// <param name="category">类别名称</param>
+        /// <returns>个数</returns>
+        public async Task<int> GetDatasCount(string category)
         {
-            var datas = await _repository.GetListAsync(name);
-
-            await _repository.DeleteManyAsync(datas);
+            var datas = await _repository.GetListAsync(category);
+            return datas.Count();
         }
-
-        /// <summary>
-        /// 按旧类别名称批量修改新类别名称
-        /// </summary>
-        /// <param name="oldName">旧类别名称</param>
-        /// <param name="newName">新类别名称</param>
-        /// <returns></returns>
-        public async Task ChangeAsync(string oldName, string newName)
-        {
-            var datas = await _repository.GetListAsync(oldName);
-
-            Parallel.ForEach(datas, data => {
-                data.Category = newName;
-            });
-
-            await _repository.UpdateManyAsync(datas);
-        }
-
-        
     }
 }
