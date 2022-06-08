@@ -1,16 +1,8 @@
-﻿using SmartCloud.Common.DataIndexs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.Unicode;
-using System.Threading.Tasks;
-using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
-using Volo.Abp.ObjectMapping;
+﻿using Volo.Abp.Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
+using SmartCloud.Common.Datas;
 
 namespace SmartCloud.Common.DataIndexs
 {
@@ -18,14 +10,20 @@ namespace SmartCloud.Common.DataIndexs
     {
         private readonly IDataIndexRepository _repository;
         private readonly DataIndexManager _manager;
+        private readonly IDataAppService _dataAppService;
+        private readonly IOptions<JsonSerializerOptions> _options;
 
         public DataIndexAppService(
             IDataIndexRepository repository,
-            DataIndexManager manager
+            DataIndexManager manager,
+            IDataAppService dataAppService,
+            IOptions<JsonSerializerOptions> options
             )
         {
             _repository = repository;
             _manager = manager;
+            _dataAppService = dataAppService;
+            _options = options;
         }
 
         /// <summary>
@@ -36,10 +34,11 @@ namespace SmartCloud.Common.DataIndexs
         [Route("api/common/dataindex/{name}")]
         public async Task<DataIndexDto> CreateAsync(string name)
         {
-            DataIndex dataIndex = await _manager.Create(name);
-            dataIndex = await _repository.InsertAsync(dataIndex);
+            //生成实例
+            DataIndex dataIndex = await _manager.CreateAsync(name);
 
-            string result = dataIndex.Description;
+            //新增存盘
+            await _repository.InsertAsync(dataIndex);
             return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
         }
 
@@ -51,7 +50,15 @@ namespace SmartCloud.Common.DataIndexs
         [Route("api/common/dataindex/{id}")]
         public async Task DeleteAsync(Guid id)
         {
-            await _manager.DeleteAsync(id);
+            var dataIndex = await _repository.GetAsync(id);
+            if (dataIndex != null)
+            {
+                //是否允许删除
+                await _manager.DeleteAsync(dataIndex.Name);
+
+                //删除
+                await _repository.DeleteAsync(dataIndex);
+            }
         }
 
         /// <summary>
@@ -87,6 +94,7 @@ namespace SmartCloud.Common.DataIndexs
         /// 查询全部
         /// </summary>
         /// <returns>实体列表</returns>
+        [Route("api/common/dataindex/")]
         public async Task<List<DataIndexDto>> GetListAsync()
         {
             var datas = await _repository.GetLisAsync(QueryEnum.All);
@@ -106,7 +114,18 @@ namespace SmartCloud.Common.DataIndexs
 
             if (dataIndex != null)
             {
+                //修改前的类别名称
+                string oldCategory = dataIndex.Name;
+
+                //是否允许更改名称
                 await _manager.ChangeNameAsync(dataIndex, name);
+
+                //修改存盘
+                await _repository.UpdateAsync(dataIndex);
+
+                //修改存盘数据字典对应的类别名称
+                await _dataAppService.UpdateAsync(oldCategory, name);
+
                 return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
             }
 
@@ -126,7 +145,8 @@ namespace SmartCloud.Common.DataIndexs
             {
                 dataIndex.Reader = authority.Readers.Count == 0 ? "" : authority.Readers.JoinAsString(";") + ";";
                 dataIndex.Editor = authority.Editors.Count == 0  ? "" : authority.Editors.JoinAsString(";") + ";";
-                
+
+                //修改存盘
                 await _repository.UpdateAsync(dataIndex);
             }
         }
@@ -141,7 +161,14 @@ namespace SmartCloud.Common.DataIndexs
         [Route("api/common/dataindex/update/{id}")]
         public async Task UpdateAsync(Guid id, List<Description> descriptions)
         {
-            await _manager.UpdateAsync(id, descriptions);
+            var dataIndex = await _repository.GetAsync(id);
+            if (dataIndex != null)
+            {
+                dataIndex.Description = JsonSerializer.Serialize(descriptions, _options.Value);
+
+                //修改存盘
+                await _repository.UpdateAsync(dataIndex);
+            }
         }
     }
 }
