@@ -21,14 +21,6 @@ namespace SmartCloud.Common.Organizations
         Task<GetDataNameListDto> CreateAsync();
 
         /// <summary>
-        /// 修改保存
-        /// </summary>
-        /// <param name="id">id</param>
-        /// <param name="dto">实体</param>
-        /// <returns></returns>
-        Task UpdateAsync(Guid id, OrganizationDto dto);
-
-        /// <summary>
         /// 删除
         /// </summary>
         /// <param name="id">id</param>
@@ -54,5 +46,13 @@ namespace SmartCloud.Common.Organizations
         /// </summary>
         /// <returns>实体列表</returns>
         Task<List<OrganizationDto>> GetListAsync();
+
+        /// <summary>
+        /// 修改保存
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="dto">实体</param>
+        /// <returns></returns>
+        Task UpdateAsync(Guid id, OrganizationDto dto);
     }
 }
