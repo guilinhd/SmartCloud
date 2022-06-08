@@ -14,7 +14,7 @@ namespace SmartCloud.Common
             CreateMap<DataIndex, DataIndexDto>()
                 .ForMember(
                 des => des.Descriptions,
-                opt => opt.MapFrom(src => src.Description.ToDescriptions()));
+                opt => opt.MapFrom(src => src.Description.ToDataIndexDescriptions()));
 
             CreateMap<Data, DataDto>().ReverseMap();
 
@@ -29,6 +29,11 @@ namespace SmartCloud.Common
 
     public static class ProfileExtensions
     {
+        public static List<DataIndexs.Description> ToDataIndexDescriptions(this string description)
+        {
+            return JsonSerializer.Deserialize<List<DataIndexs.Description>>(description);
+        }
+
         public static List<Description> ToDescriptions(this string description)
         {
             return JsonSerializer.Deserialize<List<Description>>(description);
