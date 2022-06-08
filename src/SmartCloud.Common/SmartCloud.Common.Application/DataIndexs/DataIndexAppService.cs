@@ -14,8 +14,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartCloud.Common.DataIndexs
 {
-    
-    
     public class DataIndexAppService : ApplicationService, IDataIndexAppService
     {
         private readonly IDataIndexRepository _repository;
@@ -34,7 +32,7 @@ namespace SmartCloud.Common.DataIndexs
         /// 新增
         /// </summary>
         /// <param name="name">名称</param>
-        /// <returns>数据字典类别信息</returns>
+        /// <returns></returns>
         [Route("api/common/dataindex/{name}")]
         public async Task<DataIndexDto> CreateAsync(string name)
         {
@@ -48,8 +46,8 @@ namespace SmartCloud.Common.DataIndexs
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="id">类别Id</param>
-        /// <returns>类别信息</returns>
+        /// <param name="id">Id</param>
+        /// <returns></returns>
         [Route("api/common/dataindex/{id}")]
         public async Task DeleteAsync(Guid id)
         {
@@ -60,7 +58,7 @@ namespace SmartCloud.Common.DataIndexs
         /// 查询
         /// </summary>
         /// <param name="id">Id</param>
-        /// <returns>类别信息</returns>
+        /// <returns></returns>
         [Route("api/common/dataindex/{id}")]
         public async Task<DataIndexDto> GetAsync(Guid id)
         {
@@ -74,22 +72,24 @@ namespace SmartCloud.Common.DataIndexs
         }
 
         /// <summary>
-        /// 显示当前读者可以查看的信息列表
+        /// 按用户名查询       
         /// </summary>
-        /// <param name="name">读者姓名</param>
-        /// <returns>类别信息列表</returns>
-        [Route("api/common/dataindex/")]
-        public async Task<List<DataIndexDto>> GetListAsync(string? name)
+        /// <param name="name">用户名</param>
+        /// <returns>实体列表</returns>
+        [Route("api/common/dataindex/name/{name}")]
+        public async Task<List<DataIndexDto>> GetListAsync(string name)
         {
-            var datas = new List<DataIndex>();
-            if (name.IsNullOrEmpty())
-            {
-                datas = await _repository.GetLisAsync(QueryEnum.All);
-            }
-            else
-            {
-                datas = await _repository.GetLisAsync(QueryEnum.Reader, name);
-            }
+            var datas = await _repository.GetLisAsync(QueryEnum.Reader, name);
+            return ObjectMapper.Map<List<DataIndex>, List<DataIndexDto>>(datas);
+        }
+
+        /// <summary>
+        /// 查询全部
+        /// </summary>
+        /// <returns>实体列表</returns>
+        public async Task<List<DataIndexDto>> GetListAsync()
+        {
+            var datas = await _repository.GetLisAsync(QueryEnum.All);
             return ObjectMapper.Map<List<DataIndex>, List<DataIndexDto>>(datas);
         }
 
