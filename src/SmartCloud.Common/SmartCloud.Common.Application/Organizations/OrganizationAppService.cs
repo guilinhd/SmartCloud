@@ -26,7 +26,7 @@ namespace SmartCloud.Common.Organizations
         /// <param name="dto">实体</param>
         public async Task<OrganizationDto> CreateAsync(OrganizationDto dto)
         {
-            var organization = await _manager.Create(dto.ParentId, dto.No, dto.Name, dto.Type, dto.Phone, dto.Fax, dto.Descriptions);
+            var organization = await _manager.Create(dto.ParentId, dto.Category, dto.No, dto.Name, dto.Type, dto.Phone, dto.Fax, dto.Descriptions);
             await _repository.InsertAsync(organization);
 
             return ObjectMapper.Map<Organization, OrganizationDto>(organization);
