@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SmartCloud.Common
+﻿namespace SmartCloud.Common
 {
     public static class CommonDomainErrorCodes
     {
         public const string DataIndexAlreadyExists = "SmartCloud.Common:00001";
 
         public const string DataIndexHasDatas = "SmartCloud.Common:00002";
+
+        public const string OrganizationAlreadyExists = "SmartCloud.Common:00003";
+
+        public const string OrganizationHasChildren = "SmartCloud.Common:00004";
+
+        public const string OrganizationHasUsers = "SmartCloud.Common:00005";
+
+        public const string OrganizationAjustRepeat = "SmartCloud.Common:00006";
     }
 }
