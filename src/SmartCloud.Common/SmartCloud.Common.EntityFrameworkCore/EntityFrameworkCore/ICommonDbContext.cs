@@ -4,6 +4,7 @@ using SmartCloud.Common.DataIndexs;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using SmartCloud.Common.Attachments;
+using SmartCloud.Common.Organizations;
 
 namespace SmartCloud.Common.EntityFrameworkCore
 {
@@ -15,5 +16,7 @@ namespace SmartCloud.Common.EntityFrameworkCore
         DbSet<Data> Datas { get; }
 
         DbSet<Attachment> Attachments { get; }
+
+        DbSet<Organization> Organizations { get; }
     }
 }
