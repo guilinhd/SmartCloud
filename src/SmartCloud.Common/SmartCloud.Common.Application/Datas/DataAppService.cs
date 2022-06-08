@@ -1,6 +1,7 @@
 ﻿using Volo.Abp.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp;
+using System.Xml.Linq;
 
 namespace SmartCloud.Common.Datas
 {
@@ -25,8 +26,9 @@ namespace SmartCloud.Common.Datas
         /// <returns></returns>
         [Route("api/common/data/category/{category}")]
         public async Task DeleteAsync(string category)
-        {
-            await _manager.DeleteAsync(category);
+{
+            var datas = await _repository.GetListAsync(category);
+            await _repository.DeleteManyAsync(datas);
         }
 
         /// <summary>
@@ -73,7 +75,6 @@ namespace SmartCloud.Common.Datas
         /// </summary>
         /// <param name="categoires">类别名称数组</param>
         /// <returns>数据字典信息列表</returns>
-
         [RemoteService(false)]
         public async Task<List<GetDataNameListDto>> GetNameListAsync(string[] categories)
         {
@@ -118,6 +119,28 @@ namespace SmartCloud.Common.Datas
 {
             var datas = await _repository.GetListRemarkAsync(category, remark);
             return ObjectMapper.Map<List<Data>, List<DataDto>>(datas);
+        }
+
+        /// <summary>
+        /// 按类别名称批量更新
+        /// </summary>
+        /// <param name="oldCategory">旧名称</param>
+        /// <param name="newCategory">新名称</param>
+        /// <returns></returns>
+        [RemoteService(false)]
+        public async Task UpdateAsync(string oldCategory, string newCategory)
+        {
+            var datas = await _repository.GetListAsync(oldCategory);
+
+            if (datas.Count > 0)
+            {
+                Parallel.ForEach(datas, data => {
+                    data.Category = newCategory;
+                });
+
+                await _repository.UpdateManyAsync(datas);
+            }
+            
         }
     }
 }
