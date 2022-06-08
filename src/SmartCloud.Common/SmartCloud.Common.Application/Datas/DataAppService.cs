@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp.Application.Services;
+﻿using Volo.Abp.Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
 using Volo.Abp;
 
 namespace SmartCloud.Common.Datas
@@ -53,7 +47,7 @@ namespace SmartCloud.Common.Datas
         /// <param name="category">类别名称</param>
         /// <param name="name">数据字典名称</param>
         /// <returns>数据字典信息列表</returns>
-        [Route("api/common/data/category/{category}/name/{name}")]
+        [RemoteService(false)]
         public async Task<List<DataDto>> GetListAsync(string category, string name)
         {
             var datas = await _repository.GetListAsync(category, name);
@@ -67,7 +61,7 @@ namespace SmartCloud.Common.Datas
         /// <param name="name">数据字典名称</param>
         /// <param name="remark">数据字典备注</param>
         /// <returns>数据字典信息列表</returns>
-        [Route("api/common/data/category/{category}/name/{name}/remark/{remark}")]
+        [RemoteService(false)]
         public async Task<List<DataDto>> GetListAsync(string category, string name, string remark)
         {
             var datas = await _repository.GetListAsync(category, name, remark);
@@ -79,25 +73,44 @@ namespace SmartCloud.Common.Datas
         /// </summary>
         /// <param name="categoires">类别名称数组</param>
         /// <returns>数据字典信息列表</returns>
-       
-        [Route("api/common/data/categories/{categories}")]
-        public async Task<List<GetDataNameListDto>> GetListAsync(string[] categories)
+
+        [RemoteService(false)]
+        public async Task<List<GetDataNameListDto>> GetNameListAsync(string[] categories)
         {
             List<GetDataNameListDto> dtos = new List<GetDataNameListDto>();
-
-            string[] vs = categories[0].Split(',');
-            var datas = await _repository.GetListAsync(vs);
-            foreach (var category in vs)
+            
+            var datas = await _repository.GetListAsync(categories);
+            foreach (var category in categories)
             {
                 dtos.Add(
                     new GetDataNameListDto()
                     {
                         Category = category,
-                        Names = datas.Where(d => d.Category == category).Select(d => d.Name).ToArray()
+                        Names = datas.Where(d => d.Category == category).GroupBy(d => d.Name).Select(d => d.Key).ToArray()
                     }
                 );
             }
 
+            return dtos;
+        }
+
+        /// <summary>
+        /// 按类别名称、数据字典名称查询
+        /// </summary>
+        /// <param name="category">类别名称</param>
+        /// <param name="name">数据字典名称</param>
+        /// <returns>数据字典信息列表</returns>
+        [RemoteService(false)]
+        public async Task<List<GetDataNameListDto>> GetNameListAsync(string category, string name)
+        {
+            List<GetDataNameListDto> dtos = new List<GetDataNameListDto>();
+
+            var datas = await _repository.GetListAsync(category, name);
+            dtos.Add(new GetDataNameListDto()
+            {
+                Category = category,
+                Names = datas.GroupBy(d => d.Remark1).Select(d => d.Key).ToArray()
+            });
             return dtos;
         }
 
@@ -107,7 +120,7 @@ namespace SmartCloud.Common.Datas
         /// <param name="category">类别名称</param>
         /// <param name="remark">数据字典备注</param>
         /// <returns>数据字典信息列表</returns>
-        [Route("api/common/data/category/{category}/remark/{remark}")]
+        [RemoteService(false)]
         public async Task<List<DataDto>> GetListRemarkAsync(string category, string remark)
 {
             var datas = await _repository.GetListRemarkAsync(category, remark);
