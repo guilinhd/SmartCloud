@@ -95,6 +95,20 @@ namespace SmartCloud.Common.DataIndexs
         }
 
         /// <summary>
+        /// 修改描述信息
+        /// </summary>
+        /// <param name="dataIndex">实体</param>
+        /// <param name="descriptions">描述信息</param>
+        public void UpdateDescription(
+            [NotNull] DataIndex dataIndex,
+            List<Description> descriptions
+        )
+        {
+            Check.NotNull(dataIndex, nameof(dataIndex));
+            dataIndex.Description = JsonSerializer.Serialize(descriptions, _options.Value);
+        }
+
+        /// <summary>
         /// 是否允许删除类别
         /// </summary>
         /// <param name="name">类别名称<</param>
