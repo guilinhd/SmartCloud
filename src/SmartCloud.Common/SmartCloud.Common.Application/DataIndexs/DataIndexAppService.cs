@@ -11,19 +11,16 @@ namespace SmartCloud.Common.DataIndexs
         private readonly IDataIndexRepository _repository;
         private readonly DataIndexManager _manager;
         private readonly IDataAppService _dataAppService;
-        private readonly IOptions<JsonSerializerOptions> _options;
 
         public DataIndexAppService(
             IDataIndexRepository repository,
             DataIndexManager manager,
-            IDataAppService dataAppService,
-            IOptions<JsonSerializerOptions> options
+            IDataAppService dataAppService
             )
         {
             _repository = repository;
             _manager = manager;
             _dataAppService = dataAppService;
-            _options = options;
         }
 
         /// <summary>
@@ -164,7 +161,8 @@ namespace SmartCloud.Common.DataIndexs
             var dataIndex = await _repository.GetAsync(id);
             if (dataIndex != null)
             {
-                dataIndex.Description = JsonSerializer.Serialize(descriptions, _options.Value);
+                //修改描述信息
+                _manager.UpdateDescription(dataIndex, descriptions);
 
                 //修改存盘
                 await _repository.UpdateAsync(dataIndex);
