@@ -25,11 +25,11 @@ namespace SmartCloud.Common.DataIndexs
         /// <param name="name">名称</param>
         /// <returns></returns>
         [Route("api/common/dataindex/{name}")]
-        public async Task<DataIndexDto> CreateAsync(string name)
+        public async Task<Guid> CreateAsync(string name)
         {
             //新增存盘
             var dataIndex = await _manager.CreateAsync(name);
-            return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
+            return dataIndex.Id;
         }
 
         /// <summary>
@@ -56,30 +56,7 @@ namespace SmartCloud.Common.DataIndexs
             var dataIndex = await _repository.GetAsync(id);
             return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
         }
-
-        /// <summary>
-        /// 按用户名查询       
-        /// </summary>
-        /// <param name="name">用户名</param>
-        /// <returns>实体列表</returns>
-        [Route("api/common/dataindex/username/{username}")]
-        public async Task<List<DataIndexDto>> GetListAsync(string username)
-        {
-            var datas = await _repository.GetLisAsync(QueryEnum.Reader, username);
-            return ObjectMapper.Map<List<DataIndex>, List<DataIndexDto>>(datas);
-        }
-
-        /// <summary>
-        /// 查询全部
-        /// </summary>
-        /// <returns>实体列表</returns>
-        [Route("api/common/dataindex/")]
-        public async Task<List<DataIndexDto>> GetListAsync()
-        {
-            var datas = await _repository.GetLisAsync(QueryEnum.All);
-            return ObjectMapper.Map<List<DataIndex>, List<DataIndexDto>>(datas);
-        }
-
+       
         /// <summary>
         /// 修改名称
         /// </summary>
@@ -87,13 +64,12 @@ namespace SmartCloud.Common.DataIndexs
         /// <param name="name">名称</param>
         /// <returns>数据字典类别信息</returns>
         [Route("api/common/dataindex/id/{id}/name/{name}")]
-        public async Task<DataIndexDto> UpdateAsync(Guid id, string name)
+        public async Task UpdateAsync(Guid id, string name)
         {
             var dataIndex = await _repository.GetAsync(id);
 
             //修改存盘
             await _manager.ChangeNameAsync(dataIndex, name);
-            return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
         }
 
         /// <summary>
@@ -115,7 +91,6 @@ namespace SmartCloud.Common.DataIndexs
         /// <param name="id">id</param>
         /// <param name="descriptions">描述信息</param>
         /// <returns></returns>
-        [HttpPost]
         [Route("api/common/dataindex/descriptions/{id}")]
         public async Task UpdateAsync(Guid id, List<Description> descriptions)
         {

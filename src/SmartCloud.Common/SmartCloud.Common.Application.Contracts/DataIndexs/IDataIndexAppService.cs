@@ -14,7 +14,7 @@ namespace SmartCloud.Common.DataIndexs
         /// </summary>
         /// <param name="name">名称</param>
         /// <returns></returns>
-        Task<DataIndexDto> CreateAsync(string name);
+        Task<Guid> CreateAsync(string name);
 
         /// <summary>
         /// 删除
@@ -31,25 +31,11 @@ namespace SmartCloud.Common.DataIndexs
         Task<DataIndexDto> GetAsync(Guid id);
 
         /// <summary>
-        /// 按用户名查询       
-        /// </summary>
-        /// <param name="name">用户名</param>
-        /// <returns>实体列表</returns>
-        Task<List<DataIndexDto>> GetListAsync(string name);
-
-        /// <summary>
-        /// 查询全部
-        /// </summary>
-        /// <returns>实体列表</returns>
-        Task<List<DataIndexDto>> GetListAsync();
-
-        /// <summary>
         /// 修改名称
         /// </summary>
         /// <param name="id">Id</param>
         /// <param name="name">名称</param>
-        /// <returns>实体列表</returns>
-        Task<DataIndexDto> UpdateAsync(Guid id, string name);
+        Task UpdateAsync(Guid id, string name);
 
         /// <summary>
         /// 修改描述
