@@ -48,14 +48,11 @@ namespace SmartCloud.Common.DataIndexs
         public async Task DeleteAsync(Guid id)
         {
             var dataIndex = await _repository.GetAsync(id);
-            if (dataIndex != null)
-            {
-                //是否允许删除
-                await _manager.DeleteAsync(dataIndex.Name);
+            //是否允许删除
+            await _manager.DeleteAsync(dataIndex.Name);
 
-                //删除
-                await _repository.DeleteAsync(dataIndex);
-            }
+            //删除
+            await _repository.DeleteAsync(dataIndex);
         }
 
         /// <summary>
@@ -67,12 +64,7 @@ namespace SmartCloud.Common.DataIndexs
         public async Task<DataIndexDto> GetAsync(Guid id)
         {
             var dataIndex = await _repository.GetAsync(id);
-            if (dataIndex != null)
-            {
-                return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
-            }
-
-            return null;
+            return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
         }
 
         /// <summary>
@@ -109,24 +101,19 @@ namespace SmartCloud.Common.DataIndexs
         {
             var dataIndex = await _repository.GetAsync(id);
 
-            if (dataIndex != null)
-            {
-                //修改前的类别名称
-                string oldCategory = dataIndex.Name;
+            //修改前的类别名称
+            string oldCategory = dataIndex.Name;
 
-                //是否允许更改名称
-                await _manager.ChangeNameAsync(dataIndex, name);
+            //是否允许更改名称
+            await _manager.ChangeNameAsync(dataIndex, name);
 
-                //修改存盘
-                await _repository.UpdateAsync(dataIndex);
+            //修改存盘
+            await _repository.UpdateAsync(dataIndex);
 
-                //修改存盘数据字典对应的类别名称
-                await _dataAppService.UpdateAsync(oldCategory, name);
+            //修改存盘数据字典对应的类别名称
+            await _dataAppService.UpdateAsync(oldCategory, name);
 
-                return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
-            }
-
-            return null;
+            return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
         }
 
         /// <summary>
@@ -138,14 +125,11 @@ namespace SmartCloud.Common.DataIndexs
         public async Task UpdateAsync(Guid id, AuthorityDto authority)
         {
             var dataIndex = await _repository.GetAsync(id);
-            if (dataIndex != null)
-            {
-                dataIndex.Reader = authority.Readers.Count == 0 ? "" : authority.Readers.JoinAsString(";") + ";";
-                dataIndex.Editor = authority.Editors.Count == 0  ? "" : authority.Editors.JoinAsString(";") + ";";
+            dataIndex.Reader = authority.Readers.Count == 0 ? "" : authority.Readers.JoinAsString(";") + ";";
+            dataIndex.Editor = authority.Editors.Count == 0 ? "" : authority.Editors.JoinAsString(";") + ";";
 
-                //修改存盘
-                await _repository.UpdateAsync(dataIndex);
-            }
+            //修改存盘
+            await _repository.UpdateAsync(dataIndex);
         }
 
         /// <summary>
