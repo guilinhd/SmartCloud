@@ -11,6 +11,19 @@ namespace SmartCloud.Common.Datas
     public interface IDataAppService : ICrudAppService<DataDto, Guid, GetDataListDto, DataDto>
     {
         /// <summary>
+        /// 显示数据字典类别
+        /// </summary>
+        /// <returns></returns>
+        Task<Dictionary<Guid, string>> CreateAsync();
+
+        /// <summary>
+        /// 显示数据字典类别
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <returns></returns>
+        Task<Dictionary<Guid, string>> CreateAsync(string userName);
+
+        /// <summary>
         /// 按类别名称批量删除
         /// </summary>
         /// <param name="category">类别名称</param>
@@ -23,53 +36,5 @@ namespace SmartCloud.Common.Datas
         /// <param name="category">类别名称</param>
         /// <returns>数据字典信息列表</returns>
         Task<List<DataDto>> GetListAsync(string category);
-
-        /// <summary>
-        /// 按类别名称批量查询
-        /// </summary>
-        /// <param name="categoires">类别名称数组</param>
-        /// <returns>数据字典信息列表</returns>
-        Task<List<GetDataNameListDto>> GetNameListAsync(string[] categories);
-
-        /// <summary>
-        /// 按类别名称、数据字典名称查询
-        /// </summary>
-        /// <param name="category">类别名称</param>
-        /// <param name="name">数据字典名称</param>
-        /// <returns>数据字典信息列表</returns>
-        Task<ICollection<string>> GetNameListAsync(string category, string name);
-
-        /// <summary>
-        /// 按类别名称、数据字典名称查询
-        /// </summary>
-        /// <param name="category">类别名称</param>
-        /// <param name="name">数据字典名称</param>
-        /// <returns>数据字典信息列表</returns>
-        Task<List<DataDto>> GetListAsync(string category, string name);
-
-        /// <summary>
-        /// 按类别名称、数据字典名称、数据字典备注查询
-        /// </summary>
-        /// <param name="category">类别名称</param>
-        /// <param name="name">数据字典名称</param>
-        /// <param name="remark">数据字典备注</param>
-        /// <returns>数据字典信息列表</returns>
-        Task<List<DataDto>> GetListAsync(string category, string name, string remark);
-
-        /// <summary>
-        /// 按类别名称、数据字典备注查询
-        /// </summary>
-        /// <param name="category">类别名称</param>
-        /// <param name="remark">数据字典备注</param>
-        /// <returns>数据字典信息列表</returns>
-        Task<List<DataDto>> GetListRemarkAsync(string category, string remark);
-
-        /// <summary>
-        /// 按类别名称批量更新
-        /// </summary>
-        /// <param name="oldCategory">旧名称</param>
-        /// <param name="newCategory">新名称</param>
-        /// <returns></returns>
-        Task UpdateAsync(string oldCategory, string newCategory);
     }
 }
