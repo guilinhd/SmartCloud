@@ -125,6 +125,44 @@ namespace SmartCloud.Common.DataIndexs
         }
 
         /// <summary>
+        /// 查询类别名称列表
+        /// </summary>
+        /// <returns>类别名称列表</returns>
+
+        public async Task<Dictionary<Guid, string>> GetListAsync()
+        {
+            Dictionary<Guid, string> dto = new Dictionary<Guid, string>();
+
+            var dataIndexs = await _repository.GetListAsync();
+            dataIndexs.ForEach(dataIndex =>
+            {
+                dto.Add(dataIndex.Id, dataIndex.Name);
+            });
+
+            return dto;
+        }
+
+        /// <summary>
+        /// 查询类别名称列表-按当前用户名
+        /// </summary>
+        /// <param name="query">查询枚举</param>
+        /// <param name="userName">用户名</param>
+        /// <returns>类别名称列表</returns>
+
+        public async Task<Dictionary<Guid, string>> GetListAsync(string userName)
+        {
+            Dictionary<Guid, string> dto = new Dictionary<Guid, string>();
+
+            var dataIndexs = await _repository.GetLisAsync(QueryEnum.Reader, userName);
+            dataIndexs.ForEach(dataIndex =>
+            {
+                dto.Add(dataIndex.Id, dataIndex.Name);
+            });
+
+            return dto;
+        }
+
+        /// <summary>
         /// 修改权限
         /// </summary>
         /// <param name="dataIndex">实体</param>
@@ -159,44 +197,6 @@ namespace SmartCloud.Common.DataIndexs
             dataIndex.Description = JsonSerializer.Serialize(descriptions, _options.Value);
 
             await _repository.UpdateAsync(dataIndex);
-        }
-
-        /// <summary>
-        /// 查询类别名称列表
-        /// </summary>
-        /// <returns>类别名称列表</returns>
-
-        public async Task<Dictionary<Guid, string>> CreateAsync()
-        {
-            Dictionary<Guid, string> dto = new Dictionary<Guid, string>();
-
-            var dataIndexs = await _repository.GetListAsync();
-            dataIndexs.ForEach(dataIndex =>
-            {
-                dto.Add(dataIndex.Id, dataIndex.Name);
-            });
-
-            return dto;
-        }
-
-        /// <summary>
-        /// 查询类别名称列表-按当前用户名
-        /// </summary>
-        /// <param name="query">查询枚举</param>
-        /// <param name="userName">用户名</param>
-        /// <returns>类别名称列表</returns>
-
-        public async Task<Dictionary<Guid, string>> CreateAsync(QueryEnum query, string userName)
-        {
-            Dictionary<Guid, string> dto = new Dictionary<Guid, string>();
-
-            var dataIndexs = await _repository.GetLisAsync(query, userName);
-            dataIndexs.ForEach(dataIndex =>
-            {
-                dto.Add(dataIndex.Id, dataIndex.Name);
-            });
-
-            return dto;
         }
     }
 }
