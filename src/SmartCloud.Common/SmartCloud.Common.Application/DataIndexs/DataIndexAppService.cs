@@ -1,8 +1,7 @@
 ﻿using Volo.Abp.Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System.Text.Json;
 using SmartCloud.Common.Datas;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SmartCloud.Common.DataIndexs
 {
@@ -10,17 +9,14 @@ namespace SmartCloud.Common.DataIndexs
     {
         private readonly IDataIndexRepository _repository;
         private readonly DataIndexManager _manager;
-        private readonly IDataAppService _dataAppService;
 
         public DataIndexAppService(
             IDataIndexRepository repository,
-            DataIndexManager manager,
-            IDataAppService dataAppService
-            )
+            DataIndexManager manager
+        )
         {
             _repository = repository;
             _manager = manager;
-            _dataAppService = dataAppService;
         }
 
         /// <summary>
@@ -31,11 +27,8 @@ namespace SmartCloud.Common.DataIndexs
         [Route("api/common/dataindex/{name}")]
         public async Task<DataIndexDto> CreateAsync(string name)
         {
-            //生成实例
-            DataIndex dataIndex = await _manager.CreateAsync(name);
-
             //新增存盘
-            await _repository.InsertAsync(dataIndex);
+            var dataIndex = await _manager.CreateAsync(name);
             return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
         }
 
@@ -48,11 +41,8 @@ namespace SmartCloud.Common.DataIndexs
         public async Task DeleteAsync(Guid id)
         {
             var dataIndex = await _repository.GetAsync(id);
-            //是否允许删除
-            await _manager.DeleteAsync(dataIndex.Name);
-
             //删除
-            await _repository.DeleteAsync(dataIndex);
+            await _manager.DeleteAsync(dataIndex);
         }
 
         /// <summary>
@@ -97,22 +87,14 @@ namespace SmartCloud.Common.DataIndexs
         /// <param name="name">名称</param>
         /// <returns>数据字典类别信息</returns>
         [Route("api/common/dataindex/id/{id}/name/{name}")]
-        public async Task<DataIndexDto> UpdateAsync(Guid id, string name)
+        public async Task<DataIndexDto> UpdateAsync(
+            Guid id, 
+            string name)
         {
             var dataIndex = await _repository.GetAsync(id);
 
-            //修改前的类别名称
-            string oldCategory = dataIndex.Name;
-
-            //是否允许更改名称
-            await _manager.ChangeNameAsync(dataIndex, name);
-
             //修改存盘
-            await _repository.UpdateAsync(dataIndex);
-
-            //修改存盘数据字典对应的类别名称
-            await _dataAppService.UpdateAsync(oldCategory, name);
-
+            await _manager.ChangeNameAsync(dataIndex, name);
             return ObjectMapper.Map<DataIndex, DataIndexDto>(dataIndex);
         }
 
@@ -125,11 +107,8 @@ namespace SmartCloud.Common.DataIndexs
         public async Task UpdateAsync(Guid id, AuthorityDto authority)
         {
             var dataIndex = await _repository.GetAsync(id);
-            dataIndex.Reader = authority.Readers.Count == 0 ? "" : authority.Readers.JoinAsString(";") + ";";
-            dataIndex.Editor = authority.Editors.Count == 0 ? "" : authority.Editors.JoinAsString(";") + ";";
-
             //修改存盘
-            await _repository.UpdateAsync(dataIndex);
+            await _manager.UpdateAuthority(dataIndex, authority.Readers, authority.Editors);
         }
 
         /// <summary>
@@ -143,14 +122,8 @@ namespace SmartCloud.Common.DataIndexs
         public async Task UpdateAsync(Guid id, List<Description> descriptions)
         {
             var dataIndex = await _repository.GetAsync(id);
-            if (dataIndex != null)
-            {
-                //修改描述信息
-                _manager.UpdateDescription(dataIndex, descriptions);
-
-                //修改存盘
-                await _repository.UpdateAsync(dataIndex);
-            }
+            //修改存盘
+            await _manager.UpdateDescription(dataIndex, descriptions);
         }
     }
 }
