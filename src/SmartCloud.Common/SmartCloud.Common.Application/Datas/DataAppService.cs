@@ -29,7 +29,7 @@ namespace SmartCloud.Common.Datas
         [HttpGet]
         public async Task<Dictionary<Guid, string>> CreateAsync()
         {
-            return await _dataIndexManager.CreateAsync();
+            return await _dataIndexManager.GetListAsync();
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace SmartCloud.Common.Datas
         [Route("api/common/data/create/{userName}")]
         public async Task<Dictionary<Guid, string>> CreateAsync(string userName)
         {
-            return await _dataIndexManager.CreateAsync(QueryEnum.Reader, userName);
+            return await _dataIndexManager.GetListAsync(QueryEnum.Reader, userName);
         }
 
         /// <summary>
