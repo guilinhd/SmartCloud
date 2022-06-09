@@ -63,11 +63,15 @@ namespace SmartCloud.Common.DataIndexs
             }
             #endregion
 
-            return new DataIndex(
+            var dataIndex = new DataIndex(
                 GuidGenerator.Create(),
                 name,
                 JsonSerializer.Serialize(descriptions, _options.Value)
-            ); 
+            );
+
+            await _repository.InsertAsync(dataIndex);
+
+            return dataIndex;
         }
 
         /// <summary>
@@ -91,21 +95,12 @@ namespace SmartCloud.Common.DataIndexs
                 throw new DataIndexAlreadyExistsException(newName);
             }
 
+            //修改存盘
             dataIndex.ChangeName(newName);
-        }
+            await _repository.UpdateAsync(dataIndex);
 
-        /// <summary>
-        /// 修改描述信息
-        /// </summary>
-        /// <param name="dataIndex">实体</param>
-        /// <param name="descriptions">描述信息</param>
-        public void UpdateDescription(
-            [NotNull] DataIndex dataIndex,
-            List<Description> descriptions
-        )
-        {
-            Check.NotNull(dataIndex, nameof(dataIndex));
-            dataIndex.Description = JsonSerializer.Serialize(descriptions, _options.Value);
+            //修改存盘数据字典对应的类别名称
+            await _dataManager.UpdateAsync(oldName, newName);
         }
 
         /// <summary>
@@ -113,15 +108,56 @@ namespace SmartCloud.Common.DataIndexs
         /// </summary>
         /// <param name="name">类别名称<</param>
         /// <exception cref="DataIndexHasDatasException">有数据字典信息,不能删除</exception>
-        public async Task DeleteAsync([NotNull] string name)
+        public async Task DeleteAsync(
+            [NotNull] DataIndex dataIndex
+        )
         {
-            Check.NotNullOrWhiteSpace(name, nameof(name));
+            Check.NotNull(dataIndex, nameof(dataIndex));
 
-            int count = await _dataManager.GetDatasCount(name);
+            int count = await _dataManager.GetDatasCount(dataIndex.Name);
             if (count > 0)
             {
-                throw new DataIndexHasDatasException(name);
+                throw new DataIndexHasDatasException(dataIndex.Name);
             }
+
+            await _repository.DeleteAsync(dataIndex);
+        }
+
+        /// <summary>
+        /// 修改权限
+        /// </summary>
+        /// <param name="dataIndex">实体</param>
+        /// <param name="readers">读者</param>
+        /// <param name="editors">编辑者</param>
+        /// <returns></returns>
+        public async Task UpdateAuthority(
+            [NotNull] DataIndex dataIndex,
+            ICollection<string> readers,
+            ICollection<string> editors
+        )
+        {
+            Check.NotNull(dataIndex, nameof(dataIndex));
+
+            dataIndex.Reader = readers.Count == 0 ? "" : readers.JoinAsString(";") + ";";
+            dataIndex.Editor = editors.Count == 0 ? "" : editors.JoinAsString(";") + ";";
+
+            await _repository.UpdateAsync(dataIndex);
+        }
+
+        /// <summary>
+        /// 修改描述信息
+        /// </summary>
+        /// <param name="dataIndex">实体</param>
+        /// <param name="descriptions">描述信息</param>
+        public async Task UpdateDescription(
+            [NotNull] DataIndex dataIndex,
+            List<Description> descriptions
+        )
+        {
+            Check.NotNull(dataIndex, nameof(dataIndex));
+            dataIndex.Description = JsonSerializer.Serialize(descriptions, _options.Value);
+
+            await _repository.UpdateAsync(dataIndex);
         }
     }
 }
