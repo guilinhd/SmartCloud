@@ -62,10 +62,10 @@ namespace SmartCloud.Common.DataIndexs
         /// </summary>
         /// <param name="name">用户名</param>
         /// <returns>实体列表</returns>
-        [Route("api/common/dataindex/name/{name}")]
-        public async Task<List<DataIndexDto>> GetListAsync(string name)
+        [Route("api/common/dataindex/username/{username}")]
+        public async Task<List<DataIndexDto>> GetListAsync(string username)
         {
-            var datas = await _repository.GetLisAsync(QueryEnum.Reader, name);
+            var datas = await _repository.GetLisAsync(QueryEnum.Reader, username);
             return ObjectMapper.Map<List<DataIndex>, List<DataIndexDto>>(datas);
         }
 
@@ -87,9 +87,7 @@ namespace SmartCloud.Common.DataIndexs
         /// <param name="name">名称</param>
         /// <returns>数据字典类别信息</returns>
         [Route("api/common/dataindex/id/{id}/name/{name}")]
-        public async Task<DataIndexDto> UpdateAsync(
-            Guid id, 
-            string name)
+        public async Task<DataIndexDto> UpdateAsync(Guid id, string name)
         {
             var dataIndex = await _repository.GetAsync(id);
 
@@ -103,7 +101,7 @@ namespace SmartCloud.Common.DataIndexs
         /// </summary>
         /// <param name="id">id</param>
         /// <param name="authority">权限</param>
-        [Route("api/common/dataindex/update/{id}")]
+        [Route("api/common/dataindex/authority/{id}")]
         public async Task UpdateAsync(Guid id, AuthorityDto authority)
         {
             var dataIndex = await _repository.GetAsync(id);
@@ -118,7 +116,7 @@ namespace SmartCloud.Common.DataIndexs
         /// <param name="descriptions">描述信息</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/common/dataindex/update/{id}")]
+        [Route("api/common/dataindex/descriptions/{id}")]
         public async Task UpdateAsync(Guid id, List<Description> descriptions)
         {
             var dataIndex = await _repository.GetAsync(id);
