@@ -29,6 +29,16 @@ namespace SmartCloud.Common.Organizations
                         }
                         return organizations;
                     }
+                case QueryEnum.Id:
+                    {
+                        var organizations = new List<Organization>();
+                        var organization = await dbSet.Where(d => d.Id == new Guid(name)).FirstOrDefaultAsync();
+                        if (organization != null)
+                        {
+                            organizations.Add(organization);
+                        }
+                        return organizations;
+                    }
                 case QueryEnum.Type:
                     return await dbSet.Where(d => d.Type == name).ToListAsync();
                 case QueryEnum.Category:
