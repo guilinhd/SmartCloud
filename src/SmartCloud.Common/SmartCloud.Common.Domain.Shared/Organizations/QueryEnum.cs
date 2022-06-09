@@ -3,6 +3,7 @@
     public enum QueryEnum
     {
         Parent,
+        Id,
         Name,
         Type,
         Category,

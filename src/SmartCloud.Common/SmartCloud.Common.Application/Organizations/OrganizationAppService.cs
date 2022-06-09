@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.Datas;
 using Volo.Abp.Application.Services;
 
@@ -8,16 +9,17 @@ namespace SmartCloud.Common.Organizations
     {
         private readonly IOrganizationRepository _repository;
         private readonly OrganizationManager _manager;
-        private readonly IDataAppService _dataAppService;
+        private readonly DataManager _dataManager;
 
         public OrganizationAppService(
             IOrganizationRepository repository,
             OrganizationManager manager,
-            IDataAppService dataAppService)
+            DataManager dataManager
+        )
         {
             _repository = repository;
             _manager = manager;
-            _dataAppService = dataAppService;
+            _dataManager = dataManager;
         }
 
         /// <summary>
@@ -26,8 +28,15 @@ namespace SmartCloud.Common.Organizations
         /// <param name="dto">实体</param>
         public async Task<OrganizationDto> CreateAsync(OrganizationDto dto)
         {
-            var organization = await _manager.Create(dto.ParentId, dto.Category, dto.No, dto.Name, dto.Type, dto.Phone, dto.Fax, dto.Descriptions);
-            await _repository.InsertAsync(organization);
+            var organization = await _manager.CreateAsync(
+                dto.ParentId, 
+                dto.No, 
+                dto.Name, 
+                dto.Type, 
+                dto.Phone, 
+                dto.Fax, 
+                dto.Descriptions
+            );
 
             return ObjectMapper.Map<Organization, OrganizationDto>(organization);
         }
@@ -37,14 +46,14 @@ namespace SmartCloud.Common.Organizations
         /// </summary>
         /// <returns>数据字典</returns>
         [HttpGet]
-        public async Task<GetDataNameListDto> CreateAsync()
+        public async Task<Dictionary<string, ICollection<string>>> CreateAsync()
         {
-            var names = await _dataAppService.GetNameListAsync("组织结构说明", "类型");
-            return new GetDataNameListDto()
-            {
-                Category = "组织结构类型",
-                Names = names
-            };
+            Dictionary<string, ICollection<string>> dto = new Dictionary<string, ICollection<string>>();
+
+            var names = await _dataManager.GetNameAsync("组织结构说明", "类型");
+            dto.Add("类型", names);
+
+            return dto;
         }
 
         /// <summary>
@@ -65,24 +74,7 @@ namespace SmartCloud.Common.Organizations
         public async Task<OrganizationDto> GetAsync(Guid id)
         {
             var organization = await _repository.GetAsync(id);
-            if (organization != null)
-            {
-                return ObjectMapper.Map<Organization, OrganizationDto>(organization);
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 按上级id查询
-        /// </summary>
-        /// <param name="parentId">上级组织结构id</param>
-        /// <returns>实体列表</returns>
-        [Route("api/core/organization/parentid/{parentId}")]
-        public async Task<List<OrganizationDto>> GetListAsync(string parentId)
-        {
-            var organizations = await _repository.GetListAsync(QueryEnum.Parent, parentId);
-            return ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(organizations);
+            return ObjectMapper.Map<Organization, OrganizationDto>(organization);
         }
 
         /// <summary>
@@ -104,15 +96,16 @@ namespace SmartCloud.Common.Organizations
         public async Task UpdateAsync(Guid id, OrganizationDto dto)
         {
             var organization = await _repository.GetAsync(id);
-            if (organization != null)
-            {
-                organization.No = dto.No;
-                organization.Type = dto.Type;
-                organization.Phone = dto.Phone;
-                organization.Fax = dto.Fax;
 
-                await _manager.UpdateAsync(organization, dto.Name, dto.Descriptions);
-            }
+            await _manager.UpdateAsync(
+                organization, 
+                dto.No,
+                dto.Name, 
+                dto.Type,
+                dto.Phone,
+                dto.Fax,
+                dto.Descriptions
+            );
         }
     }
 }

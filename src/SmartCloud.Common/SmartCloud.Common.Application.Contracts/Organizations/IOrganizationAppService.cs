@@ -18,7 +18,7 @@ namespace SmartCloud.Common.Organizations
         /// 新增
         /// </summary>
         /// <returns>数据字典</returns>
-        Task<GetDataNameListDto> CreateAsync();
+        Task<Dictionary<string, ICollection<string>>> CreateAsync();
 
         /// <summary>
         /// 删除
@@ -33,13 +33,6 @@ namespace SmartCloud.Common.Organizations
         /// <param name="id">id</param>
         /// <returns></returns>
         Task<OrganizationDto> GetAsync(Guid id);
-
-        /// <summary>
-        /// 按上级id查询
-        /// </summary>
-        /// <param name="parentId">上级组织结构id</param>
-        /// <returns>实体列表</returns>
-        Task<List<OrganizationDto>> GetListAsync(string parentId);
 
         /// <summary>
         /// 查询全部

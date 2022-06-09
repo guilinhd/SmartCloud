@@ -8,7 +8,7 @@ namespace SmartCloud.Common.Organizations
     {
         public int No { get; set; }
 
-        public string ParentId { get; set; } = null!;
+        public string ParentId { get; set; }
 
         public int Category { get; set; }
 
