@@ -41,7 +41,7 @@ namespace SmartCloud.Common.Datas
         [Route("api/common/data/create/{userName}")]
         public async Task<Dictionary<Guid, string>> CreateAsync(string userName)
         {
-            return await _dataIndexManager.GetListAsync(QueryEnum.Reader, userName);
+            return await _dataIndexManager.GetListAsync(userName);
         }
 
         /// <summary>
