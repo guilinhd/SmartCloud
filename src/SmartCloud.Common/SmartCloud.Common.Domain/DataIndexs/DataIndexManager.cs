@@ -42,7 +42,7 @@ namespace SmartCloud.Common.DataIndexs
             }
 
             #region 初始化类型描述
-            List<Description> descriptions = new List<Description>();
+            List<Description> descriptions = new();
             descriptions.Add(new Description()
             {
                 No = 1,
@@ -131,7 +131,7 @@ namespace SmartCloud.Common.DataIndexs
 
         public async Task<Dictionary<Guid, string>> GetListAsync()
         {
-            Dictionary<Guid, string> dto = new Dictionary<Guid, string>();
+            Dictionary<Guid, string> dto = new();
 
             var dataIndexs = await _repository.GetListAsync();
             dataIndexs.ForEach(dataIndex =>
@@ -151,7 +151,7 @@ namespace SmartCloud.Common.DataIndexs
 
         public async Task<Dictionary<Guid, string>> GetListAsync(string userName)
         {
-            Dictionary<Guid, string> dto = new Dictionary<Guid, string>();
+            Dictionary<Guid, string> dto = new();
 
             var dataIndexs = await _repository.GetLisAsync(QueryEnum.Reader, userName);
             dataIndexs.ForEach(dataIndex =>
