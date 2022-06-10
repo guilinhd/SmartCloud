@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SmartCloud.Common.EntityFrameworkCore;
+using System.Text;
 using System.Text.Json;
 using System.Text.Unicode;
 using Volo.Abp;
@@ -66,8 +69,9 @@ namespace SmartCloud.Common
                 });
             }
 
-            //app.UseCors();
+            
             app.UseRouting();
+            //app.UseAuthentication();
             app.UseAuthorization();
             app.UseConfiguredEndpoints();
         }
@@ -81,26 +85,24 @@ namespace SmartCloud.Common
             });
         }
 
-        private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
+        private void ConfigureAuthenticationServices(IServiceCollection services, IConfiguration configuration)
         {
-            context.Services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder =>
+            services
+                .AddAuthentication(options =>
                 {
-                    builder
-                        .WithOrigins(
-                            configuration["App:CorsOrigins"]
-                                .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                                .Select(o => o.RemovePostFix("/"))
-                                .ToArray()
-                        )
-                        .WithAbpExposedHeaders()
-                        .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options => {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = configuration["Authentication:Issuer"],
+                        ValidAudience = configuration["Authentication:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:SigningKey"]))
+                    };
                 });
-            });
         }
+
+        
     }
 }
