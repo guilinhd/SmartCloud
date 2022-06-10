@@ -30,7 +30,7 @@ namespace SmartCloud.Common.Datas
         public async Task<int> GetDatasCount(string category)
         {
             var datas = await _repository.GetListAsync(category);
-            return datas.Count();
+            return datas.Count;
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace SmartCloud.Common.Datas
         /// <returns></returns>
         public async Task<Dictionary<string, ICollection<string>>> GetNameListAsync(string[] categories)
         {
-            Dictionary<string, ICollection<string>> names = new Dictionary<string, ICollection<string>>();
+            Dictionary<string, ICollection<string>> names = new ();
 
             var datas = await _repository.GetListAsync(categories);
             foreach (var category in categories)
