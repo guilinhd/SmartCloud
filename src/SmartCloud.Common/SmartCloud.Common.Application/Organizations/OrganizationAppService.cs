@@ -48,7 +48,7 @@ namespace SmartCloud.Common.Organizations
         [HttpGet]
         public async Task<Dictionary<string, ICollection<string>>> CreateAsync()
         {
-            Dictionary<string, ICollection<string>> dto = new Dictionary<string, ICollection<string>>();
+            Dictionary<string, ICollection<string>> dto = new ();
 
             var names = await _dataManager.GetNameAsync("组织结构说明", "类型");
             dto.Add("类型", names);
