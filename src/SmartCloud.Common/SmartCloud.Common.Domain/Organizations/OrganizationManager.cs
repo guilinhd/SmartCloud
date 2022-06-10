@@ -139,7 +139,7 @@ namespace SmartCloud.Common.Organizations
         /// <returns>列表</returns>
         public async Task<Dictionary<Guid, string>> GetListAsync()
         {
-            Dictionary<Guid, string> names = new Dictionary<Guid, string>();
+            Dictionary<Guid, string> names = new ();
 
             var organizations = await _repository.GetListAsync();
             organizations.ForEach(organization => {
@@ -173,14 +173,16 @@ namespace SmartCloud.Common.Organizations
             {
                 throw new OrganizationAlreadyExistsException(name);
             }
-
+            
+            organization.No = no;
             organization.ChangeName(name);
+            organization.Type = type;
+            organization.Phone = phone;
+            organization.Fax = fax;
             organization.Description = JsonSerializer.Serialize(descriptions, _options.Value);
             
             await _repository.UpdateAsync(organization);
         }
-
-        
 
         /// <summary>
         /// 获取当前组织结构的核算编号

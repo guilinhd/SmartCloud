@@ -37,7 +37,7 @@ namespace SmartCloud.Common.Organizations
             string fax,
             string accounting,
             string description
-        )
+        ):base(id)
         {
             No = no;
             ParentId = parentId;
