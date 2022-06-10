@@ -4,6 +4,7 @@ using System.Text.Json;
 using SmartCloud.Common.Datas;
 using SmartCloud.Common.Attachments;
 using SmartCloud.Common.Organizations;
+using SmartCloud.Common.Users;
 
 namespace SmartCloud.Common
 {
@@ -24,6 +25,24 @@ namespace SmartCloud.Common
                 .ForMember(
                 des => des.Descriptions,
                 opt => opt.MapFrom(src => src.Description.ToDescriptions()));
+
+            CreateMap<User, CreateUpdateUserDto>()
+                .ForMember(
+                    des => des.Descriptions,
+                    opt => opt.MapFrom(src => src.Description.ToDescriptions()));
+
+            CreateMap<User, UserDto>()
+                .ForMember(
+                    des => des.Descriptions,
+                    opt => opt.MapFrom(src => src.Description.ToDescriptions()))
+                .ForMember(
+                    des => des.OrganizationName,
+                    opt => opt.MapFrom(src => src.Organization.Name)
+                )
+                .ForMember(
+                    des => des.OrganizationAccounting,
+                    opt => opt.MapFrom(src => src.Organization.Accounting)
+                );
         }
     }
 

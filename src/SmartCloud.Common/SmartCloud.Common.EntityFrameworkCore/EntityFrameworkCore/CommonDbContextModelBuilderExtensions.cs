@@ -3,6 +3,7 @@ using SmartCloud.Common.Attachments;
 using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.Datas;
 using SmartCloud.Common.Organizations;
+using SmartCloud.Common.Users;
 using System.Diagnostics.CodeAnalysis;
 using Volo.Abp;
 using Volo.Abp.EntityFrameworkCore.Modeling;
@@ -52,6 +53,16 @@ namespace SmartCloud.Common.EntityFrameworkCore
                 b.HasIndex(b => b.Accounting);
                 b.HasIndex(b => b.Category);
                 b.HasIndex(b => b.Type);
+            });
+
+            builder.Entity<User>(b =>
+            {
+                b.ToTable("User");
+                b.ConfigureByConvention();
+
+                b.HasIndex(b => b.OrganizationId);
+                b.HasIndex(b => b.Name);
+                b.HasIndex(b => b.Post);
             });
         }
     }

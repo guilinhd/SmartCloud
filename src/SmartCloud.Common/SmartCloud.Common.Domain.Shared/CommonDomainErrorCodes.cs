@@ -13,5 +13,9 @@
         public const string OrganizationHasUsers = "SmartCloud.Common:00005";
 
         public const string OrganizationAjustRepeat = "SmartCloud.Common:00006";
+
+        public const string UserAlreadyExists = "SmartCloud.Common:00007";
+
+        public const string UserPwdInvalid = "SmartCloud.Common:00008";
     }
 }
