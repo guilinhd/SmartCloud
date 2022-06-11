@@ -7,6 +7,7 @@ using SmartCloud.Common.Organizations;
 using SmartCloud.Common.Users;
 using SmartCloud.Common.Menus;
 using SmartCloud.Common.Roles;
+using SmartCloud.Common.RoleUsers;
 
 namespace SmartCloud.Common
 {
@@ -52,6 +53,8 @@ namespace SmartCloud.Common
             CreateMap<Menu, MenuDto>().ReverseMap();
 
             CreateMap<Role, RoleDto>().ReverseMap();
+
+            CreateMap<RoleUser, RoleUserDto>();
         }
     }
 
