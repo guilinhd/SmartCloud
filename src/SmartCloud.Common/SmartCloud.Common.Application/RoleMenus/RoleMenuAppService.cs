@@ -1,5 +1,6 @@
 ﻿
 
+using Microsoft.AspNetCore.Mvc;
 using SmartCloud.Common.RoleUsers;
 using Volo.Abp.Application.Services;
 
@@ -19,6 +20,7 @@ namespace SmartCloud.Common.RoleMenus
             _manager = manager;
         }
 
+        [Route("api/common/rolemenu")]
         public async Task<List<RoleMenuDto>> CreateAsync(CreateRoleMenuDto dto)
         {
             string roleId = dto.RoleId;
@@ -30,6 +32,7 @@ namespace SmartCloud.Common.RoleMenus
             return ObjectMapper.Map<List<RoleMenu>, List<RoleMenuDto>>(roleMenus);
         }
 
+        [Route("api/common/rolemenu")]
         public async Task<List<RoleMenuDto>> GetListAsync(string roleId)
         {
             var roleMenus = await _repository.GetListAsync(QueryEnum.RoleId, roleId);
