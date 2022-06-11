@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
+using Volo.Abp.ObjectMapping;
 
 namespace SmartCloud.Common.Users
 {
@@ -14,23 +15,20 @@ namespace SmartCloud.Common.Users
     {
         private readonly IUserRepository _repository;
         private readonly UserManager _manager;
-        private readonly OrganizationManager _organizationManager;
         private readonly DataManager _dataManager;
-        private readonly IDataAppService _dataAppService;
+        private readonly IOrganizationAppService _organizationAppService;
 
         public UserAppService(
             IUserRepository repository,
             UserManager manager,
-            OrganizationManager organizationManager,
             DataManager dataManager,
-            IDataAppService dataAppService
+            IOrganizationAppService organizationAppService
         )
         {
             _repository = repository;
             _manager = manager;
-            _organizationManager = organizationManager;
             _dataManager = dataManager;
-            _dataAppService = dataAppService;
+            _organizationAppService = organizationAppService;
         }
 
         /// <summary>
@@ -38,7 +36,7 @@ namespace SmartCloud.Common.Users
         /// </summary>
         /// <param name="dto">实体</param>
         /// <returns></returns>
-        public async Task<CreateUpdateUserDto> CreateAsync(CreateUpdateUserDto dto)
+        public async Task<ListUserDto> CreateAsync(ListUserDto dto)
         {
             //新增存盘
             string pwdSalt = CreateSalt(6);
@@ -57,7 +55,7 @@ namespace SmartCloud.Common.Users
                 dto.Descriptions
             );
 
-            return ObjectMapper.Map<User, CreateUpdateUserDto>(user);
+            return ObjectMapper.Map<User, ListUserDto>(user);
         }
 
         /// <summary>
@@ -66,23 +64,18 @@ namespace SmartCloud.Common.Users
         /// <returns></returns>
         [HttpGet]
         [Route("api/common/user/create")]
-        public async Task<Dictionary<string, Dictionary<Guid, string>>> CreateAsync()
+        public async Task<CreateUserDto> CreateAsync()
         {
-            Dictionary<string, Dictionary<Guid, string>> dto = new();
+            CreateUserDto dto = new();
 
-            var organizations = await _organizationManager.GetListAsync();
-            dto.Add("组织结构列表", organizations);
+            //组织结构列表
+            dto.Organizations = await _organizationAppService.GetListAsync();
 
-            var users = await _manager.GetListAsync();
-            dto.Add("人员列表", users);
+            //人员列表
+            dto.Users = ObjectMapper.Map<List<User>, List<PartUserDto>>(await _repository.GetListAsync());
 
-            var datas = await _dataManager.GetNameListAsync(new string[] { "职务列表" });
-            Dictionary<Guid, string> names = new();
-            foreach (var item in datas.First().Value)
-            {
-                names.Add(Guid.NewGuid(), item);
-            }
-            dto.Add("职务", names);
+            var datas =  await _dataManager.GetNameListAsync(new string[] { "职务列表" });
+            dto.Datas = datas.First().Value;
 
             return dto;
         }
@@ -104,10 +97,10 @@ namespace SmartCloud.Common.Users
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<CreateUpdateUserDto> GetAsync(Guid id)
+        public async Task<ListUserDto> GetAsync(Guid id)
         {
             var user = await _repository.GetAsync(id);
-            return ObjectMapper.Map<User, CreateUpdateUserDto>(user);
+            return ObjectMapper.Map<User, ListUserDto>(user);
         }
 
         /// <summary>
@@ -172,7 +165,7 @@ namespace SmartCloud.Common.Users
         /// <param name="id">id</param>
         /// <param name="dto">实体</param>
         /// <returns></returns>
-        public async Task UpdateAsync(Guid id, CreateUpdateUserDto dto)
+        public async Task UpdateAsync(Guid id, ListUserDto dto)
         {
             var user = await _repository.GetAsync(id);
 
