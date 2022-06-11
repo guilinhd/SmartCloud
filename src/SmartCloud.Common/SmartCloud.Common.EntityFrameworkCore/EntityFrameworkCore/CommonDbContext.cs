@@ -22,17 +22,17 @@ namespace SmartCloud.Common.EntityFrameworkCore
 
         public DbSet<Attachment> Attachments { get; set; }
 
-        public DbSet<Organization> Organizations => throw new NotImplementedException();
+        public DbSet<Organization> Organizations { get; set; }
 
-        public DbSet<User> Users => throw new NotImplementedException();
+        public DbSet<User> Users { get; set; }
 
-        public DbSet<Menu> Menus => throw new NotImplementedException();
+        public DbSet<Menu> Menus { get; set; }
 
-        public DbSet<Role> Roles => throw new NotImplementedException();
+        public DbSet<Role> Roles { get; set; }
 
-        public DbSet<RoleUser> RoleUsers => throw new NotImplementedException();
+        public DbSet<RoleUser> RoleUsers { get; set; }
 
-        public DbSet<RoleMenu> RoleMenus => throw new NotImplementedException();
+        public DbSet<RoleMenu> RoleMenus { get; set; }
 
         public CommonDbContext(DbContextOptions<CommonDbContext> options) : base(options)
         {
