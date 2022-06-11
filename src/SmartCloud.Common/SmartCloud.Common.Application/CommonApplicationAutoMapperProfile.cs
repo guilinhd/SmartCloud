@@ -5,6 +5,7 @@ using SmartCloud.Common.Datas;
 using SmartCloud.Common.Attachments;
 using SmartCloud.Common.Organizations;
 using SmartCloud.Common.Users;
+using SmartCloud.Common.Menus;
 
 namespace SmartCloud.Common
 {
@@ -46,6 +47,8 @@ namespace SmartCloud.Common
                     des => des.OrganizationAccounting,
                     opt => opt.MapFrom(src => src.Organization.Accounting)
                 );
+
+            CreateMap<Menu, MenuDto>().ReverseMap();
         }
     }
 
