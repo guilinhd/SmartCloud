@@ -7,6 +7,7 @@ using SmartCloud.Common.Attachments;
 using SmartCloud.Common.Organizations;
 using SmartCloud.Common.Users;
 using SmartCloud.Common.Menus;
+using SmartCloud.Common.Roles;
 
 namespace SmartCloud.Common.EntityFrameworkCore
 {
@@ -24,5 +25,7 @@ namespace SmartCloud.Common.EntityFrameworkCore
         DbSet<User> Users { get; }
 
         DbSet<Menu> Menus { get; }
+
+        DbSet<Role> Roles { get; }
     }
 }
