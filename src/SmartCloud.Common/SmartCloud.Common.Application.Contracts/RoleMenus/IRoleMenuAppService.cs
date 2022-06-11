@@ -6,6 +6,6 @@ namespace SmartCloud.Common.RoleMenus
     {
         Task<List<RoleMenuDto>> CreateAsync(CreateRoleMenuDto dto);
 
-        Task<List<RoleMenuDto>> GetListAsync();
+        Task<List<RoleMenuDto>> GetListAsync(string roleId);
     }
 }

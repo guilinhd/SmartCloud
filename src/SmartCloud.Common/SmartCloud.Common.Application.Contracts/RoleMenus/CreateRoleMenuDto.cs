@@ -15,7 +15,7 @@ namespace SmartCloud.Common.RoleMenus
         /// <summary>
         /// 角色包含菜单id数组
         /// </summary>
-        public string MenuIds { get; set; }
+        public string[] MenuIds { get; set; }
 
         /// <summary>
         /// 需要删除id数组
