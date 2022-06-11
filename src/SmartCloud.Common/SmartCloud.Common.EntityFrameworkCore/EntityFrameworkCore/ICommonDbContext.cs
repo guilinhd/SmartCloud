@@ -6,6 +6,7 @@ using Volo.Abp.EntityFrameworkCore;
 using SmartCloud.Common.Attachments;
 using SmartCloud.Common.Organizations;
 using SmartCloud.Common.Users;
+using SmartCloud.Common.Menus;
 
 namespace SmartCloud.Common.EntityFrameworkCore
 {
@@ -21,5 +22,7 @@ namespace SmartCloud.Common.EntityFrameworkCore
         DbSet<Organization> Organizations { get; }
 
         DbSet<User> Users { get; }
+
+        DbSet<Menu> Menus { get; }
     }
 }

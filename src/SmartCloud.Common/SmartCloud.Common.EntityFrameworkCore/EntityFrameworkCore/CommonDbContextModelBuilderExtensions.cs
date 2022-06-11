@@ -2,6 +2,7 @@
 using SmartCloud.Common.Attachments;
 using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.Datas;
+using SmartCloud.Common.Menus;
 using SmartCloud.Common.Organizations;
 using SmartCloud.Common.Users;
 using System.Diagnostics.CodeAnalysis;
@@ -63,6 +64,14 @@ namespace SmartCloud.Common.EntityFrameworkCore
                 b.HasIndex(b => b.OrganizationId);
                 b.HasIndex(b => b.Name);
                 b.HasIndex(b => b.Post);
+            });
+
+            builder.Entity<Menu>(b =>
+            {
+                b.ToTable("Menu");
+                b.ConfigureByConvention();
+
+                b.HasIndex(b => b.ParentId);
             });
         }
     }
