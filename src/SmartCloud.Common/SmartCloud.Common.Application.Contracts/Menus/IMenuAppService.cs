@@ -2,7 +2,7 @@
 
 namespace SmartCloud.Common.Menus
 {
-    public interface IMenuAppService : ICreateUpdateAppService<MenuDto, Guid>
+    public interface IMenuAppService : ICrudAppService<MenuDto, Guid>
     {
         Task<List<MenuDto>> GetListAsync();
     }
