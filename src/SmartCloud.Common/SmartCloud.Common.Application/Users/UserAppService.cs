@@ -117,7 +117,6 @@ namespace SmartCloud.Common.Users
         /// <param name="pwd">密码</param>
         /// <returns>实体</returns>
         [RemoteService(false)]
-        [AllowAnonymous]
         public async Task<UserDto> GetAsync(string name, string pwd)
         {
             var user = await _manager.GetAsync(name);
