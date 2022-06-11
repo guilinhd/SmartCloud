@@ -4,7 +4,9 @@ using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.Datas;
 using SmartCloud.Common.Menus;
 using SmartCloud.Common.Organizations;
+using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.Roles;
+using SmartCloud.Common.RoleUsers;
 using SmartCloud.Common.Users;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
@@ -27,6 +29,10 @@ namespace SmartCloud.Common.EntityFrameworkCore
         public DbSet<Menu> Menus => throw new NotImplementedException();
 
         public DbSet<Role> Roles => throw new NotImplementedException();
+
+        public DbSet<RoleUser> RoleUsers => throw new NotImplementedException();
+
+        public DbSet<RoleMenu> RoleMenus => throw new NotImplementedException();
 
         public CommonDbContext(DbContextOptions<CommonDbContext> options) : base(options)
         {

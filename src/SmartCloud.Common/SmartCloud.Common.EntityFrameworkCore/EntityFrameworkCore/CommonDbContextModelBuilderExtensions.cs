@@ -4,7 +4,9 @@ using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.Datas;
 using SmartCloud.Common.Menus;
 using SmartCloud.Common.Organizations;
+using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.Roles;
+using SmartCloud.Common.RoleUsers;
 using SmartCloud.Common.Users;
 using System.Diagnostics.CodeAnalysis;
 using Volo.Abp;
@@ -78,6 +80,21 @@ namespace SmartCloud.Common.EntityFrameworkCore
             builder.Entity<Role>(b =>
             {
                 b.ToTable("Role");
+                b.ConfigureByConvention();
+            });
+
+            builder.Entity<RoleUser>(b => {
+                b.ToTable("RoleUser");
+                b.ConfigureByConvention();
+
+                b.HasIndex(b => b.RoleId);
+            });
+
+            builder.Entity<RoleMenu>(b => {
+                b.ToTable("RoleMenu");
+                b.ConfigureByConvention();
+
+                b.HasIndex(b => b.RoleId);
             });
         }
     }

@@ -8,6 +8,8 @@ using SmartCloud.Common.Organizations;
 using SmartCloud.Common.Users;
 using SmartCloud.Common.Menus;
 using SmartCloud.Common.Roles;
+using SmartCloud.Common.RoleUsers;
+using SmartCloud.Common.RoleMenus;
 
 namespace SmartCloud.Common.EntityFrameworkCore
 {
@@ -27,5 +29,9 @@ namespace SmartCloud.Common.EntityFrameworkCore
         DbSet<Menu> Menus { get; }
 
         DbSet<Role> Roles { get; }
+
+        DbSet<RoleUser> RoleUsers { get; }
+
+        DbSet<RoleMenu> RoleMenus { get; }
     }
 }
