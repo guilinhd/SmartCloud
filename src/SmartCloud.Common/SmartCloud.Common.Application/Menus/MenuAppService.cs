@@ -25,7 +25,7 @@ namespace SmartCloud.Common.Menus
         /// <param name="id"></param>
         /// <param name="parentId"></param>
         /// <returns></returns>
-        public async Task AdjutAsync(Guid id, string parentId)
+        public async Task AdjustAsync(Guid id, string parentId)
         {
             var menu = await _repository.GetAsync(id);
             var menuParent = await _repository.GetAsync(new Guid(parentId));

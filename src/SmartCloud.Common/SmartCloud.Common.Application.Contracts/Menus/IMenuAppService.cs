@@ -10,7 +10,7 @@ namespace SmartCloud.Common.Menus
         /// <param name="id"></param>
         /// <param name="parentId">上级菜单Id</param>
         /// <returns></returns>
-        Task AdjutAsync(Guid id, string parentId);
+        Task AdjustAsync(Guid id, string parentId);
 
         Task<List<MenuDto>> GetListAsync();
     }
