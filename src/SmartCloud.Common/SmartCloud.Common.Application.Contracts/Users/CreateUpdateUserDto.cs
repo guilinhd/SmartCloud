@@ -2,9 +2,10 @@
 
 namespace SmartCloud.Common.Users
 {
-    public class CreateUpdateUserDto : AuditedEntityDto<Guid>
+    public class ListUserDto : AuditedEntityDto<Guid>
     {
         public string OrganizationId { get; set; } = null!;
+
         public int No { get; set; }
 
         public string Name { get; set; } = null!;

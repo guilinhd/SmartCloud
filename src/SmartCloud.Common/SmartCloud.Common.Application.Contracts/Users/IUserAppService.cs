@@ -10,13 +10,13 @@ namespace SmartCloud.Common.Users
         /// </summary>
         /// <param name="dto">实体</param>
         /// <returns>实体</returns>
-        Task<CreateUpdateUserDto> CreateAsync(CreateUpdateUserDto dto);
+        Task<ListUserDto> CreateAsync(ListUserDto dto);
 
         /// <summary>
         /// 新增
         /// </summary>
         /// <returns></returns>
-        Task<Dictionary<string, Dictionary<Guid, string>>> CreateAsync();
+        Task<CreateUserDto> CreateAsync();
 
         /// <summary>
         /// 删除
@@ -30,7 +30,7 @@ namespace SmartCloud.Common.Users
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<CreateUpdateUserDto> GetAsync(Guid id);
+        Task<ListUserDto> GetAsync(Guid id);
 
         /// <summary>
         /// 查询
@@ -66,6 +66,6 @@ namespace SmartCloud.Common.Users
         /// </summary>
         /// <param name="userDto">实体</param>
         /// <returns></returns>
-        Task UpdateAsync(Guid id, CreateUpdateUserDto dto);
+        Task UpdateAsync(Guid id, ListUserDto dto);
     }
 }
