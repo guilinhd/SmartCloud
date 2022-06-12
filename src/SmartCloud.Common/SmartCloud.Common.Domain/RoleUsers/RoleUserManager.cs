@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Domain.Services;
 
 namespace SmartCloud.Common.RoleUsers
 {
-    public class RoleUserManager
+    public class RoleUserManager : DomainService
     {
-        private readonly IRoleUserRepository _repository;
+        private readonly IRepository<RoleUser, Guid> _repository;
 
         public RoleUserManager(
-            IRoleUserRepository repository
+            IRepository<RoleUser, Guid> repository
         )
         {
             _repository = repository;
