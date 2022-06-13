@@ -4,8 +4,16 @@ using Volo.Abp.Application.Services;
 
 namespace SmartCloud.Common.Roles
 {
-    public interface IRoleAppService : ICrudAppService<RoleDto, Guid>
+    public interface IRoleAppService : IApplicationService
     {
-        Task<List<RoleDto>> GetListAsync();
+        Task<RoleDto> CreateAsync(CreateUpdateRoleDto dto);
+
+        Task<CreateRoleDto> CreateAsync();
+
+        Task DeleteAsync(Guid id);
+
+        Task<RoleDto> GetAsync(Guid id);
+
+        Task<RoleDto> UpdateAsync(CreateUpdateRoleDto dto);
     }
 }

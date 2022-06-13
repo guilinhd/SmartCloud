@@ -17,5 +17,7 @@
         public const string UserAlreadyExists = "SmartCloud.Common:00007";
 
         public const string UserPwdInvalid = "SmartCloud.Common:00008";
+
+        public const string RoleAlreadyExists = "SmartCloud.Common:00009";
     }
 }

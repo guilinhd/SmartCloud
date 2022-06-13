@@ -53,7 +53,9 @@ namespace SmartCloud.Common
 
             CreateMap<Menu, MenuDto>().ReverseMap();
 
-            CreateMap<Role, RoleDto>().ReverseMap();
+            CreateMap<Role, RoleDto>();
+
+            CreateMap<Role, PartRoleDto>().ReverseMap();
 
             CreateMap<RoleUser, RoleUserDto>();
 
