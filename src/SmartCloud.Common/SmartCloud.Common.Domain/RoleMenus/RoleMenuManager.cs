@@ -52,5 +52,35 @@ namespace SmartCloud.Common.RoleMenus
 
             await _repository.DeleteManyAsync(guids);
         }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="roleId">角色id</param>
+        /// <returns></returns>
+        public async Task DeleteAsync(string roleId)
+        {
+            var roleMenus = await _repository.GetListAsync(QueryEnum.RoleId, roleId);
+            await _repository.DeleteManyAsync(roleMenus);
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="roleId">角色id</param>
+        /// <returns></returns>
+        public async Task<List<RoleMenu>> GetListAsync(string roleId)
+        {
+            return await _repository.GetListAsync(QueryEnum.RoleId, roleId);
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<RoleMenu>> GetListAsync()
+        {
+            return await _repository.GetListAsync(QueryEnum.All, "");
+        }
     }
 }
