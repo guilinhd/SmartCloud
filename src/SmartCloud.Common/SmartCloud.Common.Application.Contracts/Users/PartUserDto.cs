@@ -12,5 +12,7 @@ namespace SmartCloud.Common.Users
         public string Name { get; set; } = null!;
 
         public int Disable { get; set; }
+
+        public string Post { get; set; }
     }
 }
