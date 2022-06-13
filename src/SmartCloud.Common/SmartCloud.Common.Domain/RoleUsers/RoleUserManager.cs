@@ -5,10 +5,10 @@ namespace SmartCloud.Common.RoleUsers
 {
     public class RoleUserManager : DomainService
     {
-        private readonly IRepository<RoleUser, Guid> _repository;
+        private readonly IRoleUserRepository _repository;
 
         public RoleUserManager(
-            IRepository<RoleUser, Guid> repository
+            IRoleUserRepository repository
         )
         {
             _repository = repository;
@@ -50,6 +50,27 @@ namespace SmartCloud.Common.RoleUsers
             }
 
             await _repository.DeleteManyAsync(guids);
+        }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="roleId">角色id</param>
+        /// <returns></returns>
+        public async Task DeleteAsync(string roleId)
+        {
+            var roleUsers = await _repository.GetListAsync(QueryEnum.RoleId, roleId);
+            await _repository.DeleteManyAsync(roleUsers);
+        }
+
+        /// <summary>
+        /// 批量查询
+        /// </summary>
+        /// <param name="roleId">角色id</param>
+        /// <returns></returns>
+        public async Task<List<RoleUser>> GetListAsync(string roleId)
+        {
+            return await _repository.GetListAsync(QueryEnum.RoleId, roleId);
         }
     }
 }
