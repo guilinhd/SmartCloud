@@ -75,5 +75,14 @@ namespace SmartCloud.Common.Roles
             role.ChangeName(name);
             await _repository.UpdateAsync(role);
         }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Role>> GetListAsync()
+        {
+            return await _repository.GetListAsync();
+        }
     }
 }
