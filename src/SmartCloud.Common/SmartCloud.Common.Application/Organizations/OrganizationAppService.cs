@@ -46,12 +46,15 @@ namespace SmartCloud.Common.Organizations
         /// </summary>
         /// <returns>数据字典</returns>
         [HttpGet]
-        public async Task<Dictionary<string, ICollection<string>>> CreateAsync()
+        public async Task<CreateOrganizationDto> CreateAsync()
         {
-            Dictionary<string, ICollection<string>> dto = new ();
+            CreateOrganizationDto dto = new();
 
-            var names = await _dataManager.GetNameAsync("组织结构说明", "类型");
-            dto.Add("类型", names);
+            var organizations = await _repository.GetListAsync();
+            dto.Organizations = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(organizations);
+
+            var datas = await _dataManager.GetNameAsync("组织结构说明", "类型");
+            dto.Datas = datas;
 
             return dto;
         }
@@ -75,16 +78,6 @@ namespace SmartCloud.Common.Organizations
         {
             var organization = await _repository.GetAsync(id);
             return ObjectMapper.Map<Organization, OrganizationDto>(organization);
-        }
-
-        /// <summary>
-        /// 查询全部
-        /// </summary>
-        /// <returns>实体列表</returns>
-        public async Task<List<OrganizationDto>> GetListAsync()
-        {
-            var organizations = await _repository.GetListAsync();
-            return ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(organizations);
         }
 
         /// <summary>
