@@ -9,6 +9,7 @@ namespace SmartCloud.Common.RoleUsers
     public enum QueryEnum
     {
         RoleId,
+        UserId,
         All
     }
 }
