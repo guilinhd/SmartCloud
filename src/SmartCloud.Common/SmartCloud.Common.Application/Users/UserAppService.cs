@@ -236,7 +236,7 @@ namespace SmartCloud.Common.Users
             #endregion
 
             #region 角色人员删除
-            await _roleUserManager.DeleteAsync(dto.RoleUserIds);
+            await _roleUserManager.DeleteAsync(dto.RoleUsers);
             #endregion
 
             return saveUserDto;

@@ -13,6 +13,6 @@ namespace SmartCloud.Common.Users
         /// <summary>
         /// 删除的角色用户
         /// </summary>
-        public string[] RoleUserIds { get; set; }
+        public string[] RoleUsers { get; set; }
     }
 }
