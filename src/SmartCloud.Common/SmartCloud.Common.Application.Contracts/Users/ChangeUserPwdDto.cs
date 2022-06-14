@@ -10,7 +10,7 @@ namespace SmartCloud.Common.Users
     public class ChangeUserPwdDto
     {
         [Required]
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

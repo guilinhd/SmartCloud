@@ -6,10 +6,6 @@ namespace SmartCloud.Common.Users
     {
         public string OrganizationId { get; set; } = null!;
 
-        public string OrganizationName { get; set; }
-
-        public string OrganizationAccounting { get; set; }
-
         public int No { get; set; }
 
         public string Name { get; set; } = null!;

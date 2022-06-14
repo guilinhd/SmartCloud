@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartCloud.Common.Datas;
+using SmartCloud.Common.Menus;
 using SmartCloud.Common.Organizations;
+using SmartCloud.Common.Roles;
+using SmartCloud.Common.RoleUsers;
 using System.Security.Cryptography;
 using System.Text;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
-using Volo.Abp.ObjectMapping;
 
 namespace SmartCloud.Common.Users
 {
@@ -16,19 +18,28 @@ namespace SmartCloud.Common.Users
         private readonly IUserRepository _repository;
         private readonly UserManager _manager;
         private readonly DataManager _dataManager;
-        private readonly IOrganizationAppService _organizationAppService;
+        private readonly OrganizationManager _organizationManager;
+        private readonly MenuManager _menuManager;
+        private readonly RoleManager _roleManager;
+        private readonly RoleUserManager _roleUserManager;
 
         public UserAppService(
             IUserRepository repository,
             UserManager manager,
             DataManager dataManager,
-            IOrganizationAppService organizationAppService
+            OrganizationManager organizationManager,
+            MenuManager menuManager,
+            RoleManager roleManager,
+            RoleUserManager roleUserManager
         )
         {
             _repository = repository;
             _manager = manager;
             _dataManager = dataManager;
-            _organizationAppService = organizationAppService;
+            _organizationManager = organizationManager;
+            _menuManager = menuManager;
+            _roleManager = roleManager;
+            _roleUserManager = roleUserManager;
         }
 
         /// <summary>
@@ -36,11 +47,10 @@ namespace SmartCloud.Common.Users
         /// </summary>
         /// <param name="dto">实体</param>
         /// <returns></returns>
-        public async Task<ListUserDto> CreateAsync(ListUserDto dto)
+        public async Task<SaveUserDto> CreateAsync(CreateUpdateUserDto dto)
         {
-            //新增存盘
+            #region 新增存盘
             string pwdSalt = CreateSalt(6);
-
             var user = await _manager.CreateAsync(
                 dto.OrganizationId,
                 dto.No,
@@ -54,8 +64,21 @@ namespace SmartCloud.Common.Users
                 dto.Post,
                 dto.Descriptions
             );
+            #endregion
 
-            return ObjectMapper.Map<User, ListUserDto>(user);
+            var saveUserDto = ObjectMapper.Map<User, SaveUserDto>(user);
+
+            #region 角色人员新增存盘
+            var roleUses = new List<RoleUserDto>();
+            foreach (var roleId in dto.Roles)
+            {
+                var result = await _roleUserManager.CreateAsync(roleId, new string[] { user.Id.ToString() });
+                roleUses.Add(ObjectMapper.Map<RoleUser, RoleUserDto>(result.First()));
+            }
+            saveUserDto.RoleUses = roleUses;
+            #endregion
+
+            return saveUserDto;
         }
 
         /// <summary>
@@ -69,10 +92,20 @@ namespace SmartCloud.Common.Users
             CreateUserDto dto = new();
 
             //组织结构列表
-            dto.Organizations = await _organizationAppService.GetListAsync();
+            dto.Organizations = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(await _organizationManager.GetListAsync());
 
             //人员列表
             dto.Users = ObjectMapper.Map<List<User>, List<PartUserDto>>(await _repository.GetListAsync());
+
+            //角色列表
+            var roles = await _roleManager.GetListAsync();
+            dto.Roles = new();
+            roles.ForEach(role => {
+                dto.Roles.Add(role.Id, role.Name);
+            });
+
+            //菜单列表
+            dto.Menus = ObjectMapper.Map<List<Menu>, List<MenuDto>>(await _menuManager.GetListAsync());
 
             var datas =  await _dataManager.GetNameListAsync(new string[] { "职务列表" });
             dto.Datas = datas.First().Value;
@@ -97,10 +130,16 @@ namespace SmartCloud.Common.Users
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<ListUserDto> GetAsync(Guid id)
+        public async Task<SaveUserDto> GetAsync(Guid id)
         {
             var user = await _repository.GetAsync(id);
-            return ObjectMapper.Map<User, ListUserDto>(user);
+
+            var dto = ObjectMapper.Map<User, SaveUserDto>(user);
+
+            var roleUsers = await _roleUserManager.GetListAsync(RoleUsers.QueryEnum.UserId, user.Id.ToString());
+            dto.RoleUses = ObjectMapper.Map<List<RoleUser>, List<RoleUserDto>>(roleUsers);
+
+            return dto;
         }
 
         /// <summary>
@@ -110,7 +149,7 @@ namespace SmartCloud.Common.Users
         /// <param name="pwd">密码</param>
         /// <returns>实体</returns>
         [RemoteService(false)]
-        public async Task<UserDto> GetAsync(string name, string pwd)
+        public async Task<FullUserDto> GetAsync(string name, string pwd)
         {
             var user = await _manager.GetAsync(name);
             string inputPwd = GetPwd(user.PwdSalt, pwd);
@@ -120,7 +159,7 @@ namespace SmartCloud.Common.Users
                 return null;
             }
 
-            return ObjectMapper.Map<User, UserDto>(user);
+            return ObjectMapper.Map<User, FullUserDto>(user);
         }
 
         [HttpPut]
@@ -139,7 +178,7 @@ namespace SmartCloud.Common.Users
         [Route("api/common/user/pwd/change")]
         public async Task PwdChangeAsync(ChangeUserPwdDto dto)
         {
-            var user = await _repository.GetAsync(dto.id);
+            var user = await _repository.GetAsync(dto.Id);
 
             string oldPwd = GetPwd(user.PwdSalt, dto.Password);
             string newPwd = GetPwd(user.PwdSalt, dto.NewPassword);
@@ -165,10 +204,12 @@ namespace SmartCloud.Common.Users
         /// <param name="id">id</param>
         /// <param name="dto">实体</param>
         /// <returns></returns>
-        public async Task UpdateAsync(Guid id, ListUserDto dto)
+        public async Task<SaveUserDto> UpdateAsync(Guid id, CreateUpdateUserDto dto)
         {
-            var user = await _repository.GetAsync(id);
+            var saveUserDto = new SaveUserDto();
 
+            #region 人员修改存盘
+            var user = await _repository.GetAsync(id);
             //修改存盘
             await _manager.UpdateAsync(
                 user,
@@ -181,6 +222,24 @@ namespace SmartCloud.Common.Users
                 dto.Post,
                 dto.Descriptions
             );
+            saveUserDto.Id = id;
+            #endregion
+
+            #region 角色人员新增存盘
+            var roleUses = new List<RoleUserDto>();
+            foreach (var roleId in dto.Roles)
+            {
+                var result = await _roleUserManager.CreateAsync(roleId, new string[] { id.ToString() });
+                roleUses.Add(ObjectMapper.Map<RoleUser, RoleUserDto>(result.First()));
+            }
+            saveUserDto.RoleUses = roleUses;
+            #endregion
+
+            #region 角色人员删除
+            await _roleUserManager.DeleteAsync(dto.RoleUserIds);
+            #endregion
+
+            return saveUserDto;
         }
 
         /// <summary>
@@ -236,7 +295,5 @@ namespace SmartCloud.Common.Users
 
             return result;
         }
-
-        
     }
 }

@@ -1,9 +1,6 @@
-﻿using SmartCloud.Common.Organizations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SmartCloud.Common.Menus;
+using SmartCloud.Common.Organizations;
+
 
 namespace SmartCloud.Common.Users
 {
@@ -12,6 +9,10 @@ namespace SmartCloud.Common.Users
         public List<OrganizationDto> Organizations { get; set; } = new();
 
         public List<PartUserDto> Users { get; set; } = new();
+
+        public List<MenuDto> Menus { get; set; } 
+
+        public Dictionary<Guid, string> Roles { get; set; }
 
         public ICollection<string> Datas { get; set; }
     }

@@ -1,30 +1,18 @@
-﻿using Volo.Abp.Application.Dtos;
+﻿using SmartCloud.Common.Roles;
+using Volo.Abp.Application.Dtos;
 
 namespace SmartCloud.Common.Users
 {
-    public class ListUserDto : AuditedEntityDto<Guid>
+    public class CreateUpdateUserDto : UserDto
     {
-        public string OrganizationId { get; set; } = null!;
-
-        public int No { get; set; }
-
-        public string Name { get; set; } = null!;
-
-        public string Gender { get; set; }
-
-        public string Phone { get; set; }
-
-        public string Mobile { get; set; }
-
-        public string Fax { get; set; }
-
-        public string Post { get; set; }
+        /// <summary>
+        /// 新增加的角色  string-角色id  guid-roleuserid
+        /// </summary>
+        public string[] Roles { get; set; }
 
         /// <summary>
-        /// 停用状态 0-正常 1-停用
+        /// 删除的角色用户
         /// </summary>
-        public int Disable { get; set; }
-
-        public List<Description> Descriptions { get; set; }
+        public string[] RoleUserIds { get; set; }
     }
 }
