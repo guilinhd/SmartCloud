@@ -7,6 +7,7 @@
         Name,
         Type,
         Category,
-        Accounting
+        Accounting,
+        All
     }
 }
