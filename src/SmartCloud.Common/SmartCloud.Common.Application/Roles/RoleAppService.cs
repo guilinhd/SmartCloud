@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartCloud.Common.Organizations;
 using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.RoleUsers;
 using SmartCloud.Common.Users;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
 
 namespace SmartCloud.Common.Roles
 {
@@ -92,7 +90,7 @@ namespace SmartCloud.Common.Roles
         {
             var dto = ObjectMapper.Map<Role, RoleDto>(await _repository.GetAsync(id));
 
-            dto.Users = ObjectMapper.Map<List<RoleUser>, List<RoleUserDto>>(await _roleUserManager.GetListAsync(id.ToString()));
+            dto.Users = ObjectMapper.Map<List<RoleUser>, List<RoleUserDto>>(await _roleUserManager.GetListAsync(RoleUsers.QueryEnum.RoleId, id.ToString()));
             dto.Menus = ObjectMapper.Map<List<RoleMenu>, List<RoleMenuDto>>(await _roleMenuManager.GetListAsync(id.ToString()));
 
             return dto;
