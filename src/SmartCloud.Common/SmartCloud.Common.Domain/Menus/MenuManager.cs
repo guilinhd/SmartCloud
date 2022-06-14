@@ -15,6 +15,12 @@ namespace SmartCloud.Common.Menus
             _repository = repository;
         }
 
+        /// <summary>
+        /// 调整至新的上级菜单
+        /// </summary>
+        /// <param name="menu">实体</param>
+        /// <param name="menuParent">上级实体</param>
+        /// <returns></returns>
         public async Task AdjustAsync(
             [NotNull] Menu menu, 
             [NotNull] Menu menuParent)
@@ -26,6 +32,15 @@ namespace SmartCloud.Common.Menus
             menu.ParentId = menuParent.ParentId;
 
             await _repository.UpdateAsync(menu);
+        }
+
+        /// <summary>
+        /// 查询全部
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Menu>> GetListAsync()
+        {
+            return await _repository.GetListAsync();
         }
     }
 }
