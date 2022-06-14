@@ -66,11 +66,12 @@ namespace SmartCloud.Common.RoleUsers
         /// <summary>
         /// 批量查询
         /// </summary>
-        /// <param name="roleId">角色id</param>
+        /// <param name="query">查询枚举</param>
+        /// <param name="name">内容</param>
         /// <returns></returns>
-        public async Task<List<RoleUser>> GetListAsync(string roleId)
+        public async Task<List<RoleUser>> GetListAsync(QueryEnum query, string name)
         {
-            return await _repository.GetListAsync(QueryEnum.RoleId, roleId);
+            return await _repository.GetListAsync(query, name);
         }
     }
 }
