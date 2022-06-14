@@ -137,16 +137,9 @@ namespace SmartCloud.Common.Organizations
         /// 查询
         /// </summary>
         /// <returns>列表</returns>
-        public async Task<Dictionary<Guid, string>> GetListAsync()
+        public async Task<List<Organization>> GetListAsync()
         {
-            Dictionary<Guid, string> names = new ();
-
-            var organizations = await _repository.GetListAsync();
-            organizations.ForEach(organization => {
-                names.Add(organization.Id, organization.Name);
-            });
-
-            return names;
+            return await _repository.GetListAsync(QueryEnum.All, "");
         }
 
         /// <summary>
