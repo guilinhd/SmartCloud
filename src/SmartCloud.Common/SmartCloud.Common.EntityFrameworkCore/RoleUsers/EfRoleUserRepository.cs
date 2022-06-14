@@ -18,6 +18,7 @@ namespace SmartCloud.Common.RoleUsers
             return query switch
             {
                 QueryEnum.RoleId => await dbSet.Where(d => d.RoleId == name).ToListAsync(),
+                QueryEnum.UserId =>  await dbSet.Where(d => d.UserId == name).ToListAsync(),
                 _ => await dbSet.ToListAsync(),
             };
         }
