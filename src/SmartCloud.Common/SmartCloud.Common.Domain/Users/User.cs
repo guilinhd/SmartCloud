@@ -41,9 +41,6 @@ namespace SmartCloud.Common.Users
 
         public string Description { get; set; }
 
-        [NotMapped]
-        public List<Permisson> permissons { get; set; } = new();
-
         private User() { }
 
         internal User (
