@@ -4,6 +4,7 @@ using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.Datas;
 using SmartCloud.Common.Menus;
 using SmartCloud.Common.Organizations;
+using SmartCloud.Common.Permissions;
 using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.Roles;
 using SmartCloud.Common.RoleUsers;
@@ -68,14 +69,13 @@ namespace SmartCloud.Common.EntityFrameworkCore
                 b.HasIndex(b => b.Name);
                 b.HasIndex(b => b.Post);
 
-                b.HasMany(b => b.permissons).WithOne(p => p.User);
             });
 
-            builder.Entity<Permisson>(b => {
-                b.ToTable("Permisson");
+            builder.Entity<Permission>(b => {
+                b.ToTable("Permission");
                 b.ConfigureByConvention();
 
-                b.HasOne(b => b.User).WithMany(u => u.permissons).HasForeignKey(b => b.UserId);
+                b.HasIndex(b => b.UserName);
             });
 
             builder.Entity<Menu>(b =>

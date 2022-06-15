@@ -9,6 +9,7 @@ using SmartCloud.Common.Menus;
 using SmartCloud.Common.Roles;
 using SmartCloud.Common.RoleUsers;
 using SmartCloud.Common.RoleMenus;
+using SmartCloud.Common.Permissions;
 
 namespace SmartCloud.Common
 {
@@ -51,6 +52,8 @@ namespace SmartCloud.Common
                     des => des.OrganizationAccounting,
                     opt => opt.MapFrom(src => src.Organization.Accounting)
                 );
+
+            CreateMap<Permission, PermissionDto>().ReverseMap();
 
             CreateMap<Menu, MenuDto>();
 

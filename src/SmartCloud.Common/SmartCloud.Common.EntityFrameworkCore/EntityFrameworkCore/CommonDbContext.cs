@@ -4,6 +4,7 @@ using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.Datas;
 using SmartCloud.Common.Menus;
 using SmartCloud.Common.Organizations;
+using SmartCloud.Common.Permissions;
 using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.Roles;
 using SmartCloud.Common.RoleUsers;
@@ -26,6 +27,8 @@ namespace SmartCloud.Common.EntityFrameworkCore
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Permission> Permissions { get; set; }
+
         public DbSet<Menu> Menus { get; set; }
 
         public DbSet<Role> Roles { get; set; }
@@ -33,6 +36,8 @@ namespace SmartCloud.Common.EntityFrameworkCore
         public DbSet<RoleUser> RoleUsers { get; set; }
 
         public DbSet<RoleMenu> RoleMenus { get; set; }
+
+        
 
         public CommonDbContext(DbContextOptions<CommonDbContext> options) : base(options)
         {
