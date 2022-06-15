@@ -1,6 +1,8 @@
 ﻿using Volo.Abp.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using SmartCloud.Common.DataIndexs;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp;
 
 namespace SmartCloud.Common.Datas
 {
@@ -65,6 +67,12 @@ namespace SmartCloud.Common.Datas
         {
             var datas = await _repository.GetListAsync(category);
             return ObjectMapper.Map<List<Data>, List<DataDto>>(datas);
+        }
+
+        [RemoteService(false)]
+        public override Task<PagedResultDto<DataDto>> GetListAsync(GetDataListDto input)
+        {
+            return base.GetListAsync(input);
         }
     }
 }

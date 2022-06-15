@@ -63,7 +63,7 @@ namespace SmartCloud.Common.DataIndexs
         /// <param name="id">Id</param>
         /// <param name="name">名称</param>
         /// <returns>数据字典类别信息</returns>
-        [Route("api/common/dataindex/id/{id}/name/{name}")]
+        [Route("api/common/dataindex/{id}/name/{name}")]
         public async Task UpdateAsync(Guid id, string name)
         {
             var dataIndex = await _repository.GetAsync(id);
