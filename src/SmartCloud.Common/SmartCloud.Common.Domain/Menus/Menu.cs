@@ -14,6 +14,10 @@ namespace SmartCloud.Common.Menus
 
         public string Href { get; set; }
 
+        public string ApiName { get; set; }
+
+        public MethodEnum Method { get; set; }
+
         public string ImageName { get; set; }
 
         public string Parameter { get; set; }
