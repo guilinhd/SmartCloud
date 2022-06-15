@@ -33,6 +33,13 @@ namespace SmartCloud.Common.Menus
         Task DeleteAsync(Guid id);
 
         /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<SaveMenuDto> GetAsync(Guid id);
+
+        /// <summary>
         /// 修改存盘
         /// </summary>
         /// <param name="id"></param>

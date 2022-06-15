@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.Roles;
+using SmartCloud.Common.RoleUsers;
 using SmartCloud.Common.Users;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -14,6 +15,7 @@ namespace SmartCloud.Common.Menus
         private readonly MenuManager _manager;
         private readonly RoleManager _roleManager;
         private readonly RoleMenuManager _roleMenuManager;
+        private readonly RoleUserManager _roleUserManager;
         private readonly IUserAppService _userAppService;
 
         public MenuAppService(
@@ -21,6 +23,7 @@ namespace SmartCloud.Common.Menus
             MenuManager manager,
             RoleManager roleManager,
             RoleMenuManager roleMenuManager,
+            RoleUserManager roleUserManager,
             IUserAppService userAppService
         ) 
         {
@@ -28,6 +31,7 @@ namespace SmartCloud.Common.Menus
             _manager = manager;
             _roleManager = roleManager;
             _roleMenuManager = roleMenuManager;
+            _roleUserManager = roleUserManager;
             _userAppService = userAppService;
         }
 
@@ -114,6 +118,27 @@ namespace SmartCloud.Common.Menus
             var roleMenus = await _roleMenuManager.GetListAsync(RoleMenus.QueryEnum.MenuId, id.ToString());
             var ids = roleMenus.Select(d => d.Id.ToString()).ToArray();
             await _roleMenuManager.DeleteAsync(ids);
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<SaveMenuDto> GetAsync(Guid id)
+        {
+            var menu = await _repository.GetAsync(id);
+            SaveMenuDto dto = ObjectMapper.Map<Menu, SaveMenuDto>(menu);
+
+            //角色列表
+            var roleMenus = await _roleMenuManager.GetListAsync(RoleMenus.QueryEnum.MenuId, id.ToString());
+            dto.RoleMenus = ObjectMapper.Map<List<RoleMenu>, List<RoleMenuDto>>(roleMenus);
+
+            //角色人员
+            var roleIds = roleMenus.Select(d => d.Id.ToString()).ToArray();
+            
+            return dto;
         }
 
         /// <summary>
