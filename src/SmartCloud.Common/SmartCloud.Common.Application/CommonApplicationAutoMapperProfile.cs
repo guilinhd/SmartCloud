@@ -52,7 +52,11 @@ namespace SmartCloud.Common
                     opt => opt.MapFrom(src => src.Organization.Accounting)
                 );
 
-            CreateMap<Menu, MenuDto>().ReverseMap();
+            CreateMap<Menu, MenuDto>();
+
+            CreateMap<Menu, SaveMenuDto>();
+
+            CreateMap<Menu, CreateUpdateMenuDto>().ReverseMap();
 
             CreateMap<Role, RoleDto>();
 

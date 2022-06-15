@@ -19,6 +19,7 @@ namespace SmartCloud.Common.RoleMenus
             return query switch
             {
                 QueryEnum.RoleId => await dbSet.Where(d => d.RoleId == name).ToListAsync(),
+                QueryEnum.MenuId => await dbSet.Where(d => d.MenuId == name).ToListAsync(),
                 _ => await dbSet.ToListAsync(),
             };
         }

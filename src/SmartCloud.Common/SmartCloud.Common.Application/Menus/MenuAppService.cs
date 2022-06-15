@@ -1,22 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartCloud.Common.RoleMenus;
+using SmartCloud.Common.Roles;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace SmartCloud.Common.Menus
 {
-    public class MenuAppService : CrudAppService<Menu, MenuDto, Guid>, IMenuAppService
+    public class MenuAppService :  ApplicationService , IMenuAppService
     {
         private readonly IMenuRepository _repository;
         private readonly MenuManager _manager;
+        private readonly RoleManager _roleManager;
+        private readonly RoleMenuManager _roleMenuManager;
 
         public MenuAppService(
             IMenuRepository repository,
-            MenuManager manager
-        ) : base(repository)
+            MenuManager manager,
+            RoleManager roleManager,
+            RoleMenuManager roleMenuManager
+        ) 
         {
             _repository = repository;
             _manager = manager;
+            _roleManager = roleManager;
+            _roleMenuManager = roleMenuManager;
         }
 
         /// <summary>
@@ -34,19 +42,101 @@ namespace SmartCloud.Common.Menus
         }
 
         /// <summary>
-        /// 查询
+        /// 新增存盘
         /// </summary>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task<List<MenuDto>> GetListAsync()
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<SaveMenuDto> CreateAsync(CreateUpdateMenuDto dto)
         {
-            var menus = await _repository.GetListAsync(QueryEnum.All, "");
-            return ObjectMapper.Map<List<Menu>, List<MenuDto>>(menus);
+            //新增存盘
+            var menu = await _manager.CreateAsync(ObjectMapper.Map<CreateUpdateMenuDto, Menu>(dto));
+
+            var saveMenuDto = ObjectMapper.Map<Menu, SaveMenuDto>(menu);
+
+            #region 角色菜单存盘
+            var roleMenus = new List<RoleMenu>();
+
+            foreach (var roleId in dto.Roles)
+            {
+                var result = await _roleMenuManager.CreateAsync(roleId, new string[] { menu.Id.ToString() });
+                saveMenuDto.RoleMenus.Add(ObjectMapper.Map<RoleMenu, RoleMenuDto>(result.First()));
+            }
+            #endregion
+
+            return saveMenuDto;
         }
 
-        [RemoteService(false)]
-        public override Task<PagedResultDto<MenuDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        /// <summary>
+        /// 新增初始化
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [HttpGet]
+        public async Task<CreateMenuDto> CreateAsync()
         {
-            return base.GetListAsync(input);
+            var dto = new CreateMenuDto();
+
+            dto.Menus = ObjectMapper.Map<List<Menu>, List<MenuDto>>(await _manager.GetListAsync());
+
+            //角色列表
+            var roles = await _roleManager.GetListAsync();
+            dto.Roles = new();
+            foreach (var role in roles)
+            {
+                dto.Roles.Add(role.Id, role.Name);
+            }
+
+            return dto;
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task DeleteAsync(Guid id)
+        {
+            var menu = await _repository.GetAsync(id);
+
+            await _manager.DeleteAsync(menu);
+
+            //获取rolemenu
+            var roleMenus = await _roleMenuManager.GetListAsync(RoleMenus.QueryEnum.MenuId, id.ToString());
+            var ids = roleMenus.Select(d => d.Id.ToString()).ToArray();
+            await _roleMenuManager.DeleteAsync(ids);
+        }
+
+        /// <summary>
+        /// 修改存盘
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<SaveMenuDto> UpdateAsync(Guid id, CreateUpdateMenuDto dto)
+        {
+            var menu = await _repository.GetAsync(id);
+            await _manager.UpdateAsync(menu);
+            var saveMenuDto = ObjectMapper.Map<Menu, SaveMenuDto>(menu);
+
+
+            #region 角色菜单存盘
+            var roleMenus = new List<RoleMenu>();
+
+            foreach (var roleId in dto.Roles)
+            {
+                var result = await _roleMenuManager.CreateAsync(roleId, new string[] { menu.Id.ToString() });
+                saveMenuDto.RoleMenus.Add(ObjectMapper.Map<RoleMenu, RoleMenuDto>(result.First()));
+            }
+            #endregion
+
+            #region 角色菜单删除
+            await _roleMenuManager.DeleteAsync(dto.RoleMenus);
+            #endregion
+
+            return saveMenuDto;
         }
     }
 }

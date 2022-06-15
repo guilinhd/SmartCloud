@@ -35,12 +35,46 @@ namespace SmartCloud.Common.Menus
         }
 
         /// <summary>
+        /// 新增存盘
+        /// </summary>
+        /// <param name="menu">实体</param>
+        /// <returns></returns>
+        public async Task<Menu> CreateAsync([NotNull] Menu menu)
+        {
+            Check.NotNull(menu, nameof(menu));
+
+            return await _repository.InsertAsync(menu);
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="menu">实体</param>
+        /// <returns></returns>
+        public async Task DeleteAsync([NotNull] Menu menu)
+        {
+            Check.NotNull(menu, nameof(menu));
+            await _repository.DeleteAsync(menu);
+        }
+
+        /// <summary>
         /// 查询全部
         /// </summary>
         /// <returns></returns>
         public async Task<List<Menu>> GetListAsync()
         {
             return await _repository.GetListAsync();
+        }
+
+        /// <summary>
+        /// 修改存盘
+        /// </summary>
+        /// <param name="menu">实体</param>
+        /// <returns></returns>
+        public async Task UpdateAsync([NotNull] Menu menu)
+        {
+            Check.NotNull(menu, nameof(menu));
+            await _repository.UpdateAsync(menu);
         }
     }
 }
