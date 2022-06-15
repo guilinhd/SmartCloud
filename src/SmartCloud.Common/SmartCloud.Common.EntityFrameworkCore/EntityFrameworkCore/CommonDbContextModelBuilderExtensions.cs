@@ -67,6 +67,15 @@ namespace SmartCloud.Common.EntityFrameworkCore
                 b.HasIndex(b => b.OrganizationId);
                 b.HasIndex(b => b.Name);
                 b.HasIndex(b => b.Post);
+
+                b.HasMany(b => b.permissons).WithOne(p => p.User);
+            });
+
+            builder.Entity<Permisson>(b => {
+                b.ToTable("Permisson");
+                b.ConfigureByConvention();
+
+                b.HasOne(b => b.User).WithMany(u => u.permissons).HasForeignKey(b => b.UserId);
             });
 
             builder.Entity<Menu>(b =>
