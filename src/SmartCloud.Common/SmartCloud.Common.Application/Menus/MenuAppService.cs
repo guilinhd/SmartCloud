@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.Roles;
+using SmartCloud.Common.Users;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -13,18 +14,21 @@ namespace SmartCloud.Common.Menus
         private readonly MenuManager _manager;
         private readonly RoleManager _roleManager;
         private readonly RoleMenuManager _roleMenuManager;
+        private readonly IUserAppService _userAppService;
 
         public MenuAppService(
             IMenuRepository repository,
             MenuManager manager,
             RoleManager roleManager,
-            RoleMenuManager roleMenuManager
+            RoleMenuManager roleMenuManager,
+            IUserAppService userAppService
         ) 
         {
             _repository = repository;
             _manager = manager;
             _roleManager = roleManager;
             _roleMenuManager = roleMenuManager;
+            _userAppService = userAppService;
         }
 
         /// <summary>
@@ -78,6 +82,10 @@ namespace SmartCloud.Common.Menus
             var dto = new CreateMenuDto();
 
             dto.Menus = ObjectMapper.Map<List<Menu>, List<MenuDto>>(await _manager.GetListAsync());
+
+            var createUserDto = await _userAppService.CreateAsync();
+            dto.Organizations = createUserDto.Organizations;
+            dto.Users = createUserDto.Users;
 
             //角色列表
             var roles = await _roleManager.GetListAsync();

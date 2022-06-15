@@ -16,6 +16,6 @@ namespace SmartCloud.Common.Menus
 
         public List<OrganizationDto> Organizations { get; set; }
 
-        public List<UserDto> Users { get; set; }
+        public List<PartUserDto> Users { get; set; }
     }
 }
