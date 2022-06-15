@@ -9,6 +9,7 @@ namespace SmartCloud.Common.RoleMenus
     public enum QueryEnum
     {
         RoleId,
+        MenuId,
         All
     }
 }
