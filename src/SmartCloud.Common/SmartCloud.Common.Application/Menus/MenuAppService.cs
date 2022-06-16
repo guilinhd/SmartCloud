@@ -55,10 +55,10 @@ namespace SmartCloud.Common.Menus
         /// <param name="dto"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<SaveMenuDto> CreateAsync(CreateUpdateMenuDto dto)
+        public async Task<SaveMenuDto> CreateAsync(CreateSaveMenuDto dto)
         {
             //新增存盘
-            var menu = await _manager.CreateAsync(ObjectMapper.Map<CreateUpdateMenuDto, Menu>(dto));
+            var menu = await _manager.CreateAsync(ObjectMapper.Map<CreateSaveMenuDto, Menu>(dto));
 
             var saveMenuDto = ObjectMapper.Map<Menu, SaveMenuDto>(menu);
 
@@ -153,9 +153,18 @@ namespace SmartCloud.Common.Menus
         /// <param name="dto"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<SaveMenuDto> UpdateAsync(Guid id, CreateUpdateMenuDto dto)
+        public async Task<SaveMenuDto> UpdateAsync(Guid id, UpdateSaveMenuDto dto)
         {
             var menu = await _repository.GetAsync(id);
+
+            menu.No = dto.No;
+            menu.Name = dto.Name;
+            menu.Href = dto.Href;
+            menu.ApiName = dto.ApiName;
+            menu.Method = dto.Method;
+            menu.ImageName = dto.ImageName;
+            menu.Type = dto.Type;
+
             await _manager.UpdateAsync(menu);
             var saveMenuDto = ObjectMapper.Map<Menu, SaveMenuDto>(menu);
 

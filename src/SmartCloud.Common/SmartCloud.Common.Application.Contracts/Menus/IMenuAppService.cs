@@ -17,7 +17,7 @@ namespace SmartCloud.Common.Menus
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        Task<SaveMenuDto> CreateAsync(CreateUpdateMenuDto dto);
+        Task<SaveMenuDto> CreateAsync(CreateSaveMenuDto dto);
 
         /// <summary>
         /// 新增初始化
@@ -45,6 +45,6 @@ namespace SmartCloud.Common.Menus
         /// <param name="id"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        Task<SaveMenuDto> UpdateAsync(Guid id, CreateUpdateMenuDto dto);
+        Task<SaveMenuDto> UpdateAsync(Guid id, UpdateSaveMenuDto dto);
     }
 }

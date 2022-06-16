@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartCloud.Common.Menus
 {
-    public class CreateUpdateMenuDto : MenuDto
+    public class UpdateSaveMenuDto : MenuDto
     {
         public string[] Roles { get; set; }
 
