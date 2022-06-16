@@ -11,7 +11,7 @@ namespace SmartCloud.Common.Users
         /// </summary>
         /// <param name="dto">实体</param>
         /// <returns>实体</returns>
-        Task<SaveUserDto> CreateAsync(CreateUpdateUserDto dto);
+        Task<SaveUserDto> CreateAsync(CreateSaveUserDto dto);
 
         /// <summary>
         /// 新增
@@ -67,6 +67,6 @@ namespace SmartCloud.Common.Users
         /// </summary>
         /// <param name="userDto">实体</param>
         /// <returns>roleUseIds</returns>
-        Task<SaveUserDto> UpdateAsync(Guid id, CreateUpdateUserDto dto);
+        Task<SaveUserDto> UpdateAsync(Guid id, UpdateSaveUserDto dto);
     }
 }

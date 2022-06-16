@@ -31,7 +31,7 @@ namespace SmartCloud.Common
                 des => des.Descriptions,
                 opt => opt.MapFrom(src => src.Description.ToDescriptions()));
 
-            CreateMap<User, CreateUpdateUserDto>()
+            CreateMap<User, CreateSaveUserDto>()
                 .ForMember(
                     des => des.Descriptions,
                     opt => opt.MapFrom(src => src.Description.ToDescriptions()));

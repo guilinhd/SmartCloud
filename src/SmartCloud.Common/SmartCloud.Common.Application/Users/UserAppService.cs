@@ -50,7 +50,7 @@ namespace SmartCloud.Common.Users
         /// </summary>
         /// <param name="dto">实体</param>
         /// <returns></returns>
-        public async Task<SaveUserDto> CreateAsync(CreateUpdateUserDto dto)
+        public async Task<SaveUserDto> CreateAsync(CreateSaveUserDto dto)
         {
             #region 新增存盘
             string pwdSalt = CreateSalt(6);
@@ -226,7 +226,7 @@ namespace SmartCloud.Common.Users
         /// <param name="id">id</param>
         /// <param name="dto">实体</param>
         /// <returns></returns>
-        public async Task<SaveUserDto> UpdateAsync(Guid id, CreateUpdateUserDto dto)
+        public async Task<SaveUserDto> UpdateAsync(Guid id, UpdateSaveUserDto dto)
         {
             var saveUserDto = new SaveUserDto();
 
