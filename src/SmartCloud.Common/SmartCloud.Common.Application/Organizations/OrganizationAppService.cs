@@ -42,7 +42,7 @@ namespace SmartCloud.Common.Organizations
         }
 
         /// <summary>
-        /// 新增
+        /// 新增初始化
         /// </summary>
         /// <returns>数据字典</returns>
         [HttpGet]
