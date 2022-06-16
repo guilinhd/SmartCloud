@@ -50,11 +50,8 @@ namespace SmartCloud.Common.Organizations
         {
             CreateOrganizationDto dto = new();
 
-            var organizations = await _repository.GetListAsync();
-            dto.Organizations = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(organizations);
-
-            var datas = await _dataManager.GetNameAsync("组织结构说明", "类型");
-            dto.Datas = datas;
+            dto.Organizations = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(await _repository.GetListAsync());
+            dto.Datas = await _dataManager.GetNameAsync("组织结构说明", "类型");
 
             return dto;
         }
