@@ -38,14 +38,15 @@ namespace SmartCloud.Common.Roles
         /// </summary>
         /// <param name="dto">实体</param>
         /// <returns></returns>
-        public async Task<RoleDto> CreateAsync(CreateUpdateRoleDto dto)
+        public async Task<SaveRoleDto> CreateAsync(CreateSaveRoleDto dto)
         {
             var role = await _manager.CreateAsync(dto.Name);
-            var roleUsers = await _roleUserManager.CreateAsync(role.Id.ToString(), dto.RoleUserIds);
-            var roleMenus = await _roleMenuManager.CreateAsync(role.Id.ToString(), dto.RoleMenuIds);
+            var roleUsers = await _roleUserManager.CreateAsync(role.Id.ToString(), dto.UserIds);
+            var roleMenus = await _roleMenuManager.CreateAsync(role.Id.ToString(), dto.MenuIds);
 
-            return new RoleDto()
+            return new SaveRoleDto()
             {
+                Id = role.Id,
                 Name = dto.Name,
                 Users = ObjectMapper.Map<List<RoleUser>, List<RoleUserDto>>(roleUsers),
                 Menus = ObjectMapper.Map<List<RoleMenu>, List<RoleMenuDto>>(roleMenus)
@@ -62,7 +63,7 @@ namespace SmartCloud.Common.Roles
             dto.Users = createUserDto.Users;
             dto.Datas = createUserDto.Datas;
 
-            dto.Roles = ObjectMapper.Map<List<Role>, List<PartRoleDto>>(await _repository.GetListAsync());
+            dto.Roles = ObjectMapper.Map<List<Role>, List<RoleDto>>(await _repository.GetListAsync());
             dto.Menus = ObjectMapper.Map<List<Menu>, List<MenuDto>>(await _menuManager.GetListAsync());
 
             return dto;
@@ -90,9 +91,9 @@ namespace SmartCloud.Common.Roles
         /// </summary>
         /// <param name="id">id</param>
         /// <returns></returns>
-        public async Task<RoleDto> GetAsync(Guid id)
+        public async Task<SaveRoleDto> GetAsync(Guid id)
         {
-            var dto = ObjectMapper.Map<Role, RoleDto>(await _repository.GetAsync(id));
+            var dto = ObjectMapper.Map<Role, SaveRoleDto>(await _repository.GetAsync(id));
 
             dto.Users = ObjectMapper.Map<List<RoleUser>, List<RoleUserDto>>(await _roleUserManager.GetListAsync(RoleUsers.QueryEnum.RoleId, id.ToString()));
             dto.Menus = ObjectMapper.Map<List<RoleMenu>, List<RoleMenuDto>>(await _roleMenuManager.GetListAsync(RoleMenus.QueryEnum.RoleId, id.ToString()));
@@ -106,23 +107,23 @@ namespace SmartCloud.Common.Roles
         /// <param name="dto">实体</param>
         /// <returns></returns>
 
-        public async Task<RoleDto> UpdateAsync(CreateUpdateRoleDto dto)
+        public async Task<SaveRoleDto> UpdateAsync(UpdateSaveRoleDto dto)
         {
             var role = await _repository.GetAsync(dto.Id);
             //修改存盘角色
             await _manager.UpdateAsync(role, dto.Name);
 
             //新增角色用户
-            var roleUsers = await _roleUserManager.CreateAsync(role.Id.ToString(), dto.RoleUserIds);
+            var roleUsers = await _roleUserManager.CreateAsync(role.Id.ToString(), dto.UserIds);
             //删除角色用户
             await _roleUserManager.DeleteAsync(dto.RoleUserIds);
 
             //新增角色菜单
-            var roleMenus = await _roleMenuManager.CreateAsync(role.Id.ToString(), dto.RoleMenuIds);
+            var roleMenus = await _roleMenuManager.CreateAsync(role.Id.ToString(), dto.MenuIds);
             //删除角色菜单
             await _roleMenuManager.DeleteAsync(dto.RoleMenuIds);
 
-            return new RoleDto()
+            return new SaveRoleDto()
             {
                 Name = dto.Name,
                 Users = ObjectMapper.Map<List<RoleUser>, List<RoleUserDto>>(roleUsers),

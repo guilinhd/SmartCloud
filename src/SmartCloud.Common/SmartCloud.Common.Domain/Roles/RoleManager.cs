@@ -35,8 +35,7 @@ namespace SmartCloud.Common.Roles
             );
 
             //新增role
-            await _repository.InsertAsync(role);
-            return role;
+            return await _repository.InsertAsync(role);
         }
 
         

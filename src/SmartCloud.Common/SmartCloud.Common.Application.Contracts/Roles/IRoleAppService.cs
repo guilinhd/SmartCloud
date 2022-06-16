@@ -11,7 +11,7 @@ namespace SmartCloud.Common.Roles
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        Task<RoleDto> CreateAsync(CreateUpdateRoleDto dto);
+        Task<SaveRoleDto> CreateAsync(CreateSaveRoleDto dto);
 
         /// <summary>
         /// 新增初始化
@@ -31,13 +31,13 @@ namespace SmartCloud.Common.Roles
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<RoleDto> GetAsync(Guid id);
+        Task<SaveRoleDto> GetAsync(Guid id);
 
         /// <summary>
         /// 修改存盘
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        Task<RoleDto> UpdateAsync(CreateUpdateRoleDto dto);
+        Task<SaveRoleDto> UpdateAsync(UpdateSaveRoleDto dto);
     }
 }

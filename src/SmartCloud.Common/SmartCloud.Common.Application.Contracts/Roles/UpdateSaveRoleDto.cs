@@ -1,15 +1,9 @@
 ﻿
-using Volo.Abp.Application.Dtos;
 
 namespace SmartCloud.Common.Roles
 {
-    public class CreateUpdateRoleDto : AuditedEntityDto<Guid>
+    public class UpdateSaveRoleDto : RoleDto
     {
-        /// <summary>
-        /// 角色名称
-        /// </summary>
-        public string Name { get; set; }
-
         /// <summary>
         /// 新增用户Ids
         /// </summary>
@@ -18,12 +12,12 @@ namespace SmartCloud.Common.Roles
         /// <summary>
         /// 删除角色用户Ids
         /// </summary>
-        public string[] RoleUserIds { get; set; } 
+        public string[] RoleUserIds { get; set; }
 
         /// <summary>
         /// 新增菜单Ids
         /// </summary>
-        public string[] MenuIds { get; set; }   
+        public string[] MenuIds { get; set; }
 
         /// <summary>
         /// 删除菜单Ids

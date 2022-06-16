@@ -7,7 +7,7 @@ namespace SmartCloud.Common.Roles
 {
     public class CreateRoleDto
     {
-        public List<PartRoleDto> Roles { get; set; }
+        public List<RoleDto> Roles { get; set; }
 
         public List<OrganizationDto> Organizations { get; set; }
 
