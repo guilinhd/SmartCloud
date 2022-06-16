@@ -15,7 +15,7 @@ namespace SmartCloud.Common.Organizations
         Task<OrganizationDto> CreateAsync(OrganizationDto dto);
 
         /// <summary>
-        /// 新增
+        /// 新增初始化
         /// </summary>
         /// <returns>数据字典</returns>
         Task<CreateOrganizationDto> CreateAsync();
