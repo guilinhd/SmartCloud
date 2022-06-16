@@ -1,9 +1,9 @@
 ﻿
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartCloud.Common.Datas;
 using SmartCloud.Common.Menus;
 using SmartCloud.Common.Organizations;
+using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.Roles;
 using SmartCloud.Common.RoleUsers;
 using System.Security.Cryptography;
@@ -22,6 +22,7 @@ namespace SmartCloud.Common.Users
         private readonly MenuManager _menuManager;
         private readonly RoleManager _roleManager;
         private readonly RoleUserManager _roleUserManager;
+        private readonly RoleMenuManager _roleMenuManager;
 
         public UserAppService(
             IUserRepository repository,
@@ -30,7 +31,8 @@ namespace SmartCloud.Common.Users
             OrganizationManager organizationManager,
             MenuManager menuManager,
             RoleManager roleManager,
-            RoleUserManager roleUserManager
+            RoleUserManager roleUserManager,
+            RoleMenuManager roleMenuManager
         )
         {
             _repository = repository;
@@ -40,6 +42,7 @@ namespace SmartCloud.Common.Users
             _menuManager = menuManager;
             _roleManager = roleManager;
             _roleUserManager = roleUserManager;
+            _roleMenuManager = roleMenuManager;
         }
 
         /// <summary>
@@ -77,6 +80,8 @@ namespace SmartCloud.Common.Users
             }
             saveUserDto.RoleUses = roleUses;
             #endregion
+
+            saveUserDto.Menus = await GetRoleMenusAsync(dto.Roles);
 
             return saveUserDto;
         }
@@ -121,6 +126,11 @@ namespace SmartCloud.Common.Users
         public async Task DeleteAsync(Guid id)
         {
             var user = await _repository.GetAsync(id);
+
+            //删除角色用户
+            var roleUsers = await _roleUserManager.GetListAsync(RoleUsers.QueryEnum.UserId, user.Id.ToString());
+            await _roleUserManager.DeleteAsync(roleUsers.Select(d => d.Id.ToString()).ToArray());
+
             //删除
             await _manager.DeleteAsync(user);
         }
@@ -138,6 +148,8 @@ namespace SmartCloud.Common.Users
 
             var roleUsers = await _roleUserManager.GetListAsync(RoleUsers.QueryEnum.UserId, user.Id.ToString());
             dto.RoleUses = ObjectMapper.Map<List<RoleUser>, List<RoleUserDto>>(roleUsers);
+
+            dto.Menus = await GetRoleMenusAsync(roleUsers.Select(d => d.RoleId).ToArray());
 
             return dto;
         }
@@ -162,6 +174,11 @@ namespace SmartCloud.Common.Users
             return ObjectMapper.Map<User, FullUserDto>(user);
         }
 
+        /// <summary>
+        /// 密码重置
+        /// </summary>
+        /// <param name="id">用户id</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("api/common/user/pwd/reset")]
         public async Task PwdResetAsync(Guid id)
@@ -174,6 +191,11 @@ namespace SmartCloud.Common.Users
             await _manager.ChangePwdAsync(user, pwd, pwd); 
         }
 
+        /// <summary>
+        /// 密码修改
+        /// </summary>
+        /// <param name="dto">实体</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("api/common/user/pwd/change")]
         public async Task PwdChangeAsync(ChangeUserPwdDto dto)
@@ -239,6 +261,8 @@ namespace SmartCloud.Common.Users
             await _roleUserManager.DeleteAsync(dto.RoleUsers);
             #endregion
 
+            saveUserDto.Menus = await GetRoleMenusAsync(dto.Roles);
+
             return saveUserDto;
         }
 
@@ -294,6 +318,22 @@ namespace SmartCloud.Common.Users
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 按角色id查询菜单id
+        /// </summary>
+        /// <param name="roleIds">角色id</param>
+        /// <returns></returns>
+        private async Task<string[]> GetRoleMenusAsync(string[] roleIds)
+        {
+            var roleMenus = new List<RoleMenu>();
+            foreach (var roleId in roleIds)
+            {
+                roleMenus.AddRange(await _roleMenuManager.GetListAsync(RoleMenus.QueryEnum.RoleId, roleId));
+            }
+
+            return roleMenus.Select(d => d.MenuId).ToArray();
         }
     }
 }
