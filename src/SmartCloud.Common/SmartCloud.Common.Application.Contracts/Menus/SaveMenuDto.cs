@@ -1,5 +1,4 @@
 ﻿using SmartCloud.Common.RoleMenus;
-using SmartCloud.Common.RoleUsers;
 
 namespace SmartCloud.Common.Menus
 {
@@ -7,6 +6,6 @@ namespace SmartCloud.Common.Menus
     {
         public List<RoleMenuDto> RoleMenus { get; set; }
 
-        public List<RoleUserDto> RoleUsers { get; set; }
+        public string[] Users { get; set; }
     }
 }

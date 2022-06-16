@@ -72,6 +72,9 @@ namespace SmartCloud.Common.Menus
             }
             #endregion
 
+            //角色人员
+            saveMenuDto.Users = await GetRoleUsersAsync(dto.Roles);
+
             return saveMenuDto;
         }
 
@@ -135,9 +138,11 @@ namespace SmartCloud.Common.Menus
             var roleMenus = await _roleMenuManager.GetListAsync(RoleMenus.QueryEnum.MenuId, id.ToString());
             dto.RoleMenus = ObjectMapper.Map<List<RoleMenu>, List<RoleMenuDto>>(roleMenus);
 
-            //角色人员
+
+            //角色人员列表
             var roleIds = roleMenus.Select(d => d.Id.ToString()).ToArray();
-            
+            dto.Users = await GetRoleUsersAsync(roleIds);
+
             return dto;
         }
 
@@ -154,22 +159,39 @@ namespace SmartCloud.Common.Menus
             await _manager.UpdateAsync(menu);
             var saveMenuDto = ObjectMapper.Map<Menu, SaveMenuDto>(menu);
 
-
             #region 角色菜单存盘
-            var roleMenus = new List<RoleMenu>();
-
             foreach (var roleId in dto.Roles)
             {
                 var result = await _roleMenuManager.CreateAsync(roleId, new string[] { menu.Id.ToString() });
                 saveMenuDto.RoleMenus.Add(ObjectMapper.Map<RoleMenu, RoleMenuDto>(result.First()));
             }
+
             #endregion
 
             #region 角色菜单删除
             await _roleMenuManager.DeleteAsync(dto.RoleMenus);
             #endregion
 
+            //角色人员
+            saveMenuDto.Users = await GetRoleUsersAsync(dto.Roles);
+
             return saveMenuDto;
+        }
+
+        /// <summary>
+        /// 按角色id查询用户id
+        /// </summary>
+        /// <param name="roleIds">角色id</param>
+        /// <returns></returns>
+        private async Task<string[]> GetRoleUsersAsync(string[] roleIds)
+        {
+            var roleUsers = new List<RoleUser>();
+            foreach (var roleId in roleIds)
+            {
+                roleUsers.AddRange(await _roleUserManager.GetListAsync(RoleUsers.QueryEnum.RoleId, roleId));
+            }
+
+            return roleUsers.Select(d => d.UserId).ToArray();   
         }
     }
 }
