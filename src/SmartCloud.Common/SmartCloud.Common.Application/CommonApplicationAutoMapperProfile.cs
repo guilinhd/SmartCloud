@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SmartCloud.Common.DataIndexs;
-using System.Text.Json;
+
 using SmartCloud.Common.Datas;
 using SmartCloud.Common.Attachments;
 using SmartCloud.Common.Organizations;
@@ -31,6 +31,8 @@ namespace SmartCloud.Common
                 des => des.Descriptions,
                 opt => opt.MapFrom(src => src.Description.ToDescriptions()));
 
+            CreateMap<OrganizationDto, INodeDto>();
+
             CreateMap<User, CreateSaveUserDto>()
                 .ForMember(
                     des => des.Descriptions,
@@ -57,6 +59,8 @@ namespace SmartCloud.Common
 
             CreateMap<Menu, MenuDto>();
 
+            CreateMap<MenuDto, INodeDto>();
+
             CreateMap<Menu, SaveMenuDto>();
 
             CreateMap<Menu, CreateSaveMenuDto>().ReverseMap();
@@ -71,16 +75,5 @@ namespace SmartCloud.Common
         }
     }
 
-    public static class ProfileExtensions
-    {
-        public static List<DataIndexs.Description> ToDataIndexDescriptions(this string description)
-        {
-            return JsonSerializer.Deserialize<List<DataIndexs.Description>>(description);
-        }
-
-        public static List<Description> ToDescriptions(this string description)
-        {
-            return JsonSerializer.Deserialize<List<Description>>(description);
-        }
-    }
+    
 }

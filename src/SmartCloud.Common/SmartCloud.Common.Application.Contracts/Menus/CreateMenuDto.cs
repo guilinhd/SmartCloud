@@ -6,11 +6,11 @@ namespace SmartCloud.Common.Menus
 {
     public class CreateMenuDto 
     {
-        public List<MenuDto> Menus { get; set; }
+        public INodeDto Menu { get; set; }
 
         public Dictionary<Guid, string> Roles { get; set; }
 
-        public List<OrganizationDto> Organizations { get; set; }
+        public INodeDto Organization { get; set; }
 
         public List<PartUserDto> Users { get; set; }
     }

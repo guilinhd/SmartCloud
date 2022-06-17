@@ -27,5 +27,7 @@ namespace SmartCloud.Common.Menus
         public string Parameter { get; set; }
 
         public TypeEnum Type { get; set; }
+
+       
     }
 }

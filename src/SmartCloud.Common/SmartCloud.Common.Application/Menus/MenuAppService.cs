@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartCloud.Common.Organizations;
 using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.Roles;
 using SmartCloud.Common.RoleUsers;
 using SmartCloud.Common.Users;
+using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -88,10 +90,16 @@ namespace SmartCloud.Common.Menus
         {
             var dto = new CreateMenuDto();
 
-            dto.Menus = ObjectMapper.Map<List<Menu>, List<MenuDto>>(await _manager.GetListAsync());
+            NodeDto menu = new NodeDto("功能菜单列表");
+            var dtos = ObjectMapper.Map<List<Menu>, List<MenuDto>>(await _manager.GetListAsync());
+            menu.ToTree(ObjectMapper.Map<List<MenuDto>, List<INodeDto>>(dtos));
+            dto.Menu = menu;
 
             var createUserDto = await _userAppService.CreateAsync();
-            dto.Organizations = createUserDto.Organizations;
+            NodeDto organization = new NodeDto("组织结构列表");
+            organization.ToTree(ObjectMapper.Map<List<OrganizationDto>, List<INodeDto>>(createUserDto.Organizations));
+            dto.Organization = organization;
+
             dto.Users = createUserDto.Users;
 
             //角色列表
