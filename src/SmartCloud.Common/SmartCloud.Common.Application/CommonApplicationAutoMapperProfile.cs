@@ -31,7 +31,7 @@ namespace SmartCloud.Common
                 des => des.Descriptions,
                 opt => opt.MapFrom(src => src.Description.ToDescriptions()));
 
-            CreateMap<OrganizationDto, INodeDto>();
+            CreateMap<Organization, INodeDto>();
 
             CreateMap<User, CreateSaveUserDto>()
                 .ForMember(
@@ -59,7 +59,7 @@ namespace SmartCloud.Common
 
             CreateMap<Menu, MenuDto>();
 
-            CreateMap<MenuDto, INodeDto>();
+            CreateMap<Menu, INodeDto>();
 
             CreateMap<Menu, SaveMenuDto>();
 

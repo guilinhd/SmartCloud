@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartCloud.Common.DataIndexs;
 using SmartCloud.Common.Datas;
+using Volo.Abp;
 using Volo.Abp.Application.Services;
 
 namespace SmartCloud.Common.Organizations
@@ -50,7 +51,7 @@ namespace SmartCloud.Common.Organizations
         {
             CreateOrganizationDto dto = new();
 
-            dto.Organizations = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(await _repository.GetListAsync());
+            dto.Organization = await GetNodeAsync();
             dto.Datas = await _dataManager.GetNameAsync("组织结构说明", "类型");
 
             return dto;
@@ -75,6 +76,20 @@ namespace SmartCloud.Common.Organizations
         {
             var organization = await _repository.GetAsync(id);
             return ObjectMapper.Map<Organization, OrganizationDto>(organization);
+        }
+
+        /// <summary>
+        /// 获取组织结构Tree
+        /// </summary>
+        /// <returns></returns>
+        [RemoteService(false)]
+        public async Task<INodeDto> GetNodeAsync()
+        {
+            var organizations = await _manager.GetListAsync();
+            INodeDto root = new NodeDto("组织结构列表");
+            root.ToTree(ObjectMapper.Map<List<Organization>, List<INodeDto>>(organizations));
+
+            return root;
         }
 
         /// <summary>

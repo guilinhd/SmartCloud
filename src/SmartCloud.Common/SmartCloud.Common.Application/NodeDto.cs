@@ -20,6 +20,7 @@ namespace SmartCloud.Common
         {
             Name = name;
             Nodes = new();
+            ParentId = "";
         }
     }
 }

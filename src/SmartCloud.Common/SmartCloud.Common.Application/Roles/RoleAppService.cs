@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartCloud.Common.Datas;
 using SmartCloud.Common.Menus;
+using SmartCloud.Common.Organizations;
 using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.RoleUsers;
 using SmartCloud.Common.Users;
@@ -11,26 +13,30 @@ namespace SmartCloud.Common.Roles
     {
         private readonly IRoleRepository _repository;
         private readonly RoleManager _manager;
-        private readonly MenuManager _menuManager;
+        private readonly IOrganizationAppService _organizationAppService;
+        private readonly IMenuAppService _menuAppService;
         private readonly RoleUserManager _roleUserManager;
         private readonly RoleMenuManager _roleMenuManager;
+        private readonly DataManager _datatManager;
         private readonly IUserAppService _userAppService;
 
         public RoleAppService(
             IRoleRepository repository,
             RoleManager manager,
-            MenuManager  menuManager,
+            IOrganizationAppService organizationAppService,
+            IMenuAppService menuAppService,
             RoleUserManager roleUserManager,
             RoleMenuManager roleMenuManager,
-            IUserAppService userAppService
+            DataManager datatManager
         ) 
         {
             _repository = repository;
             _manager = manager;
-            _menuManager = menuManager;
+            _organizationAppService = organizationAppService;
+            _menuAppService = menuAppService;
             _roleUserManager = roleUserManager;
             _roleMenuManager = roleMenuManager;
-            _userAppService = userAppService;
+            _datatManager = datatManager;
         }
 
         /// <summary>
@@ -58,13 +64,18 @@ namespace SmartCloud.Common.Roles
         {
             var dto = new CreateRoleDto();
 
-            var createUserDto = await _userAppService.CreateAsync();
-            dto.Organizations = createUserDto.Organizations;
-            dto.Users = createUserDto.Users;
-            dto.Datas = createUserDto.Datas;
+            //组织结构
+            dto.Organization = await _organizationAppService.GetNodeAsync();
+
+            //dto.Users = createUserDto.Users;
+
+            var datas = await _datatManager.GetNameListAsync(new string[] { "职务列表" });
+            dto.Datas = datas.First().Value;
 
             dto.Roles = ObjectMapper.Map<List<Role>, List<RoleDto>>(await _repository.GetListAsync());
-            dto.Menus = ObjectMapper.Map<List<Menu>, List<MenuDto>>(await _menuManager.GetListAsync());
+
+            //菜单列表
+            dto.Menu = await _menuAppService.GetNodeAsync();
 
             return dto;
         }

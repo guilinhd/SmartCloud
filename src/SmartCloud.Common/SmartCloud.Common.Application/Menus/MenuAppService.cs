@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.ObjectMapping;
 
 namespace SmartCloud.Common.Menus
 {
@@ -18,6 +19,8 @@ namespace SmartCloud.Common.Menus
         private readonly RoleManager _roleManager;
         private readonly RoleMenuManager _roleMenuManager;
         private readonly RoleUserManager _roleUserManager;
+        private readonly IOrganizationAppService _organizationAppService;
+        private readonly IMenuAppService _menuAppService;
         private readonly IUserAppService _userAppService;
 
         public MenuAppService(
@@ -26,6 +29,8 @@ namespace SmartCloud.Common.Menus
             RoleManager roleManager,
             RoleMenuManager roleMenuManager,
             RoleUserManager roleUserManager,
+            IOrganizationAppService organizationAppService,
+            IMenuAppService menuAppService,
             IUserAppService userAppService
         ) 
         {
@@ -34,6 +39,8 @@ namespace SmartCloud.Common.Menus
             _roleManager = roleManager;
             _roleMenuManager = roleMenuManager;
             _roleUserManager = roleUserManager;
+            _organizationAppService = organizationAppService;
+            _menuAppService = menuAppService;
             _userAppService = userAppService;
         }
 
@@ -90,17 +97,9 @@ namespace SmartCloud.Common.Menus
         {
             var dto = new CreateMenuDto();
 
-            NodeDto menu = new NodeDto("功能菜单列表");
-            var dtos = ObjectMapper.Map<List<Menu>, List<MenuDto>>(await _manager.GetListAsync());
-            menu.ToTree(ObjectMapper.Map<List<MenuDto>, List<INodeDto>>(dtos));
-            dto.Menu = menu;
-
-            var createUserDto = await _userAppService.CreateAsync();
-            NodeDto organization = new NodeDto("组织结构列表");
-            organization.ToTree(ObjectMapper.Map<List<OrganizationDto>, List<INodeDto>>(createUserDto.Organizations));
-            dto.Organization = organization;
-
-            dto.Users = createUserDto.Users;
+            dto.Organization = await _organizationAppService.GetNodeAsync();
+            dto.Menu = await _menuAppService.GetNodeAsync();
+            dto.Users = await _userAppService.GetListAsync();
 
             //角色列表
             var roles = await _roleManager.GetListAsync();
@@ -193,6 +192,21 @@ namespace SmartCloud.Common.Menus
             saveMenuDto.Users = await GetRoleUsersAsync(dto.Roles);
 
             return saveMenuDto;
+        }
+
+        /// <summary>
+        /// 获取菜单Tree
+        /// </summary>
+        /// <returns></returns>
+        [RemoteService(false)]
+        public async Task<INodeDto> GetNodeAsync()
+        {
+            var menus = await _manager.GetListAsync();
+
+            INodeDto root = new NodeDto("功能菜单列表");
+            root.ToTree(ObjectMapper.Map<List<Menu>, List<INodeDto>>(menus));
+
+            return root;
         }
 
         /// <summary>

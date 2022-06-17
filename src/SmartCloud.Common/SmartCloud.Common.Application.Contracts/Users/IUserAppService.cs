@@ -42,6 +42,12 @@ namespace SmartCloud.Common.Users
         Task<FullUserDto> GetAsync(string name, string pwd);
 
         /// <summary>
+        /// 查询
+        /// </summary>
+        /// <returns></returns>
+        Task<List<PartUserDto>> GetListAsync();
+
+        /// <summary>
         /// 密码重置
         /// </summary>
         /// <param name="id"></param>

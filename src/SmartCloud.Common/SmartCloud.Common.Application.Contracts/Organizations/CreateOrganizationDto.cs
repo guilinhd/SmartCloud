@@ -8,7 +8,7 @@ namespace SmartCloud.Common.Organizations
 {
     public class CreateOrganizationDto
     {
-        public List<OrganizationDto> Organizations { get; set; }
+        public INodeDto Organization { get; set; }
 
         public ICollection<string> Datas { get; set; }
     }

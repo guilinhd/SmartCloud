@@ -145,6 +145,12 @@ namespace SmartCloud.Common.Users
             await _repository.UpdateAsync(user);
         }
 
+        /// <summary>
+        /// 按用户名查询
+        /// </summary>
+        /// <param name="name">用户名</param>
+        /// <returns></returns>
+        /// <exception cref="EntityNotFoundException"></exception>
         public async Task<User> GetAsync(string name)
         {
             

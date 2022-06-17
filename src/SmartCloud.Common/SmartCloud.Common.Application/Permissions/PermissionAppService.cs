@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartCloud.Common.Menus;
 using SmartCloud.Common.Organizations;
+using SmartCloud.Common.Users;
 using Volo.Abp.Application.Services;
 
 namespace SmartCloud.Common.Permissions
@@ -8,18 +9,18 @@ namespace SmartCloud.Common.Permissions
     public class PermissionAppService : ApplicationService, IPermissionAppService
     {
         private readonly PermissionManager _manager;
-        private readonly OrganizationManager _organizationManager;
-        private readonly MenuManager _menuManager;
+        private readonly IOrganizationAppService _organizationAppService;
+        private readonly IMenuAppService _menuAppService;
 
         public PermissionAppService(
             PermissionManager manager,
-            OrganizationManager organizationManager,
-            MenuManager menuManager
+            IOrganizationAppService organizationAppService,
+            IMenuAppService menuAppService
         )
         {
             _manager = manager;
-            _organizationManager = organizationManager;
-            _menuManager = menuManager;
+            _organizationAppService = organizationAppService;
+            _menuAppService = menuAppService;
         }
 
         /// <summary>
@@ -48,10 +49,10 @@ namespace SmartCloud.Common.Permissions
             dto.UserName = userName;
 
             //菜单列表
-            dto.Menus = ObjectMapper.Map<List<Menu>, List<MenuDto>>(await _menuManager.GetListAsync());
+            dto.Menu = await _menuAppService.GetNodeAsync();
 
             //组织结构列表
-            dto.Organizations = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(await _organizationManager.GetListAsync());
+            dto.Organization = await _organizationAppService.GetNodeAsync();
 
             //权限列表
             dto.Permissions = ObjectMapper.Map<List<Permission>, List<PermissionDto>>(await _manager.GetListAsync(userName));

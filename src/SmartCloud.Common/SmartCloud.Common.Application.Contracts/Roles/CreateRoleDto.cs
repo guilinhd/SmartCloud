@@ -1,6 +1,4 @@
-﻿using SmartCloud.Common.Menus;
-using SmartCloud.Common.Organizations;
-using SmartCloud.Common.Users;
+﻿using SmartCloud.Common.Users;
 
 
 namespace SmartCloud.Common.Roles
@@ -9,11 +7,11 @@ namespace SmartCloud.Common.Roles
     {
         public List<RoleDto> Roles { get; set; }
 
-        public List<OrganizationDto> Organizations { get; set; }
+        public INodeDto Organization { get; set; }
 
         public List<PartUserDto> Users { get; set; }
 
-        public List<MenuDto> Menus { get; set; }
+        public INodeDto Menu { get; set; }
 
         public ICollection<string> Datas { get; set; }
     }

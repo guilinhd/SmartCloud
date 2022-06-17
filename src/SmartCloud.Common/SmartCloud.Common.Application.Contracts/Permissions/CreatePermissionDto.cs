@@ -14,8 +14,8 @@ namespace SmartCloud.Common.Permissions
 
         public List<PermissionDto> Permissions { get; set; }
 
-        public List<MenuDto> Menus { get; set; }
+        public INodeDto Organization { get; set; }
 
-        public List<OrganizationDto> Organizations { get; set; }
+        public INodeDto Menu { get; set; }
     }
 }

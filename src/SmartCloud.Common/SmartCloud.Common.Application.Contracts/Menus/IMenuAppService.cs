@@ -40,6 +40,12 @@ namespace SmartCloud.Common.Menus
         Task<SaveMenuDto> GetAsync(Guid id);
 
         /// <summary>
+        /// 获取菜单Tree
+        /// </summary>
+        /// <returns></returns>
+        Task<INodeDto> GetNodeAsync();
+
+        /// <summary>
         /// 修改存盘
         /// </summary>
         /// <param name="id"></param>

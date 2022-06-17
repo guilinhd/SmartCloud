@@ -1,6 +1,5 @@
 ﻿
 
-using SmartCloud.Common.Datas;
 using Volo.Abp.Application.Services;
 
 namespace SmartCloud.Common.Organizations
@@ -33,6 +32,12 @@ namespace SmartCloud.Common.Organizations
         /// <param name="id">id</param>
         /// <returns></returns>
         Task<OrganizationDto> GetAsync(Guid id);
+
+        /// <summary>
+        /// 获取组织结构Tree
+        /// </summary>
+        /// <returns></returns>
+        Task<INodeDto> GetNodeAsync();
 
         /// <summary>
         /// 修改保存

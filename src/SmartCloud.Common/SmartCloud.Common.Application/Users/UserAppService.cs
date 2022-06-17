@@ -18,8 +18,8 @@ namespace SmartCloud.Common.Users
         private readonly IUserRepository _repository;
         private readonly UserManager _manager;
         private readonly DataManager _dataManager;
-        private readonly OrganizationManager _organizationManager;
-        private readonly MenuManager _menuManager;
+        private readonly IOrganizationAppService _organizationAppService;
+        private readonly IMenuAppService _menuAppService;
         private readonly RoleManager _roleManager;
         private readonly RoleUserManager _roleUserManager;
         private readonly RoleMenuManager _roleMenuManager;
@@ -28,8 +28,8 @@ namespace SmartCloud.Common.Users
             IUserRepository repository,
             UserManager manager,
             DataManager dataManager,
-            OrganizationManager organizationManager,
-            MenuManager menuManager,
+            IOrganizationAppService organizationAppService,
+            IMenuAppService menuAppService,
             RoleManager roleManager,
             RoleUserManager roleUserManager,
             RoleMenuManager roleMenuManager
@@ -38,8 +38,8 @@ namespace SmartCloud.Common.Users
             _repository = repository;
             _manager = manager;
             _dataManager = dataManager;
-            _organizationManager = organizationManager;
-            _menuManager = menuManager;
+            _organizationAppService = organizationAppService;
+            _menuAppService = menuAppService;
             _roleManager = roleManager;
             _roleUserManager = roleUserManager;
             _roleMenuManager = roleMenuManager;
@@ -97,10 +97,10 @@ namespace SmartCloud.Common.Users
             CreateUserDto dto = new();
 
             //组织结构列表
-            dto.Organizations = ObjectMapper.Map<List<Organization>, List<OrganizationDto>>(await _organizationManager.GetListAsync());
+            dto.Organization = await _organizationAppService.GetNodeAsync();
 
             //人员列表
-            dto.Users = ObjectMapper.Map<List<User>, List<PartUserDto>>(await _repository.GetListAsync());
+            dto.Users = await GetListAsync();
 
             //角色列表
             var roles = await _roleManager.GetListAsync();
@@ -110,7 +110,7 @@ namespace SmartCloud.Common.Users
             });
 
             //菜单列表
-            dto.Menus = ObjectMapper.Map<List<Menu>, List<MenuDto>>(await _menuManager.GetListAsync());
+            dto.Menu = await _menuAppService.GetNodeAsync();
 
             var datas =  await _dataManager.GetNameListAsync(new string[] { "职务列表" });
             dto.Datas = datas.First().Value;
@@ -264,6 +264,12 @@ namespace SmartCloud.Common.Users
             saveUserDto.Menus = await GetRoleMenusAsync(dto.Roles);
 
             return saveUserDto;
+        }
+
+        [RemoteService(false)]
+        public async Task<List<PartUserDto>> GetListAsync()
+        {
+            return ObjectMapper.Map<List<User>, List<PartUserDto>>(await _repository.GetListAsync());
         }
 
         /// <summary>
