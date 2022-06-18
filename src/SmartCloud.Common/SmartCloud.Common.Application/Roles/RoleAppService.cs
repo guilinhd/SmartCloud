@@ -15,16 +15,17 @@ namespace SmartCloud.Common.Roles
         private readonly RoleManager _manager;
         private readonly IOrganizationAppService _organizationAppService;
         private readonly IMenuAppService _menuAppService;
+        private readonly UserManager _userManager;
         private readonly RoleUserManager _roleUserManager;
         private readonly RoleMenuManager _roleMenuManager;
         private readonly DataManager _datatManager;
-        private readonly IUserAppService _userAppService;
 
         public RoleAppService(
             IRoleRepository repository,
             RoleManager manager,
             IOrganizationAppService organizationAppService,
             IMenuAppService menuAppService,
+            UserManager userManager,
             RoleUserManager roleUserManager,
             RoleMenuManager roleMenuManager,
             DataManager datatManager
@@ -34,6 +35,7 @@ namespace SmartCloud.Common.Roles
             _manager = manager;
             _organizationAppService = organizationAppService;
             _menuAppService = menuAppService;
+            _userManager = userManager;
             _roleUserManager = roleUserManager;
             _roleMenuManager = roleMenuManager;
             _datatManager = datatManager;
@@ -67,7 +69,7 @@ namespace SmartCloud.Common.Roles
             //组织结构
             dto.Organization = await _organizationAppService.GetNodeAsync();
 
-            //dto.Users = createUserDto.Users;
+            dto.Users = ObjectMapper.Map<List<User>, List<PartUserDto>>(await _userManager.GetListAsync());
 
             var datas = await _datatManager.GetNameListAsync(new string[] { "职务列表" });
             dto.Datas = datas.First().Value;

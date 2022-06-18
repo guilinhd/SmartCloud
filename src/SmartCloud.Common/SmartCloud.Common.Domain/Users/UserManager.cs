@@ -102,21 +102,7 @@ namespace SmartCloud.Common.Users
             await _repository.DeleteAsync(user);
         }
 
-        /// <summary>
-        /// 查询
-        /// </summary>
-        /// <returns></returns>
-        public async Task<Dictionary<Guid, string>> GetListAsync()
-        {
-            Dictionary<Guid, string> names = new();
-
-            var users = await _repository.GetListAsync();
-            users.ForEach(user => {
-                names.Add(user.Id, user.Name);
-            });
-
-            return names;
-        }
+        
 
         /// <summary>
         /// 修改密码
@@ -171,6 +157,15 @@ namespace SmartCloud.Common.Users
             resutl.Organization = queryResult.organization;
 
             return resutl;
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<User>> GetListAsync()
+        {
+            return await _repository.GetListAsync(); 
         }
 
         /// <summary>

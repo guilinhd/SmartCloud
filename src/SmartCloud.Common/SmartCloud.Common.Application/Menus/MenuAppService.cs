@@ -4,11 +4,8 @@ using SmartCloud.Common.RoleMenus;
 using SmartCloud.Common.Roles;
 using SmartCloud.Common.RoleUsers;
 using SmartCloud.Common.Users;
-using System.Collections.Generic;
 using Volo.Abp;
-using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.ObjectMapping;
 
 namespace SmartCloud.Common.Menus
 {
@@ -20,8 +17,7 @@ namespace SmartCloud.Common.Menus
         private readonly RoleMenuManager _roleMenuManager;
         private readonly RoleUserManager _roleUserManager;
         private readonly IOrganizationAppService _organizationAppService;
-        private readonly IMenuAppService _menuAppService;
-        private readonly IUserAppService _userAppService;
+        private readonly UserManager _userManager;
 
         public MenuAppService(
             IMenuRepository repository,
@@ -30,8 +26,7 @@ namespace SmartCloud.Common.Menus
             RoleMenuManager roleMenuManager,
             RoleUserManager roleUserManager,
             IOrganizationAppService organizationAppService,
-            IMenuAppService menuAppService,
-            IUserAppService userAppService
+            UserManager userManager
         ) 
         {
             _repository = repository;
@@ -40,8 +35,7 @@ namespace SmartCloud.Common.Menus
             _roleMenuManager = roleMenuManager;
             _roleUserManager = roleUserManager;
             _organizationAppService = organizationAppService;
-            _menuAppService = menuAppService;
-            _userAppService = userAppService;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -98,8 +92,9 @@ namespace SmartCloud.Common.Menus
             var dto = new CreateMenuDto();
 
             dto.Organization = await _organizationAppService.GetNodeAsync();
-            dto.Menu = await _menuAppService.GetNodeAsync();
-            dto.Users = await _userAppService.GetListAsync();
+            dto.Menu = await GetNodeAsync();
+
+            dto.Users = ObjectMapper.Map<List<User>, List<PartUserDto>>(await _userManager.GetListAsync());
 
             //角色列表
             var roles = await _roleManager.GetListAsync();

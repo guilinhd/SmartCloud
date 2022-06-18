@@ -85,8 +85,14 @@ namespace SmartCloud.Common.Organizations
         [RemoteService(false)]
         public async Task<INodeDto> GetNodeAsync()
         {
+            string name = "组织结构列表";
+            var datas = await _dataManager.GetListAsync("组织结构说明", "名称");
+            if (datas.Count > 0)
+            {
+                name = datas.First().Remark1;
+            }
             var organizations = await _manager.GetListAsync();
-            INodeDto root = new NodeDto("组织结构列表");
+            INodeDto root = new NodeDto(name);
             root.ToTree(ObjectMapper.Map<List<Organization>, List<INodeDto>>(organizations));
 
             return root;

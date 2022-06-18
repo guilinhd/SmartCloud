@@ -100,7 +100,7 @@ namespace SmartCloud.Common.Users
             dto.Organization = await _organizationAppService.GetNodeAsync();
 
             //人员列表
-            dto.Users = await GetListAsync();
+            dto.Users = ObjectMapper.Map<List<User>, List<PartUserDto>>(await _manager.GetListAsync());
 
             //角色列表
             var roles = await _roleManager.GetListAsync();
@@ -266,11 +266,7 @@ namespace SmartCloud.Common.Users
             return saveUserDto;
         }
 
-        [RemoteService(false)]
-        public async Task<List<PartUserDto>> GetListAsync()
-        {
-            return ObjectMapper.Map<List<User>, List<PartUserDto>>(await _repository.GetListAsync());
-        }
+        
 
         /// <summary>
         /// 生成密码

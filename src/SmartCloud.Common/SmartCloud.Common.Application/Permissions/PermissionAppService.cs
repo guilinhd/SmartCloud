@@ -42,6 +42,7 @@ namespace SmartCloud.Common.Permissions
         }
 
         [HttpGet]
+        [Route("api/common/permission/create/{userName}")]
         public async Task<CreatePermissionDto> CreateAsync(string userName)
         {
             var dto = new CreatePermissionDto();
