@@ -40,7 +40,7 @@ namespace SmartCloud.Common.Datas
         /// <param name="category">类别名称</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("api/common/data/create/{userName}")]
+        [Route("api/common/data/create/username/{userName}")]
         public async Task<Dictionary<Guid, string>> CreateAsync(string userName)
         {
             return await _dataIndexManager.GetListAsync(userName);
