@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SmartCloud.Common.EntityFrameworkCore;
@@ -36,12 +38,14 @@ namespace SmartCloud.Common
                 });
             });
 
-            //Configure<MvcOptions>(configure => {
-            //    var policy = new AuthorizationPolicyBuilder()
-            //        .RequireAuthenticatedUser()
-            //        .Build();
-            //    configure.Filters.Add(new AuthorizeFilter(policy));
-            //});
+            Configure<MvcOptions>(configure =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                configure.Filters.Add(new AuthorizeFilter(policy));
+            });
+
 
             Configure<AbpAntiForgeryOptions>(options => {
                 options.AutoValidate = false;
@@ -51,7 +55,10 @@ namespace SmartCloud.Common
                 options.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(UnicodeRanges.All);
             });
 
-            ConfigureSwaggerServices(context.Services);
+
+            var services = context.Services;
+            ConfigureAuthenticationServices(services, services.GetConfiguration());
+            ConfigureSwaggerServices(services);
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -71,7 +78,7 @@ namespace SmartCloud.Common
 
             
             app.UseRouting();
-            //app.UseAuthentication();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseConfiguredEndpoints();
         }
