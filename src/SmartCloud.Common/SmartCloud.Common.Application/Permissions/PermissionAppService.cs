@@ -81,9 +81,9 @@ namespace SmartCloud.Common.Permissions
             #endregion
 
             #region 删除
-            if (dto.DeleteIds != null)
+            if (dto.DeletePermissions != null)
             {
-                await _manager.DeleteAsync(dto.DeleteIds.Where(t => !string.IsNullOrEmpty(t)).ToArray());
+                await _manager.DeleteAsync(dto.DeletePermissions.Where(t => !string.IsNullOrEmpty(t)).ToArray());
             }
             #endregion
         }
