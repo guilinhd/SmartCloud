@@ -27,6 +27,34 @@ namespace SmartCloud.Common.Permissions
         }
 
         /// <summary>
+        /// 新增存盘
+        /// </summary>
+        /// <param name="permissions">实体</param>
+        /// <returns></returns>
+        public async Task CreateAsync(
+            [NotNull] List<Permission> permissions
+        )
+        {
+            Check.NotNull(permissions, nameof(permissions));
+            foreach (var permission in permissions)
+            {
+                permission.ConcurrencyStamp = null;
+            }
+            await _repository.InsertManyAsync(permissions);
+        }
+
+        /// <summary>
+        /// 按id更新存盘
+        /// </summary>
+        /// <param name="permissions">实体列表</param>
+        /// <returns></returns>
+        public async Task UpdateAsync([NotNull] Permission permission)
+        {
+            Check.NotNull(permission, nameof(permission));
+            await _repository.UpdateAsync(permission);
+        }
+
+        /// <summary>
         /// 批量更新存盘
         /// </summary>
         /// <param name="permissions">实体列表</param>
@@ -61,7 +89,17 @@ namespace SmartCloud.Common.Permissions
         /// <returns></returns>
         public async Task<List<Permission>> GetListAsync(string userName)
         {
-            return await _repository.GetListAsync(userName);    
+            return await _repository.GetListAsync(userName);
+        }
+
+        /// <summary>
+        /// 查询指定id列表对应的实体
+        /// </summary>
+        /// <param name="ids">id列表</param>
+        /// <returns></returns>
+        public async Task<List<Permission>> GetListAsync(IEnumerable<Guid> ids)
+        {
+            return await _repository.GetListAsync(ids);
         }
     }
 }

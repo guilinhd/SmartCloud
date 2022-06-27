@@ -14,6 +14,8 @@ namespace SmartCloud.Common
 
         public string Name { get; set; }
 
+        public string Accounting { get; set; }
+
         public List<INodeDto> Nodes { get; set; }
     }
 }

@@ -14,6 +14,8 @@ namespace SmartCloud.Common
 
         public string Name { get; set; }
 
+        public string Accounting { get; set; }
+
         public List<INodeDto> Nodes { get; set; }
 
         public NodeDto(string name)
@@ -21,6 +23,7 @@ namespace SmartCloud.Common
             Name = name;
             Nodes = new();
             ParentId = "";
+            Accounting = "";
         }
     }
 }

@@ -14,5 +14,7 @@ namespace SmartCloud.Common.Permissions
         /// 1-读  2-编辑
         /// </summary>
         public int Status { get; set; }
+
+        //public string ConcurrencyStamp { get; set; }
     }
 }

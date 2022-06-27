@@ -27,10 +27,24 @@ namespace SmartCloud.Common.Permissions
         Task DeleteAsync(string[] ids);
 
         /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="dtos">实体列表</param>
+        /// <returns></returns>
+        Task UpdateAsync(PermissionDto dto);
+
+        /// <summary>
         /// 批量更新
         /// </summary>
         /// <param name="dtos">实体列表</param>
         /// <returns></returns>
         Task UpdateAsync(List<PermissionDto> dtos);
+
+        /// <summary>
+        /// 批量保存
+        /// </summary>
+        /// <param name="dto">实体列表</param>
+        /// <returns></returns>
+        Task SaveAsync(SavePermissionDto dto);
     }
 }

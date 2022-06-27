@@ -17,5 +17,11 @@ namespace SmartCloud.Common.Permissions
 
             return await dbSet.Where(f => f.UserName == userName).ToListAsync();
         }
+
+        public async Task<List<Permission>> GetListAsync(IEnumerable<Guid> ids)
+        {
+            var dbSet = await GetDbSetAsync();
+            return await dbSet.Where(f => ids.Contains(f.Id)).ToListAsync();
+        }
     }
 }
